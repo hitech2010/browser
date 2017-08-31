@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window caption="0,0,0,30" roundcorner="5,5,5,5" sizebox="4,4,4,4" mininfo="600,320" >
+  <Font id="0" name="PingFangSC-Medium" size="14" />
+  <Font id="1" name="PingFangSC-Regular" size="12" />
+
+  <VerticalLayout bkcolor="#FFFFFFFF" width="270" height="355" bordercolor="#FFBBBBBB" bordersize="1,1,1,1">
+    
+    <HorizontalLayout height="39">
+    <Button name="ui_favor_close" padding="250,8,4,0" width="16" height="16" align="right" bkimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;16,0,32,16&apos;" />
+    </HorizontalLayout>
+    
+    <HorizontalLayout height="24">
+      <Label width="84" height="20" text="我的收藏列表" font="0"  textcolor="#FF5C5C5C" padding="27,0,0,0" />
+      <Button name="ui_favor_add" text="添加到收藏夹" font="1" width="90" height="20" textcolor="#FFFFFFFF" padding="42,0,10,0"  bkcolor="#FF6389E0"/>
+    </HorizontalLayout>
+    
+    <Control height="1" bkcolor="#FFDFE3EB" padding="27,0,27,0" />
+    
+    <HorizontalLayout inset="3,0,3,3">
+      <List name="ui_favor_list" bkcolor="#FFFFFFFF" vscrollbar="true" hscrollbar="true" itemalign="center" itembkcolor="#FFFFFFFF" itemaltbk="true">
+
+      </List>
+    </HorizontalLayout>
+
+  </VerticalLayout>
+  
+</Window>

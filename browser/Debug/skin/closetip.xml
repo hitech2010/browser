@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+
+<Window size="386,254">
+  
+  <Font id="0" name="PingFangSC-Medium" size="14" />
+  <Font id="1" name="PingFangSC-Regular" size="14" />
+
+  <VerticalLayout width="386" height="254" bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" bordersize="1,1,1,1">
+    
+    <HorizontalLayout height="32">
+    <Label text="极密浏览器" padding="19,12,0,0" width="70" height="20"/>
+    <Button name="ui_closetipdlg_close" padding="271,10,10,0" width="16" height="16" align="right" bkimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;16,0,32,16&apos;" />
+    </HorizontalLayout>
+
+    <HorizontalLayout height="94">
+      <Label name="ui_closetipdlg_logo" width="48" height="48" bkimage="file=&apos;skin\closetip.png&apos; " padding="168,32,170,14"/>
+    </HorizontalLayout>
+
+
+    <Label width="266" height="20" text="当前已打开多个窗口，确定要全部关闭么？" bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" padding="60,0,60,0" />
+
+    <HorizontalLayout height="76">
+      <Option name="ui_close_tip_checkbox" height="16" width="16" align="left" padding="21,44,0,0" normalimage="skin/unchecked.png" selectedimage="skin/checked.png"/>
+      <Button name="ui_close_tip_checkboxtext" text="不再提示" padding="0,44,0,0" width="70" height="20"/>
+      <Button name="ui_close_tip_ok" text="确定" font="1" width="60" height="24" textcolor="#FFFFFFFF" padding="123,34,0,0"  bkcolor="#FF6389E0"  bordersize="1" bordercolor="0xFFCBD7DE"/>
+      <Button name="ui_close_tip_cancel" text="取消" font="1" width="60" height="24" textcolor="#FF000000" padding="18,34,0,0"  bkcolor="#FFFFFFFF"  bordersize="1" bordercolor="0xFFCBD7DE"/>
+    </HorizontalLayout>
+
+  </VerticalLayout>
+
+</Window>

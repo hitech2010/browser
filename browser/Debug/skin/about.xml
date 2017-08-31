@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+
+<Window size="386,254">
+
+  <!--font-family: PingFangSC-Medium;
+  font-size: 14px;
+  color: #5C5C5C;
+  letter-spacing: 0px;-->
+  <Font id="0" name="PingFangSC-Medium" size="14" />
+
+  <!--font-family: PingFangSC-Regular;
+  font-size: 14px;
+  color: #5C5C5C;
+  letter-spacing: 0px-->
+  <Font id="1" name="PingFangSC-Regular" size="14" />
+
+  <VerticalLayout width="386" height="254" bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" bordersize="1,1,1,1">
+    <Button name="ui_about_close" padding="360,8,0,0" width="16" height="16" align="right" bkimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;16,0,32,16&apos;" />
+    <!--<HorizontalLayout height="24"  bordercolor="#FFBBBBBB" bordersize="0,0,0,0">
+      <Button name="ui_titlebar" width="360" height="24"></Button>
+      <Button name="ui_close" width="24" height="24" padding="0,2,0,0" bkimage="file=&apos;skin\toolbar1.png&apos; source=&apos;72,0,96,24&apos;" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file=&apos;skin\toolbar1.png&apos; source=&apos;72,24,96,48&apos;" pushedimage="file=&apos;skin\toolbar1.png&apos; source=&apos;72,24,96,48&apos;" />
+      <Button name="ui_titlebar" width="2" height="24"></Button>
+    </HorizontalLayout>-->
+
+    <Label height="30" bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" bordersize="1,0,1,0"/>
+
+    <HorizontalLayout height="56">
+      <Label name="ui_about_logo" width="56" height="56" bkimage="file=&apos;skin\appicon.png&apos; " padding="165,0,165,0"/>
+    </HorizontalLayout>
+
+
+    <Label height="23" bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" bordersize="1,0,1,0"/>
+
+    <!--158.139-->
+    <HorizontalLayout height="20" bordercolor="#FFBBBBBB" bordersize="1,0,1,0">
+      <Label name="ui_about_name" width="70" height="20" text="极密浏览器" font="0"  textcolor="#FF5C5C5C" padding="158,0,158,0" />
+    </HorizontalLayout>
+
+    <Label height="3" bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" bordersize="1,0,1,0"/>
+
+    <!--116.162-->
+    <HorizontalLayout height="20" bordercolor="#FFBBBBBB" bordersize="1,0,1,0">
+      <Label name="ui_about_describ" width="154" height="20" text="一款更安全的国密浏览器" font="1"  textcolor="#FF5C5C5C" padding="116,0,116,0" />
+    </HorizontalLayout>
+
+    <Label height="20" bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" bordersize="1,0,1,0"/>
+
+    <!--47.202-->
+    <HorizontalLayout height="20" bordercolor="#FFBBBBBB" bordersize="1,0,1,0">
+      <Label name="ui_about_version" width="293" height="20" text="版本号：0.0.0.1  |  内核版本号：45.0.0.1" font="1"  textcolor="#FF8D8D8D" padding="47,0,46,0" />
+    </HorizontalLayout>
+
+
+  </VerticalLayout>
+
+</Window>
