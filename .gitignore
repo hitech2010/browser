@@ -1,0 +1,12 @@
+*.sdf
+*.exp
+*.obj
+*.lib
+*.dll
+*.opensdf
+*.exe
+**/Debug/**
+**/Release/**
+**/Temp/
+**/Tmp/
+**/ipch/
