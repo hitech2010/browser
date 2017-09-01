@@ -1,8 +1,12 @@
 
 #include "utilities.h"
+#include <fstream>
+#include "json/json.h"
 #include "app_config.h"
 #include "appframe.h"
 
+
+#pragma  comment(lib, "jsoncpp.lib")
 
 bool isGMSSL(string &strt, bool &b)
 {
@@ -12,7 +16,10 @@ bool isGMSSL(string &strt, bool &b)
 
 	AppConfig::AppConfig()
 	{
+		inifile = "gmbrowser.ini";
 		regkey = "GMbrowser";
+
+		m_ask_before_close = "yes";
 	}
 	void AppConfig::setRegKey(const string& keyname)
 	{
@@ -21,6 +28,25 @@ bool isGMSSL(string &strt, bool &b)
 
 	AppConfig::~AppConfig(){};
 
+
+	void AppConfig::setAskBeforeClose(const string& value)
+	{
+		m_ask_before_close = value;
+	}
+
+	bool AppConfig::IfAskBeforeClose()
+	{
+		return m_ask_before_close == "yes";
+	}
+	string AppConfig::getAskBeforeClose()
+	{
+		return m_ask_before_close;
+	}
+
+	string AppConfig::getConfigFile()
+	{
+		return inipath;
+	}
 
 
 	BrowserApp::BrowserApp():AppConfig()
@@ -34,8 +60,36 @@ bool isGMSSL(string &strt, bool &b)
 
 		db.open(szPath);
 
+		inipath = m_appdir + inifile;
+
 		m_favor = new CFavorManager(&db);
 		m_history = new CHistoryMgr(&db);
+
+		ifstream ifs;
+		ifs.open(inipath.c_str());
+
+		Json::Reader reader;
+		Json::Value root;
+		if (!reader.parse(ifs, root, false))
+		{
+			throw std::exception("imcomplete ini file");
+		}
+
+		try
+		{
+			setAskBeforeClose(root["appconfig"]["ask_before_close"].asString());
+			
+			ifs.close();
+			
+		}
+		catch (...)
+		{
+			throw std::exception("wrong ini file");
+		}
+		
+
+
+
 	}
 	BrowserApp::~BrowserApp()
 	{
@@ -55,6 +109,50 @@ bool isGMSSL(string &strt, bool &b)
 
 BrowserApp theApp;
 
+unsigned int __stdcall  sync_setting_proc(void* para)
+{
+
+	while (1)
+	{
+
+		
+
+		try
+		{
+			
+			Json::Reader reader;
+			Json::Value  root;
+			Json::StreamWriterBuilder b;
+
+			ifstream ifs;
+			ifs.open(theApp.getConfigFile().c_str());
+
+			reader.parse(ifs, root, false);
+			ifs.close();
+
+			root["appconfig"]["ask_before_close"] = theApp.getAskBeforeClose();
+
+			string result = Json::writeString(b, root);
+			ofstream ofs;
+			ofs.open(theApp.getConfigFile().c_str());
+
+			if (ofs.is_open())
+			{
+				ofs << result.c_str();
+				ofs.close();
+			}
+
+		}
+		catch (...)
+		{
+			
+		}
+		Sleep(100);
+	}
+
+	return 0;
+
+}
 
 int __stdcall _tWinMain(HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
@@ -62,6 +160,8 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 	int       nCmdShow)
 
 {
+
+	_beginthreadex(NULL, 0, sync_setting_proc, NULL, 0, NULL);
 
 
 	string a;
