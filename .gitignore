@@ -1,7 +1,8 @@
-*.sdf
+﻿*.sdf
 *.exp
 *.obj
 *.lib
+*.bak
 *.dll
 *.opensdf
 *.exe
