@@ -837,13 +837,6 @@ BOOL CFrameWindowWnd::init()
 
 	CHistory::GetAllItem();
 
-	m_bTip = true;
-	ifstream f("gmbrowserseting.ini");
-	if(f.is_open())
-	{
-		m_bTip = false;
-		f.close();
-	}
 
 	//SetIcon(IDR_MAINFRAME);
 
@@ -889,7 +882,7 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 {
 
 	if( msg.pSender->GetName() == _T("ui_close") ) {
-		if(m_engine->m_bindings.size() > 1 && m_bTip)
+		if(m_engine->m_bindings.size() > 1 && theApp.IfAskBeforeClose())
 		{
 			ShowCloseTipDlg();
 		}
@@ -905,6 +898,11 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 	else if(msg.pSender->GetUserData().Find(_T("ui_closetab")) != -1)
 	{
 		m_engine->Remove(msg.pSender);
+		if (m_engine->GetCount() < 2) /*UI_addtab btn left and quit */
+		{
+			Close();;
+		}
+		
 	}
 
 	else if( msg.pSender->GetName() == _T("ui_maximize") ) {
@@ -1231,6 +1229,7 @@ int CMdWebEngine::Add(LPCTSTR url)
 	pOpt->SetBkImage(_T("skin\\tab.png"));
 	pOpt->SetGroup(_T("webpage"));
 	pOpt->SetTag((UINT_PTR)pOpt);
+	pOpt->SetBkImage(_T("skin\\tab_bkgd.png"));
 	pOpt->SetSelectedImage(_T("skin\\tab_focus.png"));
 	pOpt->SetUserData(_T("ui_option"));
 	pOpt->Selected(true);
@@ -1284,6 +1283,11 @@ int CMdWebEngine::Add(LPCTSTR url)
 
 
 	return true;
+}
+
+int CMdWebEngine::GetCount()
+{
+	return m_tabcontainer->GetCount();
 }
 
 int CMdWebEngine::Remove( CControlUI* btnCloseTab )
@@ -1348,6 +1352,9 @@ int CMdWebEngine::Remove( CControlUI* btnCloseTab )
 	}
 
 	UnBind(pContainer);
+
+
+	
 
 
 	return true;
@@ -1539,18 +1546,12 @@ void CFrameWindowWnd::ShowCloseTipDlg()
 
 void CFrameWindowWnd::SetNeedTip(bool need)
 {
-	if(!need)
+	if (need)
 	{
-		ofstream f("gmbrowserseting.ini");
-		if(f.is_open())
-		{
-			m_bTip = false;
-			f.close();
-		}
+		theApp.setAskBeforeClose("yes");
 	}
 	else
 	{
-		remove("gmbrowserseting.ini");
+		theApp.setAskBeforeClose("no");
 	}
-
 }

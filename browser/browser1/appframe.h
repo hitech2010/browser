@@ -17,6 +17,7 @@ static CMdWebEngine* thisobj;
 	~CMdWebEngine();
 	static CMdWebEngine* Get();
 	int Add(LPCTSTR url = L"http://www.microdone.cn");
+	int GetCount();
 	int Remove(CControlUI* btnCloseTab);
 	int Reload(LPCTSTR url = NULL);
 	int Switch(CControlUI* pOption);
@@ -90,6 +91,5 @@ public:
 	//最大化最小化
 	CControlUI* m_pMaxButton;
 	CControlUI* m_pResotreButton;
-	bool m_bTip;
 	
 };
