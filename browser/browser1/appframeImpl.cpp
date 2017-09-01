@@ -433,7 +433,7 @@ public:
 		m_pm.Init(m_hWnd);  
 		m_pm.AddPreMessageFilter(this);  
 		CDialogBuilder builder;  
-		CControlUI* pRoot = builder.Create(_T("skin//favor_add_item.xml"), (UINT)0, NULL, &m_pm);  
+		CControlUI* pRoot = builder.Create(_T("skin//bookmark_add.xml"), (UINT)0, NULL, &m_pm);  
 		ASSERT(pRoot && "Failed to parse XML");
 		m_pm.AttachDialog(pRoot);  
 		m_pm.AddNotifier(this);
