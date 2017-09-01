@@ -71,6 +71,9 @@
     <ClInclude Include="xxstring.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\thirdparty\json\json.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="browser1.rc">

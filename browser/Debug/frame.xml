@@ -5,7 +5,7 @@
 	<Font id="2" name="微软雅黑" size="12" bold="false" default="true"/>
     <VerticalLayout name="VL_main" width="529" height="80" bkcolor="#FFFFFFFF">
         <HorizontalLayout height="80" bkcolor="#FFF7F7FA">
-            <Button width="80" height="80" bkimage="skin\app.png" bkcolor="#FFF7F7FA" />
+            <!--Button width="80" height="80" bkimage="skin\app.png" bkcolor="#FFF7F7FA" /-->
             <VerticalLayout height="80">
                 <HorizontalLayout height="40" bkcolor="#FFF0F0F1" padding="0,0,8,0">
                     <HorizontalLayout name="htab" height="32" padding="0,8,0,0">
