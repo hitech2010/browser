@@ -153,7 +153,17 @@ public:
 	}
 
 
+	_encoding& astr()
+	{
+		if (m_out.size())
+		{
+			m_int = m_out;
+			m_out = "";
+		}
 
+
+		return MultiBytes(CP_ACP);
+	}
 
 
 	_encoding& utf8()

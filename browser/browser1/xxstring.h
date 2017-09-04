@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <varargs.h>
 #include "encoding.h"
-
+#include <assert.h>
+#include <atlstr.h>
 
 
 class _xstring
@@ -204,12 +205,12 @@ public:
 		va_list args;
 		va_start(args, fmt);
 
-		size_t sz = vsnprintf(NULL, 0,  fmt, args);
+		size_t sz = vsnprintf(NULL, 0, fmt, args);
 		tmp.resize(sz);
 
 
 
-		vsnprintf_s(tmp._Myptr(), tmp.capacity(), _TRUNCATE, fmt, args);
+		vsnprintf_s(tmp._Myptr(), tmp.capacity(),_TRUNCATE, fmt, args);
 
 		va_end(args);
 
@@ -406,19 +407,28 @@ public:
 	_wxstring& format(const wchar_t* fmt, ...)
 	{
 		std::wstring tmp;
-		va_list va;
 
 		va_list args;
 		va_start(args, fmt);
 
-		size_t sz = vswprintf_s(NULL, 0,  fmt, va);
-		tmp.resize(sz);
+		CStringW b;
+		b.Format(L"12341234%s", L"asdfasdfasdfasdf");
 
-		vswprintf_s(tmp._Myptr(), tmp.size(), fmt, va);
+		
+		SetLastError(ERROR_SUCCESS);
+		wchar_t szBuffer[1028];
+		int nLength = _vscwprintf(fmt, args);
+		assert(GetLastError() == ERROR_SUCCESS);
+
+		tmp.resize(nLength);
+
+		vswprintf_s(tmp._Myptr(), tmp.size()+1, fmt, args);
 
 		va_end(args);
 
 		m_buffer = tmp;
+
+		return *this;
 	}
 };
 

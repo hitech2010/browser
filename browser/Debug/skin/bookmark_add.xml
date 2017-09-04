@@ -2,6 +2,10 @@
 <Window caption="0,0,0,30" roundcorner="5,5,5,5" sizebox="4,4,4,4" mininfo="386,254" >
   <Font id="0" name="PingFangSC-Medium" size="14" />
   <Font id="1" name="PingFangSC-Regular" size="14" />
+  <Default name="VScrollBar" shared="true" value="width=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='skin/vscrollbar.png' source='0,60,8,100' corner='0,4,0,4'&quot; thumbhotimage=&quot;file='skin/vscrollbar.png' source='8,60,16,100' corner='0,4,0,4'&quot; thumbpushedimage=&quot;file='skin/vscrollbar.png' source='16,60,24,100' corner='0,4,0,4'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/vscrollbar.png' source='0,0,8,60' corner='0,4,0,4'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
+  <Default name="HScrollBar" shared="true" value="height=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='skin/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; thumbhotimage=&quot;file='skin/hscrollbar.png' source='0,8,32,16' corner='4,0,4,0'&quot; thumbpushedimage=&quot;file='skin/hscrollbar.png' source='0,16,32,24' corner='4,0,4,0'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
+ 
+  <Style name="combo_style" value="height=&quot;28&quot; textcolor=&quot;#FFFFFFFF&quot; itemvalign=&quot;vcenter&quot; textpadding=&quot;4,1,28,1&quot; normalimage=&quot;res='skin/combo.png' source='0,0,161,28' corner='2,2,28,2'&quot; hotimage=&quot;res='skin/combo.png' source='0,28,161,56' corner='2,2,28,2'&quot; pushedimage=&quot;res='skin/combo.png' source='0,56,161,84' corner='2,2,28,2'&quot;" />
 
   <VerticalLayout bkcolor="#FFFFFFFF" width="386" height="254" bordercolor="#FFBBBBBB" bordersize="1,1,1,1">
 
@@ -11,8 +15,8 @@
     </HorizontalLayout>
 
     <HorizontalLayout height="80">
-      <Label width="42" height="42" padding="137,40,0,0" bkimage="skin\favor_log.png" />
-			<Label width="100" height="42" padding="36,44,0,0" text="书签已添加" />
+      <Label width="28" height="28" padding="137,30,0,0" bkimage="skin\bookmark_add_complete.png" />
+			<Label width="100" height="20" padding="36,34,0,0" text="书签已添加!" />
     </HorizontalLayout>
 
     <HorizontalLayout height="34">
@@ -20,16 +24,46 @@
       <Edit  name ="ui_favor_add_title" padding="8,0,0,0" width="214" height="28" bordersize="1" bordercolor="0xFFCBD7DE" />
     </HorizontalLayout>
     
-    <HorizontalLayout height="34">
-      <Label width="56" padding="41,0,0,0" height="20" text="文件夹:" font="0"  textcolor="#FF5C5C5C" />
-      <Edit  padding="8,0,0,0" width="214" height="28" bordersize="1" bordercolor="0xFFCBD7DE" />
-    </HorizontalLayout>
+    <Container >
+      <Label   float="true" pos="41,0,97,34" text="文件夹:" font="0"  textcolor="#FF5C5C5C" />
+      <Combo style="combo_style"  float="true" dropbox="hscrollbar=&quot;false&quot;" pos="105,0,319,28"  bordersize="1" bordercolor="0xFFCBD7DE" >
+                <ListLabelElement text="书签栏" selected="true" height="23" width="214"/>
+                <ListLabelElement name="ui_favor_selfolder" text="其它文件夹" height="23" width="214" />
+      
+      </Combo>
+    	<Button  float="true" pos="36,56,96,80" name="ui_favor_add_delete"  text="删除" font="1" textcolor="#FFFFFFFF" bkcolor="#FF6389E0"  bordersize="1" bordercolor="0xFFCBD7DE"/>
+      <Button  float="true" pos="215,56,275,80" name="ui_favor_add_edit"    text="修改" font="1" textcolor="#FFFFFFFF" bkcolor="#FF6389E0"  bordersize="1" bordercolor="0xFFCBD7DE"/>
+      <Button  float="true" pos="290,56,350,80" name="ui_favor_add_ok"      text="完成" font="1" textcolor="#FF000000" bkcolor="#FFFFFFFF"  bordersize="1" bordercolor="0xFFCBD7DE"/>
+      	
+    </Container>
     
-    <HorizontalLayout height="59">
-    	<Button name="ui_favor_add_delete"  text="删除" font="1" width="60" height="24" textcolor="#FFFFFFFF" padding="36,0,0,0"  bkcolor="#FF6389E0"  bordersize="1" bordercolor="0xFFCBD7DE"/>
-      <Button name="ui_favor_add_edit"    text="修改" font="1" width="60" height="24" textcolor="#FFFFFFFF" padding="119,0,0,0"  bkcolor="#FF6389E0"  bordersize="1" bordercolor="0xFFCBD7DE"/>
-      <Button name="ui_favor_add_ok"      text="完成" font="1" width="60" height="24" textcolor="#FF000000" padding="15,0,0,0"  bkcolor="#FFFFFFFF"  bordersize="1" bordercolor="0xFFCBD7DE"/>
-    </HorizontalLayout>
+    		<!--Container bkcolor="#FFFFFFFF" >
+			<Label text="账号：" float="true" pos="10, 20, 78, 42" />
+			<Combo name="accountcombo" float="true" pos="80, 20, 220, 42" tooltip="请点击这里选择您准备使用的账号" normalimage="file='Combo_nor.bmp' corner='2,2,24,2'" hotimage="file='Combo_over.bmp' corner='2,2,24,2'" pushedimage="file='Combo_over.bmp' corner='2,2,24,2'" textpadding="1,1,1,1" >
+				<ListLabelElement text="张三" selected="true" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+			</Combo>
+			<Button text="{u}注册账号{/u}" showhtml="true" float="true" pos="230, 20, 300, 42" tooltip="如果你还没有账号，请点击注册一个账号" />
+			<Edit name="accountedit" float="true" pos="81, 21, 199, 41" tooltip="请在这里输入您的账号"/>
+			<Label text="密码：" float="true" pos="10, 55, 78, 75" />
+			<Edit name="pwdedit" float="true" pos="80, 55, 220, 75" password="true" tooltip="请在这里输入您的密码" bordercolor="#FF4EA0D1" bordersize="1"/>
+			<Button text="{u}{l}找回密码{/l}{/u}" showhtml="true" float="true" pos="230, 55, 300, 75" tooltip="如果你忘记了密码，请点击找回密码"/>
+			<Button name="SettingBtn" text="设置" float="true" pos="66, 90, 126, 110" tooltip="Use English Language" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" />
+			<Button name="loginBtn" text="登录" float="true" pos="186, 90, 246, 110" tooltip="点击这里登录游戏" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" />
+		</Container-->
+
 
   </VerticalLayout>
 

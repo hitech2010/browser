@@ -406,6 +406,9 @@ public:
 
 	void Notify(TNotifyUI& msg)  
 	{
+		wxstring tmp;
+		tmp.format(L"Notify:psender: msgtype(%s)",  msg.sType);
+		Log(tmp);
 		if (msg.pSender->GetName() == _T("ui_favor_add_close") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			this->Close(IDCLOSE);
@@ -422,6 +425,12 @@ public:
 		{
 			AddItem();
 		}
+		if ( msg.sType == DUI_MSGTYPE_ITEMSELECT)
+		{
+			;
+		}
+
+		
 	}
 
 	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)  
@@ -954,7 +963,7 @@ void CFrameWindowWnd::Notify(TNotifyUI& msg)
 	}
 	else if (msg.pSender->GetName() == _T("ui_favor") && msg.sType == DUI_MSGTYPE_CLICK)
 	{
-		ShowFavorForm();
+		BookmarkAdd();
 	}
 	else if (CDuiString(msg.pSender->GetClass()) == _T("WebBrowser"))
 	{
@@ -1390,6 +1399,14 @@ void CMdWebEngine::UnBind( CContainerUI* tab)
 
 }
 
+CEditUI* CMdWebEngine::GetAddressBar()
+{
+	CEditUI* pEdit = dynamic_cast<CEditUI*>(m_pm->FindControl(_T("ui_address")));
+
+	return pEdit;
+
+}
+
 CWebBrowserUI* CMdWebEngine::GetWebPage(UINT_PTR tab)
 {
 	if(tab)
@@ -1505,7 +1522,7 @@ int CMdWebEngine::Switch( CControlUI* pOption )
 
 
 
-void CFrameWindowWnd::ShowFavorForm(void)
+void CFrameWindowWnd::BookmarkAdd(void)
 {
 	CDuiPoint point;
 	CControlUI* pCon = m_pm.FindControl(L"ui_address");
@@ -1514,10 +1531,20 @@ void CFrameWindowWnd::ShowFavorForm(void)
 	point.y = rc.bottom;
 	ClientToScreen(m_hWnd, &point);
 
-	CFavorForm* cff = new CFavorForm;
-	cff->m_fream = this;
-	cff->Create(m_hWnd, _T(""), UI_WNDSTYLE_DIALOG, 0, point.x - 270, point.y, 270, 355, NULL);  
-	cff->ShowWindow();
+	favor_recode_item item;
+	item.folder = _encoding(L"ÊéÇ©À¸").utf8().get();
+	item.url = _encoding(m_engine->GetAddressBar()->GetText()).astr().get();
+	item.img = "";
+
+	_encoding ed(wxstring(m_engine->GetContainer(m_engine->m_crrentWebPage)->GetItemAt(0)->GetText().GetData()));
+	item.title = ed.utf8().get();
+	theApp.Favor()->Add(item);
+
+	CFavorAddItemDlg* additemdlg = new CFavorAddItemDlg;
+	additemdlg->m_fream = this;
+	additemdlg->Create(GetHWND(), _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 386, 254, NULL);
+	additemdlg->CenterWindow();
+	additemdlg->ShowModal();
 }
 
 

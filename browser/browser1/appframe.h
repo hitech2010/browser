@@ -27,6 +27,8 @@ protected:
 	void Bind(CContainerUI* tab, CWebBrowserUI* page);
 	void UnBind(CContainerUI* tab);
 	
+public:
+	CEditUI* GetAddressBar();
 
 
 
@@ -75,7 +77,7 @@ public:
 	void ShowAboutDlg();
 	void ShowAddFavorDlg();
 	void ShowHistoryForm();
-	void ShowFavorForm(void);
+	void BookmarkAdd(void);
 	void ShowMenu(void);
 	void ShowCloseTipDlg();
 	void SetNeedTip(bool need);

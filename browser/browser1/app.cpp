@@ -14,6 +14,9 @@ bool isGMSSL(string &strt, bool &b)
 }
 
 
+
+
+
 	AppConfig::AppConfig()
 	{
 		inifile = "gmbrowser.ini";
@@ -124,12 +127,9 @@ unsigned int __stdcall  sync_setting_proc(void* para)
 			Json::Value  root;
 			Json::StreamWriterBuilder b;
 
-			ifstream ifs;
-			ifs.open(theApp.getConfigFile().c_str());
 
-			reader.parse(ifs, root, false);
-			ifs.close();
 
+			root["appname"] = "gmbrowser";
 			root["appconfig"]["ask_before_close"] = theApp.getAskBeforeClose();
 
 			string result = Json::writeString(b, root);

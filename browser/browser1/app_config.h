@@ -11,7 +11,9 @@ public:
 	string regkey;
 	string        inipath;
 private:
+	
 	string m_ask_before_close;
+
 
 
 public:	
