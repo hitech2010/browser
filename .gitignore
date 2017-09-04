@@ -1,7 +1,10 @@
 ﻿*.sdf
 *.exp
 *.obj
+
+
 *.lib
+!sqlite3.lib
 *.bak
 *.dll
 *.opensdf
