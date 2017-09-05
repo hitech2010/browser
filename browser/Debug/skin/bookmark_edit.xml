@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window caption="0,0,0,30" roundcorner="5,5,5,5" sizebox="4,4,4,4" mininfo="386,254" >
+  <Font id="0" name="PingFangSC-Medium" size="17" />
+  <Font id="1" name="PingFangSC-Regular" size="14" />
+  <Font id="2" name="微软雅黑" size="20" />
+  <Default name="VScrollBar" shared="true" value="width=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='skin/vscrollbar.png' source='0,60,8,100' corner='0,4,0,4'&quot; thumbhotimage=&quot;file='skin/vscrollbar.png' source='8,60,16,100' corner='0,4,0,4'&quot; thumbpushedimage=&quot;file='skin/vscrollbar.png' source='16,60,24,100' corner='0,4,0,4'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/vscrollbar.png' source='0,0,8,60' corner='0,4,0,4'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
+  <Default name="HScrollBar" shared="true" value="height=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='skin/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; thumbhotimage=&quot;file='skin/hscrollbar.png' source='0,8,32,16' corner='4,0,4,0'&quot; thumbpushedimage=&quot;file='skin/hscrollbar.png' source='0,16,32,24' corner='4,0,4,0'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
+ 
+  <Style name="combo_style" value="height=&quot;28&quot; textcolor=&quot;#FFFFFFFF&quot; itemvalign=&quot;vcenter&quot; textpadding=&quot;4,1,28,1&quot; normalimage=&quot;res='skin/combo.png' source='0,0,161,28' corner='2,2,28,2'&quot; hotimage=&quot;res='skin/combo.png' source='0,28,161,56' corner='2,2,28,2'&quot; pushedimage=&quot;res='skin/combo.png' source='0,56,161,84' corner='2,2,28,2'&quot;" />
+  <Style name="treenode_folder_style" value="padding=&quot;0,1,0,0&quot; width=&quot;16&quot; height=&quot;16&quot; normalimage=&quot;file='skin/treeview_folderclose.png' source='0,0,16,16' &quot; hotimage=&quot;file='skin/treeview_folderclose.png' source='0,0,16.16' &quot; selectedimage=&quot;file='skin/treeview_folderopen.png' source='0,0,16,16' &quot; selectedhotimage=&quot;file='skin/treeview_folderopen.png' source='0,0,16.16' &quot;"/>
+  <Style name="treenode_checkbox_style" value="width=&quot;16&quot; height=&quot;16&quot; normalimage=&quot;file='common/unchecked.png' &quot; selectedimage=&quot;file='common/checked.png'&quot;" />
+  <Style name="treeview_style" value="folderattr=&quot;treenode_folder_style&quot; checkboxattr=&quot;treenode_checkbox_style&quot;"/>
+
+  <VerticalLayout bkcolor="#FFFFFFFF" width="386" height="254" bordercolor="#FFBBBBBB" bordersize="1,1,1,1">
+
+    <HorizontalLayout height="34" padding="0,13,0,0" width="386"  >
+      <Button name="ui_favor_edit_name" text="名称：" font="1" width="42" height="20" textcolor="#FF5C5C5C" padding="56,7,0,0" />
+      <Edit name="ui_favor_edit_nameedit" font="1" padding="8,3,0,0" width="214" height="28"  bordersize="1" bordercolor="0xFFCBD7DE"/>
+    </HorizontalLayout>
+
+    <HorizontalLayout height="34">
+      <Button name="ui_favor_edit_site" text="网址：" font="1" width="42" height="20" textcolor="#FF5C5C5C" padding="56,7,0,0" />
+      <Edit name="ui_favor_edit_siteedit" font="1" padding="8,3,0,0" width="214" height="28"  bordersize="1" bordercolor="0xFFCBD7DE"/>
+    </HorizontalLayout>
+
+
+    	<List name="ui_favor_edit_list" itemalign="left" vscrollbar="true" header="hidden" headerbkimage="skin/combo.png" height="104" width="314" padding="36,14,0,0"  bordercolor="0xFFCBD7DE" bordersize="1">
+    		<!--ListContainerElement padding="0,0,0,0" text="书签栏"   width="214" height="28" >
+    			<Edit name="ui_treeview_edit1" font="1" padding="1,0,1,0" bordersize="1" bordercolor="0xFFCBD7DE"/>	
+    		</ListContainerElement >
+    		<ListContainerElement     > 
+    			<Edit name="ui_treeview_edit2" font="1" padding="1,0,1,0" width="214" height="28"  bordersize="1" bordercolor="0xFFCBD7DE"/>	
+    		</ListContainerElement -->	
+    		 <ListContainerElement name="elem" height="30" padding="1,1,1,1" selected="true">
+				    <Button name="troy1_Btn" padding="5,7,0,0" bkimage="skin/folder_close.png" height="16" width="16" align="center"/>
+				    <Label  name="troy1_label" padding="5,0,0,0" text="书签栏" />
+				    <Edit   name="troy" text="新建文件夹"   padding="1,0,1,0"  visible="false" bordersize="1" bordercolor="0xFFCBD7DE"/>
+  			 </ListContainerElement>
+  			 <!--ListContainerElement name="elem"  height="30" padding="1,1,1,1">
+				    <Button name="troy2_Btn" 	padding="5,7,0,0" bkimage="skin/folder_close.png" height="16" width="16" align="center"/>
+				    <Label  name="troy2_label" padding="5,0,0,0"  text="" />
+				    <Edit   name="troy" text="新建文件夹" padding="1,0,1,0"  visible="false" bordersize="1" bordercolor="0xFFCBD7DE"/>
+  			 </ListContainerElement>
+  			 <ListContainerElement name="elem"  height="30" padding="1,1,1,1">
+				    <Button name="troy3_Btn" padding="5,7,0,0" bkimage="skin/folder_open.png" height="16" width="16" align="center"/>
+				    <Label  name="troy3_label" padding="5,0,0,0"  text="" />
+				    <Edit   name="troy" text="新建文件夹" padding="1,0,1,0"  visible="false" bordersize="1" bordercolor="0xFFCBD7DE"/>
+  			 </ListContainerElement>
+  			 <ListContainerElement name="elem"  height="30" padding="1,1,1,1">
+				    <Button name="troy4_Btn" padding="5,7,0,0" bkimage="skin/folder_close.png" height="16" width="16" align="center"/>
+				    <Label  name="troy4_label" padding="5,0,0,0"  text="" />
+				    <Edit   name="troy" text="新建文件夹" padding="1,0,1,0"  visible="false" bordersize="1" bordercolor="0xFFCBD7DE"/>
+  			 </ListContainerElement>
+  			 <ListContainerElement name="elem"  height="30" padding="1,1,1,1">
+				    <Button name="troy5_Btn" padding="5,7,0,0" bkimage="skin/folder_close.png" height="16" width="16" align="center"/>
+				    <Label  name="troy5_label" padding="5,0,0,0"  text="" />
+				    <Edit   name="troy" text="新建文件夹" padding="1,0,1,0"  visible="false" bordersize="1" bordercolor="0xFFCBD7DE"/>
+  			 </ListContainerElement-->
+    		
+    	</List>
+
+    
+    <Container >
+
+    	<Button  float="true" pos="36,7,106,31" name="ui_favor_edit_newfolder"  text="新建文件夹" font="1" textcolor="#FF000000" bkcolor="#FFFFFFFF"  bordersize="1" bordercolor="0xFFCBD7DE"/>
+      <Button  float="true" pos="215,7,275,31" name="ui_favor_edit_cancel"    text="取消" font="1" textcolor="#FF000000" bkcolor="#FFFFFFFF"  bordersize="1" bordercolor="0xFFCBD7DE"/>
+      <Button  float="true" pos="290,7,350,31" name="ui_favor_edit_save"      text="保存" font="1" textcolor="#FFFFFFFF" bkcolor="#FF4790E4"  bordersize="1" bordercolor="0xFFCBD7DE"/>
+      	
+    </Container>
+
+  </VerticalLayout>
+
+</Window>

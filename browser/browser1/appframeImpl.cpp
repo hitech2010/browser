@@ -406,9 +406,7 @@ public:
 
 	void Notify(TNotifyUI& msg)  
 	{
-		wxstring tmp;
-		tmp.format(L"Notify:psender: msgtype(%s)",  msg.sType);
-		Log(tmp);
+
 		if (msg.pSender->GetName() == _T("ui_favor_add_close") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			this->Close(IDCLOSE);
@@ -427,7 +425,14 @@ public:
 		}
 		if ( msg.sType == DUI_MSGTYPE_ITEMSELECT)
 		{
-			;
+			CComboUI* combo = static_cast<CComboUI*>(m_pm.FindControl(L"ui_favor_folderlist"));
+
+			if (combo )
+			{
+				combo->RemoveAll();
+			}
+
+			Close(1000);
 		}
 
 		
@@ -488,6 +493,147 @@ public:
 public:
 	CPaintManagerUI m_pm;
 	CFrameWindowWnd* m_fream;
+};
+
+class CFavorEditDlg : public CWindowWnd, public INotifyUI, public IMessageFilterUI
+{
+public:
+
+	LPCTSTR GetWindowClassName() const { return _T("UIFavorEditDlg"); };
+	LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)
+	{
+		if (uMsg == WM_KEYDOWN)
+		{
+			if (wParam == VK_ESCAPE)
+			{
+				Close();
+				return true;
+			}
+		}
+
+		return false;
+	}
+	void OnFinalMessage(HWND /*hWnd*/)
+	{
+		m_pm.RemovePreMessageFilter(this);
+		delete this;
+	}
+
+	void AddItem()
+	{
+		;
+	}
+
+	void Notify(TNotifyUI& msg)
+	{
+		wxstring tmp;
+
+		tmp.format(L"Notify:psender(%s): msgtype(%s)", msg.pSender->GetName().GetData(), msg.sType);
+
+		Log(tmp);
+		if (msg.pSender->GetName() == _T("ui_favor_edit_newfolder") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			CListContainerElementUI* elmt = new CListContainerElementUI();
+			CButtonUI*               btn = new CButtonUI();
+			CLabelUI*                label = new CLabelUI();
+			elmt->SetChildAlign(DT_CENTER);
+			elmt->SetManager(&m_pm, NULL, false);
+			elmt->SetFixedHeight(30);
+			RECT rc = { 1, 1, 1, 1 };
+			elmt->SetPadding(rc);
+			m_folder->Add(elmt);
+
+
+			btn->SetManager(&m_pm, NULL, false);
+			RECT rcbtn = {5,7,0,0};
+			btn->SetPadding(rcbtn);
+			btn->SetName(_T("ui_folder_btn"));
+			btn->SetBkImage(_T("skin/folder_close.png"));
+			btn->SetFixedHeight(16);
+			btn->SetFixedWidth(16);
+			elmt->Add(btn);
+
+
+			label->SetManager(&m_pm, NULL, false);
+			RECT rclable = { 5, 0, 0, 0 };
+			label->SetPadding(rcbtn);
+			label->SetName(_T("ui_folder_label"));
+			label->SetText(_T("新建文件夹"));
+			elmt->Add(label);
+			
+
+		}
+		if (msg.pSender->GetName() == _T("ui_favor_edit_cancel") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			Close(IDCLOSE);
+		}
+		if (msg.pSender->GetName() == _T("ui_favor_edit_save") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			Close(IDCLOSE);
+		}
+		
+
+	}
+
+	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+	{
+		LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);
+		styleValue &= ~WS_CAPTION;
+		::SetWindowLong(*this, GWL_STYLE, styleValue | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
+
+		m_pm.Init(m_hWnd);
+		m_pm.AddPreMessageFilter(this);
+		CDialogBuilder builder;
+		CControlUI* pRoot = builder.Create(_T("skin//bookmark_edit.xml"), (UINT)0, NULL, &m_pm);
+		ASSERT(pRoot && "Failed to parse XML");
+		m_pm.AttachDialog(pRoot);
+		m_pm.AddNotifier(this);
+
+		LPCTSTR pTitle = m_fream->m_engine->GetAddressBar()->GetText();
+
+		m_folder = static_cast<CListUI*>(m_pm.FindControl(_T("ui_favor_edit_list")));
+		assert(m_folder);
+
+
+
+		return 0;
+	}
+
+	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		LRESULT lRes = 0;
+		BOOL bHandled = TRUE;
+
+		switch (uMsg)
+		{
+		case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;
+		case WM_KEYDOWN:
+		{
+			if (wParam == VK_RETURN)
+			{
+				//AddItem();
+			}
+			else if (wParam == VK_ESCAPE)
+			{
+				this->Close(IDCLOSE);
+				return true;
+			}
+		}
+		break;
+		default:
+			bHandled = FALSE;
+		}
+
+		if (bHandled) return lRes;
+		if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes)) return lRes;
+		return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+	}
+
+public:
+	CPaintManagerUI m_pm;
+	CFrameWindowWnd* m_fream;
+
+	CListUI*        m_folder;
 };
 
 class CFavorForm : public CWindowWnd, public INotifyUI, public IMessageFilterUI  
@@ -1544,7 +1690,16 @@ void CFrameWindowWnd::BookmarkAdd(void)
 	additemdlg->m_fream = this;
 	additemdlg->Create(GetHWND(), _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 386, 254, NULL);
 	additemdlg->CenterWindow();
-	additemdlg->ShowModal();
+	int nRet = additemdlg->ShowModal();
+
+	if (nRet == 1000)
+	{
+		CFavorEditDlg* additemdlg = new CFavorEditDlg;
+		additemdlg->m_fream = this;
+		additemdlg->Create(GetHWND(), _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 386, 254, NULL);
+		additemdlg->CenterWindow();
+		int nRet = additemdlg->ShowModal();
+	}
 }
 
 

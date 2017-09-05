@@ -406,27 +406,22 @@ public:
 
 	_wxstring& format(const wchar_t* fmt, ...)
 	{
-		std::wstring tmp;
+
 
 		va_list args;
 		va_start(args, fmt);
-
-		CStringW b;
-		b.Format(L"12341234%s", L"asdfasdfasdfasdf");
-
-		
+	
 		SetLastError(ERROR_SUCCESS);
 		wchar_t szBuffer[1028];
 		int nLength = _vscwprintf(fmt, args);
 		assert(GetLastError() == ERROR_SUCCESS);
 
-		tmp.resize(nLength);
+		m_buffer.resize(nLength);
 
-		vswprintf_s(tmp._Myptr(), tmp.size()+1, fmt, args);
+		vswprintf_s(m_buffer._Myptr(), m_buffer.size() + 1, fmt, args);
 
 		va_end(args);
 
-		m_buffer = tmp;
 
 		return *this;
 	}

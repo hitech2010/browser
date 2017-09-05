@@ -26,10 +26,9 @@
     
     <Container >
       <Label   float="true" pos="41,0,97,34" text="文件夹:" font="0"  textcolor="#FF5C5C5C" />
-      <Combo style="combo_style"  float="true" dropbox="hscrollbar=&quot;false&quot;" pos="105,0,319,28"  bordersize="1" bordercolor="0xFFCBD7DE" >
+      <Combo  name="ui_favor_folderlist" style="combo_style"  float="true" dropbox="hscrollbar=&quot;false&quot;" pos="105,0,319,28"  bordersize="1" bordercolor="0xFFCBD7DE" >
                 <ListLabelElement text="书签栏" selected="true" height="23" width="214"/>
                 <ListLabelElement name="ui_favor_selfolder" text="其它文件夹" height="23" width="214" />
-      
       </Combo>
     	<Button  float="true" pos="36,56,96,80" name="ui_favor_add_delete"  text="删除" font="1" textcolor="#FFFFFFFF" bkcolor="#FF6389E0"  bordersize="1" bordercolor="0xFFCBD7DE"/>
       <Button  float="true" pos="215,56,275,80" name="ui_favor_add_edit"    text="修改" font="1" textcolor="#FFFFFFFF" bkcolor="#FF6389E0"  bordersize="1" bordercolor="0xFFCBD7DE"/>
