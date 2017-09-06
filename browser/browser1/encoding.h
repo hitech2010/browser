@@ -62,7 +62,7 @@ private:
 
 		m_out.resize(charactersNeeded);
 
-		WideCharToMultiByte(cp, NULL, (LPCWSTR)m_int.c_str(), m_int.size() / sizeof(wchar_t), (LPSTR)m_out.c_str(), charactersNeeded, NULL, NULL);
+		int nRet = WideCharToMultiByte(cp, NULL, (LPCWSTR)m_int.c_str(), m_int.size() / sizeof(wchar_t), (LPSTR)m_out.c_str(), charactersNeeded, NULL, NULL);
 
 		return *this;
 	}
@@ -72,10 +72,15 @@ private:
 	{
 		int charactersNeeded = MultiByteToWideChar(cp, 0, (LPCSTR)m_int.c_str(), m_int.size(), NULL, 0 );
 
-		m_out.resize(charactersNeeded * 2);
+		wstring tmp;
+		tmp.resize(charactersNeeded * 2);
 	
 
-		MultiByteToWideChar(cp, NULL, (LPCSTR)m_int.c_str(), m_int.size(), (LPWSTR)m_out.c_str(), charactersNeeded);
+		int nRet = MultiByteToWideChar(cp, NULL, (LPCSTR)m_int.c_str(), m_int.size(), (LPWSTR)tmp.c_str(), charactersNeeded);
+
+		m_out.assign((LPSTR)tmp.c_str(), tmp.size() * 2 + 2);
+
+	
 
 		return *this;
 	}

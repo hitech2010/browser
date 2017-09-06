@@ -32,7 +32,7 @@
     			<Edit name="ui_treeview_edit2" font="1" padding="1,0,1,0" width="214" height="28"  bordersize="1" bordercolor="0xFFCBD7DE"/>	
     		</ListContainerElement -->	
     		 <ListContainerElement name="elem" height="30" padding="1,1,1,1" selected="true">
-				    <Button name="troy1_Btn" padding="5,7,0,0" bkimage="skin/folder_close.png" height="16" width="16" align="center"/>
+				    <Button name="troy1_Btn" padding="5,7,0,0" bkimage="skin/folder_close.png"  height="16" width="16" align="center"/>
 				    <Label  name="troy1_label" padding="5,0,0,0" text="书签栏" />
 				    <Edit   name="troy" text="新建文件夹"   padding="1,0,1,0"  visible="false" bordersize="1" bordercolor="0xFFCBD7DE"/>
   			 </ListContainerElement>

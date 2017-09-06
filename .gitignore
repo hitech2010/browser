@@ -5,6 +5,10 @@
 
 *.lib
 !sqlite3.lib
+!libeay32MTd.lib
+!MDSMD.lib
+!jsoncpp.lib
+
 *.bak
 *.dll
 *.opensdf

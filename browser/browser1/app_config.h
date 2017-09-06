@@ -33,6 +33,7 @@ class BrowserApp :public AppConfig
 	CppSQLite3DB db;//关于browser的数据
 	string       m_appdir;
 	CFavorManager* m_favor;
+	CFavorFolder*  m_favorfolder;
 	CHistoryMgr*   m_history;
 	CRegKey        m_regedit;
 	
@@ -41,6 +42,7 @@ public:
 	~BrowserApp();
 	CHistoryMgr* History();
 	CFavorManager* Favor();
+	CFavorFolder*  FavorFolder();
 };
 
 

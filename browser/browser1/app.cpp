@@ -67,6 +67,8 @@ bool isGMSSL(string &strt, bool &b)
 
 		m_favor = new CFavorManager(&db);
 		m_history = new CHistoryMgr(&db);
+		m_favorfolder = new CFavorFolder(&db);
+
 
 		ifstream ifs;
 		ifs.open(inipath.c_str());
@@ -105,7 +107,14 @@ bool isGMSSL(string &strt, bool &b)
 	}
 	CFavorManager* BrowserApp::Favor()
 	{
+		
 		return m_favor;
+	}
+
+
+	CFavorFolder* BrowserApp::FavorFolder()
+	{
+		return m_favorfolder;
 	}
 
 

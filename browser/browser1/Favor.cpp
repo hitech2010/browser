@@ -29,7 +29,7 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 		;
 	}
 
-	 CFavorManager::VRECORD& CFavorManager::Query(int query)
+	 CFavorManager::VRECORD& CFavorManager::Query(int query )
 	 {
 
 		 m_result.clear();
@@ -206,8 +206,76 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 		 return *this;
 	 }
 
+	 CFavorManager& CFavorManager::QueryById(int id)
+	 {
+
+		 xstring sql;
+		 if (id == -1)
+		 {
+			 sql.assign("SELECT * FROM    FAVOR WHERE   ID = (SELECT MAX(ID)  FROM FAVOR)");
+		 }
+		 else
+		 {
+			 sql.format("SELECT * FROM    FAVOR WHERE   ID = %d", id);
+		 }
 
 
+		 m_dbtable = m_db->getTable(sql.c_str());
+		 m_result.clear();
+
+		 
+		 if (m_dbtable.numRows() != 1)
+		 {
+			 throw std::exception("no record found!");
+		 }
+
+
+		 for (int j = 0; j < m_dbtable.numRows(); ++j)
+		 {
+			 RECORD rc;
+			 for (int i = 0; i < m_dbtable.numFields(); ++i)
+			 {
+				 m_dbtable.setRow(j);
+
+
+				 rc.id = m_dbtable.getIntField("ID");
+				 rc.folder = m_dbtable.getStringField("FOLDER");
+				 const  char* blob = m_dbtable.getStringField("IMG");
+				 CppSQLite3Binary bin;
+				 bin.setEncoded((const unsigned char*)blob);
+				 rc.img.assign((const char*)bin.getBinary(), bin.getBinaryLength());
+
+
+				 rc.title = m_dbtable.getStringField("TITLE");
+				 rc.url = m_dbtable.getStringField("URL");
+				 rc.time = m_dbtable.getStringField("ADDDATE");
+			 }
+			 m_result.push_back(rc);
+
+		 }
+		  
+		 return *this;
+
+	 }
+
+	 CFavorManager& CFavorManager::Edit(const RECORD& newRecord)
+	 {
+		 xstring sql;
+		 sql.format("update favor set TITLE=\"%s\",FOLDER=\"%s\",URL=\"%s\" where id = %d",
+			 newRecord.title.c_str(),
+			 newRecord.folder.c_str(),
+			 newRecord.url.c_str(),
+			 newRecord.id);
+
+		 m_db->execDML(sql.c_str());
+
+		 return *this;
+	 }
+
+	 const CFavorManager::VRECORD& CFavorManager::GetResult()
+	 {
+		 return m_result;
+	 }
 
 
 
@@ -342,6 +410,91 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 	{
 		return xstring();
 	}
+
+
+
+
+
+	CFavorFolder::CFavorFolder(CppSQLite3DB*db) throw()
+	{
+
+		m_db = db;
+
+		string sql = "CREATE TABLE IF NOT EXISTS FAVOR_FOLDER(\
+					 ID integer primary key,\
+					 TITLE text NOT NULL);";
+		
+		db->execDML(sql.c_str());
+
+	}
+
+
+	CFavorFolder& CFavorFolder::clear()
+	{
+		string sql = "DELETE FROM FAVOR_FOLDER";
+		m_db->execDML(sql.c_str());
+		return *this;
+	}
+
+	CFavorFolder& CFavorFolder::Add(const RECORD& record)
+	{
+
+		CppSQLite3Buffer   sql;
+
+
+		sql.format("INSERT INTO FAVOR_FOLDER "
+			"VALUES(NULL,%Q);",
+			record.c_str());
+
+		try
+		{
+			m_db->execDML(sql);
+		}
+		catch (CppSQLite3Exception& e)
+		{
+			MessageBoxA(NULL, "334", e.errorMessage(), MB_OK);
+		}
+
+
+		return *this;
+	}
+
+
+	CFavorFolder::~CFavorFolder(){
+	}
+
+
+	CFavorFolder::VRECORD& CFavorFolder::Query()
+	{
+
+		string sql;
+		
+		sql = "select * from FAVOR_FOLDER;";
+		
+		m_result.clear();
+
+
+		m_dbtable = m_db->getTable(sql.c_str());
+
+
+
+		for (int j = 0; j < m_dbtable.numRows(); ++j)
+		{
+			RECORD rc;
+			for (int i = 0; i < m_dbtable.numFields(); ++i)
+			{
+				m_dbtable.setRow(j);
+				rc = m_dbtable.getStringField("TITLE");
+			}
+			m_result.push_back(rc);
+
+		}
+
+		return m_result;
+
+	}
+
+
 
 
 
@@ -788,3 +941,5 @@ bool CHistory::DeleteAllItem()
 	s_hl.clear();
 	return SQLiteHelper::DeleteAllItem(s_dbpath,s_tablename);
 }
+
+

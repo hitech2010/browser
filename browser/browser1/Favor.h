@@ -73,6 +73,8 @@ public:
 
 
 
+
+
 class CFavorManager//收藏标签管理//throw std::exception
 {
 public:
@@ -93,6 +95,9 @@ public:
 	VRECORD& Query(int query);
 
 	CFavorManager& Add(const RECORD& record);
+	CFavorManager& Edit(const RECORD& newRecord);
+	CFavorManager& QueryById(int id = -1);
+	const VRECORD& GetResult();
 	CFavorManager& Delete(int startpos, int endpos);
 	CFavorManager& Delete(int startpos, int endpos, const string& folder);
 	CFavorManager& clear();
@@ -103,6 +108,33 @@ public:
 
 
 };
+
+
+
+class CFavorFolder//收藏标签文件夹管理//throw std::exception
+{
+public:
+	const char* m_table;
+	char   m_szPath[MAX_PATH];
+	CppSQLite3DB* m_db;
+	CppSQLite3Table m_dbtable;
+	typedef string  RECORD;
+	typedef vector<RECORD>     VRECORD;
+	VRECORD               m_result;
+
+public:
+	CFavorFolder(CppSQLite3DB* db)throw();
+
+
+	~CFavorFolder();
+
+	VRECORD& Query();
+	CFavorFolder& Add(const RECORD& record);
+
+	CFavorFolder& clear();
+
+};
+
 
 class CHistoryMgr//历史标签管理//throw std::exception
 {

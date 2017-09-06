@@ -378,34 +378,35 @@ public:
 		delete this;  
 	}
 
-	void AddItem()
+	void Edit()
 	{
-		CEditUI* pEdit = static_cast<CEditUI*>(m_pm.FindControl(_T("ui_favor_add_title")));
 
-		favor_recode_item hri;
-		LPCTSTR pTitle = pEdit->GetText().GetData();
-		hri.title = Codec::wstring2string(pTitle);
+		
+		wxstring title = m_title->GetText();
 
-		BSTR bstr = NULL;
-		m_fream->m_engine->m_crrentWebPage->GetWebBrowser2()->get_LocationURL(&bstr);
-		//hri.url = Codec::wstring2string(bstr);
-		string strt = Codec::wstring2string(wstring(bstr));
-		if (g_um.find(strt) != g_um.end())
+		string utf8title = _encoding(title).utf8().get();
+
+		favor_recode_item res = theApp.Favor()->QueryById().GetResult().at(0);
+
+		if (res.title != utf8title)
 		{
-			hri.url  = g_um[strt];
-		}
-		else
-		{
-			hri.url  = strt;
+			res.title = utf8title;
+
+			theApp.Favor()->Edit(res);
 		}
 
-		CFavor::AddItem(hri);
+		
 
-		this->Close(IDCLOSE);
+		
+
+
 	}
 
 	void Notify(TNotifyUI& msg)  
 	{
+		wxstring tmp;
+		tmp.format(L"NOTIFY-psender[%s], sType[%s]", msg.pSender->GetName().GetData(), msg.sType);
+		Log(tmp);
 
 		if (msg.pSender->GetName() == _T("ui_favor_add_close") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
@@ -413,26 +414,54 @@ public:
 		}
 		if (msg.pSender->GetName() == _T("ui_favor_add_ok") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			AddItem();
+			
+			try
+			{
+				Edit();
+			}
+			catch (std::exception& e)
+			{
+				MessageBoxA(NULL, e.what(), "发生异常", MB_OK);
+			}
+			
+			Close();
 		}
-		if (msg.pSender->GetName() == _T("ui_favor_add_cancel") && msg.sType == DUI_MSGTYPE_CLICK)
+		if (msg.pSender->GetName() == _T("ui_favor_add_edit") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			this->Close(IDCLOSE);
+			m_Combo->RemoveAll();
+			Close(1000);
+		}
+		if (msg.pSender->GetName() == _T("ui_favor_add_delete") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			favor_recode_item record = theApp.Favor()->QueryById().GetResult().at(0);
+			theApp.Favor()->Delete(record.id, record.id);
+			Close();
 		}
 		if (msg.pSender->GetName() == _T("ui_favor_add_title") && msg.sType == DUI_MSGTYPE_RETURN)
 		{
-			AddItem();
+			try
+			{
+				Edit();
+			}
+			catch (std::exception& e)
+			{
+				MessageBoxA(NULL, e.what(), "发生异常", MB_OK);
+			}
+			
+			Close(IDCLOSE);
+
 		}
 		if ( msg.sType == DUI_MSGTYPE_ITEMSELECT)
 		{
-			CComboUI* combo = static_cast<CComboUI*>(m_pm.FindControl(L"ui_favor_folderlist"));
+			
 
-			if (combo )
+			if (m_Combo && m_Combo->GetCurSel() == m_Combo->GetCount() - 1)
 			{
-				combo->RemoveAll();
+				m_Combo->RemoveAll();
+				Close(1000);
 			}
 
-			Close(1000);
+			
 		}
 
 		
@@ -453,9 +482,45 @@ public:
 		m_pm.AddNotifier(this);
 
 		LPCTSTR pTitle = m_fream->m_engine->GetContainer(m_fream->m_engine->m_crrentWebPage)->GetItemAt(0)->GetText().GetData();
-		CEditUI* pEdit = static_cast<CEditUI*>(m_pm.FindControl(_T("ui_favor_add_title")));
-		pEdit->SetText(pTitle);
-		pEdit->SetFocus();
+		m_title = static_cast<CEditUI*>(m_pm.FindControl(_T("ui_favor_add_title")));
+		m_Combo = static_cast<CComboUI*>(m_pm.FindControl(_T("ui_favor_folderlist")));
+		assert(m_title);
+		assert(m_Combo);
+
+		vector<string> otherfolders = theApp.FavorFolder()->Query();
+
+		for (int i = 0; i < otherfolders.size(); ++i)
+		{
+			CListLabelElementUI* newlabel = new CListLabelElementUI();
+
+			newlabel->SetManager(&m_pm, NULL, false);
+			newlabel->SetName(L"ui_favor_customfolder");
+			wxstring folder = (const wchar_t*)_encoding(otherfolders[i]).u8_utf16().get().c_str();
+
+			newlabel->SetText(folder);
+			newlabel->SetFixedHeight(23);
+			newlabel->SetFixedWidth(214);
+
+			m_Combo->Add(newlabel);
+		}
+
+		CListLabelElementUI* newlabel = new CListLabelElementUI();
+
+		newlabel->SetManager(&m_pm, NULL, false);
+		newlabel->SetName(L"ui_favor_selfolder");
+		newlabel->SetText(L"其它文件夹");
+		newlabel->SetFixedHeight(23);
+		newlabel->SetFixedWidth(214);
+		m_Combo->Add(newlabel);
+
+
+
+
+
+		//<ListLabelElement name = "ui_favor_selfolder" text = "其它文件夹" height = "23" width = "214" / >
+
+		m_title->SetText(pTitle);
+		m_title->SetFocus();
 
 		return 0;  
 	}  
@@ -492,6 +557,8 @@ public:
 
 public:
 	CPaintManagerUI m_pm;
+	CEditUI*        m_title;
+	CComboUI*       m_Combo;
 	CFrameWindowWnd* m_fream;
 };
 
@@ -519,9 +586,138 @@ public:
 		delete this;
 	}
 
-	void AddItem()
+	void NewFolder()
 	{
-		;
+		CListContainerElementUI* elmt = new CListContainerElementUI();
+		CButtonUI*               btn = new CButtonUI();
+		CLabelUI*                label = new CLabelUI();
+		CEditUI*                edit = new CEditUI();
+		elmt->SetChildAlign(DT_CENTER);
+		elmt->SetManager(&m_pm, NULL, false);
+		elmt->SetFixedHeight(30);
+		RECT rc = { 1, 1, 1, 1 };
+		elmt->SetPadding(rc);
+		m_folder->Add(elmt);
+
+
+		btn->SetManager(&m_pm, NULL, false);
+		RECT rcbtn = { 5, 7, 0, 0 };
+		btn->SetPadding(rcbtn);
+		btn->SetName(_T("ui_folder_btn"));
+		btn->SetBkImage(_T("skin/folder_close.png"));
+		btn->SetFixedHeight(16);
+		btn->SetFixedWidth(16);
+		elmt->Add(btn);
+
+
+		label->SetManager(&m_pm, NULL, false);
+		RECT rclable = { 5, 0, 0, 0 };
+		label->SetPadding(rcbtn);
+		label->SetName(_T("ui_folder_label"));
+		label->SetFixedHeight(30);
+		label->SetVisible(false);
+		wxstring tmp;
+		tmp.format(L"新建文件夹%d", m_folder->GetCount());
+
+		label->SetText(tmp);
+		elmt->Add(label);
+
+
+		edit->SetManager(&m_pm, NULL, false);
+		RECT rcedit = { 1, 1, 1, 1 };
+		edit->SetPadding(rcbtn);
+		edit->SetName(_T("ui_folder_edit"));
+		edit->SetBorderSize(1);
+		edit->SetBorderColor(0xFFCBD7DE);
+		edit->SetFixedHeight(30);
+		edit->SetText(tmp);
+		elmt->Add(edit);
+		
+
+		m_folder->SelectItem(m_folder->GetCount() - 1, true);
+		
+		edit->SetFocus();
+		SendMessage(WM_PAINT);
+		m_folder->EndDown();
+	}
+
+
+	void AddExistingFolder(wstring foldername)
+	{
+
+		CListContainerElementUI* elmt = new CListContainerElementUI();
+		CButtonUI*               btn = new CButtonUI();
+		CLabelUI*                label = new CLabelUI();
+		CEditUI*                edit = new CEditUI();
+		elmt->SetChildAlign(DT_CENTER);
+		elmt->SetManager(&m_pm, NULL, false);
+		elmt->SetFixedHeight(30);
+		RECT rc = { 1, 1, 1, 1 };
+		elmt->SetPadding(rc);
+		m_folder->Add(elmt);
+
+
+		btn->SetManager(&m_pm, NULL, false);
+		RECT rcbtn = { 5, 7, 0, 0 };
+		btn->SetPadding(rcbtn);
+		btn->SetName(_T("ui_folder_btn"));
+		btn->SetBkImage(_T("skin/folder_close.png"));
+		btn->SetFixedHeight(16);
+		btn->SetFixedWidth(16);
+		elmt->Add(btn);
+
+
+		label->SetManager(&m_pm, NULL, false);
+		RECT rclable = { 5, 0, 0, 0 };
+		label->SetPadding(rcbtn);
+		label->SetName(_T("ui_folder_label"));
+		label->SetFixedHeight(30);
+		wxstring tmp = foldername;
+
+		label->SetText(tmp);
+		elmt->Add(label);
+
+
+// 		edit->SetManager(&m_pm, NULL, false);
+// 		RECT rcedit = { 1, 1, 1, 1 };
+// 		edit->SetPadding(rcbtn);
+// 		edit->SetName(_T("ui_folder_edit"));
+// 		edit->SetBorderSize(1);
+// 		edit->SetBorderColor(0xFFCBD7DE);
+// 		edit->SetFixedHeight(30);
+// 		edit->SetText(tmp);
+// 		elmt->Add(edit);
+// 
+// 
+// 		m_folder->SelectItem(m_folder->GetCount() - 1, true);
+// 
+// 		edit->SetFocus();
+// 		SendMessage(WM_PAINT);
+// 		m_folder->EndDown();
+	}
+
+	void Save()
+	{
+		favor_recode_item res = theApp.Favor()->QueryById(-1).GetResult().at(0);
+
+
+		wxstring captain		= m_captain->GetText().GetData();
+		wxstring site			= m_site->GetText().GetData();
+
+		res.title				= _encoding(captain).utf8().get();
+		res.url					= _encoding(site).utf8().get();
+		
+
+		CListContainerElementUI* elmt	= static_cast<CListContainerElementUI*>(m_folder->GetItemAt(m_folder->GetCurSel()));
+		assert(elmt);
+		CLabelUI* label					= static_cast<CLabelUI*>(elmt->GetItemAt(1));
+		wxstring  folder				= label->GetText().GetData();
+
+		res.folder						= _encoding(folder).utf8().get();
+
+		theApp.Favor()->Edit(res);
+
+
 	}
 
 	void Notify(TNotifyUI& msg)
@@ -532,44 +728,46 @@ public:
 
 		Log(tmp);
 		if (msg.pSender->GetName() == _T("ui_favor_edit_newfolder") && msg.sType == DUI_MSGTYPE_CLICK)
-		{
-			CListContainerElementUI* elmt = new CListContainerElementUI();
-			CButtonUI*               btn = new CButtonUI();
-			CLabelUI*                label = new CLabelUI();
-			elmt->SetChildAlign(DT_CENTER);
-			elmt->SetManager(&m_pm, NULL, false);
-			elmt->SetFixedHeight(30);
-			RECT rc = { 1, 1, 1, 1 };
-			elmt->SetPadding(rc);
-			m_folder->Add(elmt);
-
-
-			btn->SetManager(&m_pm, NULL, false);
-			RECT rcbtn = {5,7,0,0};
-			btn->SetPadding(rcbtn);
-			btn->SetName(_T("ui_folder_btn"));
-			btn->SetBkImage(_T("skin/folder_close.png"));
-			btn->SetFixedHeight(16);
-			btn->SetFixedWidth(16);
-			elmt->Add(btn);
-
-
-			label->SetManager(&m_pm, NULL, false);
-			RECT rclable = { 5, 0, 0, 0 };
-			label->SetPadding(rcbtn);
-			label->SetName(_T("ui_folder_label"));
-			label->SetText(_T("新建文件夹"));
-			elmt->Add(label);
+		{	
+			try
+			{
+				NewFolder();
+			}
 			
+			catch (...)
+			{
+
+			}
 
 		}
+
+
 		if (msg.pSender->GetName() == _T("ui_favor_edit_cancel") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			Close(IDCLOSE);
 		}
 		if (msg.pSender->GetName() == _T("ui_favor_edit_save") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
+			Save();
 			Close(IDCLOSE);
+		}
+
+		if (msg.pSender->GetName() == _T("ui_folder_edit") && msg.sType == DUI_MSGTYPE_KILLFOCUS)
+		{
+			CEditUI* tmp = static_cast<CEditUI*>(msg.pSender);
+			wxstring text = tmp->GetText().GetData();
+			
+			CListContainerElementUI* elmt = static_cast<CListContainerElementUI*>(m_folder->GetItemAt(m_folder->GetCurSel()));
+			assert(elmt);
+			CLabelUI* label  = static_cast<CLabelUI*>(elmt->GetItemAt(1));
+			label->SetText(text);
+
+			string foldername = _encoding(text).utf8().get();
+			theApp.FavorFolder()->Add(foldername);
+
+			label->SetVisible(true);
+			elmt->RemoveAt(2);
+
 		}
 		
 
@@ -594,7 +792,27 @@ public:
 		m_folder = static_cast<CListUI*>(m_pm.FindControl(_T("ui_favor_edit_list")));
 		assert(m_folder);
 
+		m_captain = static_cast<CEditUI*>(m_pm.FindControl(_T("ui_favor_edit_nameedit")));
+		m_site = static_cast<CEditUI*>(m_pm.FindControl(_T("ui_favor_edit_siteedit")));
+		assert(m_captain);
+		assert(m_site);
 
+		wxstring sitename = m_fream->m_engine->GetContainer(m_fream->m_engine->m_crrentWebPage)->GetItemAt(0)->GetText().GetData();
+		wxstring siteaddress = m_fream->m_engine->GetAddressBar()->GetText().GetData();
+
+		m_captain->SetText(sitename);
+		m_site->SetText(siteaddress);
+
+
+		vector<string> otherfolders = theApp.FavorFolder()->Query();
+
+		for (int i = 0; i < otherfolders.size(); ++i)
+		{
+			wstring  tmp = (LPWSTR)_encoding(otherfolders[i]).u8_utf16().get().c_str();
+			AddExistingFolder(tmp);
+		}
+
+		//AddExistingFolder();
 
 		return 0;
 	}
@@ -633,6 +851,8 @@ public:
 	CPaintManagerUI m_pm;
 	CFrameWindowWnd* m_fream;
 
+	CEditUI*           m_captain;
+	CEditUI*		 m_site;
 	CListUI*        m_folder;
 };
 
