@@ -38,6 +38,12 @@ struct history_recode_item
 	string time;
 };
 
+struct favorfolder_recode_item
+{
+	int id;
+	string folder;
+};
+
 typedef vector<favor_recode_item> FAVOR_LIST;
 typedef int H_INDEX;
 
@@ -114,25 +120,29 @@ public:
 class CFavorFolder//收藏标签文件夹管理//throw std::exception
 {
 public:
+#define NOT_USING_SQLITE 
 	const char* m_table;
 	char   m_szPath[MAX_PATH];
 	CppSQLite3DB* m_db;
 	CppSQLite3Table m_dbtable;
-	typedef string  RECORD;
+	typedef favorfolder_recode_item  RECORD;
 	typedef vector<RECORD>     VRECORD;
 	VRECORD               m_result;
+	map<int, string>		m_memdb;
 
 public:
 	CFavorFolder(CppSQLite3DB* db)throw();
 
 
 	~CFavorFolder();
+	const VRECORD& GetResult();
 
 	VRECORD& Query();
 	CFavorFolder& Add(const RECORD& record);
 
 	CFavorFolder& clear();
-
+	CFavorFolder& QueryById(int id);
+	CFavorFolder& Delete(int startpos, int endpos);
 };
 
 

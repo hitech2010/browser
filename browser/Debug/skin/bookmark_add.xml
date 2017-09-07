@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Window caption="0,0,0,30" roundcorner="5,5,5,5" sizebox="4,4,4,4" mininfo="386,254" >
+<Window caption="0,0,254,30" roundcorner="5,5,5,5" sizebox="4,4,4,4" mininfo="386,254" >
   <Font id="0" name="PingFangSC-Medium" size="17" />
   <Font id="1" name="PingFangSC-Regular" size="14" />
   <Default name="VScrollBar" shared="true" value="width=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='skin/vscrollbar.png' source='0,60,8,100' corner='0,4,0,4'&quot; thumbhotimage=&quot;file='skin/vscrollbar.png' source='8,60,16,100' corner='0,4,0,4'&quot; thumbpushedimage=&quot;file='skin/vscrollbar.png' source='16,60,24,100' corner='0,4,0,4'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/vscrollbar.png' source='0,0,8,60' corner='0,4,0,4'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>

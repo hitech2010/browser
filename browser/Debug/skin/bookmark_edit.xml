@@ -24,7 +24,7 @@
     </HorizontalLayout>
 
 
-    	<List name="ui_favor_edit_list" itemalign="left" vscrollbar="true" header="hidden" headerbkimage="skin/combo.png" height="104" width="314" padding="36,14,0,0"  bordercolor="0xFFCBD7DE" bordersize="1">
+    	<List name="ui_favor_edit_list" menu="true" itemalign="left" vscrollbar="true" header="hidden" headerbkimage="skin/combo.png" height="104" width="314" padding="36,14,0,0"  bordercolor="0xFFCBD7DE" bordersize="1">
     		<!--ListContainerElement padding="0,0,0,0" text="书签栏"   width="214" height="28" >
     			<Edit name="ui_treeview_edit1" font="1" padding="1,0,1,0" bordersize="1" bordercolor="0xFFCBD7DE"/>	
     		</ListContainerElement >

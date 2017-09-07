@@ -2,6 +2,7 @@
 #include "resource.h"
 
 #include "appframe.h"
+#include "app_favorframe.h"
 #include "webEventHandler.h"
 //#include "../../module/WhiteEncrypt/Function.h"
 #include "Favor.h"
@@ -308,11 +309,59 @@ public:
 	CFrameWindowWnd* m_fream;
 }; 
 
+
+class CFavorEditDlgMenu : public CMenuWnd, public INotifyUI
+{
+public:
+	CFavorEditDlgMenu(CFavorEditDlg* frame) :m_frame(frame){}
+	CFavorEditDlg* m_frame;
+
+#define NOTIFY_ON
+#ifdef NOTIFY_ON
+#define LOGNOTIFY wxstring tmp;\
+	tmp.format(L"CFavorEditDlgMenu::NOTIFY-psender[%s], sType[%s]", msg.pSender->GetName().GetData(), msg.sType);\
+	Log(tmp);
+#else
+#define LOGNOTIFY __noop
+#endif
+	void Notify(TNotifyUI& msg)
+	{
+		
+		if (msg.pSender->GetName() == _T("menu_rename") && msg.sType == DUI_MSGTYPE_ITEMCLICK)
+		{
+			this->Close();
+		}
+		if (msg.pSender->GetName() == _T("menu_delete") && msg.sType == DUI_MSGTYPE_ITEMCLICK)
+		{
+			this->Close();
+			::PostMessage(m_frame->GetHWND(), 1235, NULL, NULL);
+		}
+		if (msg.pSender->GetName() == _T("menu_newfolder") && msg.sType == DUI_MSGTYPE_ITEMCLICK)
+		{
+
+			this->Close();
+			::PostMessage(m_frame->GetHWND(), 1234, NULL, NULL);
+	
+			
+			
+		}
+	}
+};
+
 class CMenu : public CMenuWnd, public INotifyUI
 {
 public:
 	CMenu(CFrameWindowWnd* cfw):m_frame(cfw){}
 	CFrameWindowWnd* m_frame;
+
+#define NOTIFY_ON
+#ifdef NOTIFY_ON
+#define LOGNOTIFY wxstring tmp;\
+	tmp.format(L"CFavorEditDlgMenu::NOTIFY-psender[%s], sType[%s]", msg.pSender->GetName().GetData(), msg.sType);\
+	Log(tmp);
+#else
+#define LOGNOTIFY __noop
+#endif
 
 	void Notify(TNotifyUI& msg)
 	{
@@ -354,12 +403,9 @@ public:
 	}
 };
 
-class CFavorAddItemDlg : public CWindowWnd, public INotifyUI, public IMessageFilterUI  
-{
-public:
-
-	LPCTSTR GetWindowClassName() const { return _T("UIFavorAddItemForm"); };
-	LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)  
+//CFavorAddItemDlg
+	LPCTSTR CFavorAddItemDlg::GetWindowClassName() const { return _T("UIFavorAddItemForm"); };
+	LRESULT CFavorAddItemDlg::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)
 	{
 		if(uMsg == WM_KEYDOWN)
 		{
@@ -372,13 +418,13 @@ public:
 
 		return false;
 	}
-	void OnFinalMessage(HWND /*hWnd*/)  
+	void CFavorAddItemDlg::OnFinalMessage(HWND /*hWnd*/)
 	{  
 		m_pm.RemovePreMessageFilter(this);  
 		delete this;  
 	}
 
-	void Edit()
+	void CFavorAddItemDlg::Edit()
 	{
 
 		
@@ -402,11 +448,9 @@ public:
 
 	}
 
-	void Notify(TNotifyUI& msg)  
+	void CFavorAddItemDlg::Notify(TNotifyUI& msg)
 	{
-		wxstring tmp;
-		tmp.format(L"NOTIFY-psender[%s], sType[%s]", msg.pSender->GetName().GetData(), msg.sType);
-		Log(tmp);
+		LOGNOTIFY;
 
 		if (msg.pSender->GetName() == _T("ui_favor_add_close") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
@@ -467,7 +511,7 @@ public:
 		
 	}
 
-	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)  
+	LRESULT CFavorAddItemDlg::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	{  
 		LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);  
 		styleValue &= ~WS_CAPTION;  
@@ -487,7 +531,7 @@ public:
 		assert(m_title);
 		assert(m_Combo);
 
-		vector<string> otherfolders = theApp.FavorFolder()->Query();
+		vector<CFavorFolder::RECORD> otherfolders = theApp.FavorFolder()->Query();
 
 		for (int i = 0; i < otherfolders.size(); ++i)
 		{
@@ -495,7 +539,7 @@ public:
 
 			newlabel->SetManager(&m_pm, NULL, false);
 			newlabel->SetName(L"ui_favor_customfolder");
-			wxstring folder = (const wchar_t*)_encoding(otherfolders[i]).u8_utf16().get().c_str();
+			wxstring folder = (const wchar_t*)_encoding(otherfolders[i].folder).u8_utf16().get().c_str();
 
 			newlabel->SetText(folder);
 			newlabel->SetFixedHeight(23);
@@ -525,7 +569,7 @@ public:
 		return 0;  
 	}  
 
-	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)  
+	LRESULT CFavorAddItemDlg::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{  
 		LRESULT lRes = 0;  
 		BOOL bHandled = TRUE;
@@ -555,19 +599,13 @@ public:
 		return CWindowWnd::HandleMessage(uMsg, wParam, lParam);  
 	} 
 
-public:
-	CPaintManagerUI m_pm;
-	CEditUI*        m_title;
-	CComboUI*       m_Combo;
-	CFrameWindowWnd* m_fream;
-};
 
-class CFavorEditDlg : public CWindowWnd, public INotifyUI, public IMessageFilterUI
-{
-public:
+//CFavorEditDlg
 
-	LPCTSTR GetWindowClassName() const { return _T("UIFavorEditDlg"); };
-	LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)
+
+
+	LPCTSTR CFavorEditDlg::GetWindowClassName() const { return _T("UIFavorEditDlg"); };
+	LRESULT CFavorEditDlg::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)
 	{
 		if (uMsg == WM_KEYDOWN)
 		{
@@ -580,13 +618,46 @@ public:
 
 		return false;
 	}
-	void OnFinalMessage(HWND /*hWnd*/)
+	void CFavorEditDlg::OnFinalMessage(HWND /*hWnd*/)
 	{
 		m_pm.RemovePreMessageFilter(this);
 		delete this;
 	}
 
-	void NewFolder()
+
+	void CFavorEditDlg::DeleteSelect()
+	{
+		if (m_folder->GetSelectItemCount() == 0)
+		{
+			return;
+		}
+
+		
+		CListContainerElementUI* elmt = static_cast<CListContainerElementUI*>(m_folder->GetItemAt(m_folder->GetCurSel()));
+
+		if (!elmt)
+		{
+			return;
+		}
+		
+		CLabelUI* lable = static_cast<CLabelUI*>(elmt->GetItemAt(1));
+
+		if (!lable)
+		{
+			return;
+		}
+
+		theApp.FavorFolder()->Delete(_tcstol(lable->GetName(), NULL, 10), _tcstol(lable->GetName(), NULL, 10));
+		m_folder->Remove(elmt);
+
+
+		
+
+
+	}
+
+
+	void CFavorEditDlg::NewFolder()
 	{
 		CListContainerElementUI* elmt = new CListContainerElementUI();
 		CButtonUI*               btn = new CButtonUI();
@@ -601,8 +672,7 @@ public:
 
 
 		btn->SetManager(&m_pm, NULL, false);
-		RECT rcbtn = { 5, 7, 0, 0 };
-		btn->SetPadding(rcbtn);
+		btn->SetAttribute(_T("padding"), _T("5,7,0,0"));
 		btn->SetName(_T("ui_folder_btn"));
 		btn->SetBkImage(_T("skin/folder_close.png"));
 		btn->SetFixedHeight(16);
@@ -611,8 +681,7 @@ public:
 
 
 		label->SetManager(&m_pm, NULL, false);
-		RECT rclable = { 5, 0, 0, 0 };
-		label->SetPadding(rcbtn);
+		label->SetAttribute(_T("padding"), _T("5,0,0,0"));
 		label->SetName(_T("ui_folder_label"));
 		label->SetFixedHeight(30);
 		label->SetVisible(false);
@@ -624,8 +693,8 @@ public:
 
 
 		edit->SetManager(&m_pm, NULL, false);
-		RECT rcedit = { 1, 1, 1, 1 };
-		edit->SetPadding(rcbtn);
+		
+		edit->SetAttribute(_T("padding"), _T("1,1,1,1"));
 		edit->SetName(_T("ui_folder_edit"));
 		edit->SetBorderSize(1);
 		edit->SetBorderColor(0xFFCBD7DE);
@@ -642,8 +711,11 @@ public:
 	}
 
 
-	void AddExistingFolder(wstring foldername)
+	void CFavorEditDlg::AddExistingFolder(CFavorFolder::RECORD record)
 	{
+
+		wstring  foldername = (LPWSTR)_encoding(record.folder).u8_utf16().get().c_str();
+
 
 		CListContainerElementUI* elmt = new CListContainerElementUI();
 		CButtonUI*               btn = new CButtonUI();
@@ -658,8 +730,9 @@ public:
 
 
 		btn->SetManager(&m_pm, NULL, false);
-		RECT rcbtn = { 5, 7, 0, 0 };
-		btn->SetPadding(rcbtn);
+// 		RECT rcbtn = { 5, 7, 0, 0 };
+// 		btn->SetPadding(rcbtn);
+		btn->SetAttribute(_T("padding"), _T("5,7,0,0"));
 		btn->SetName(_T("ui_folder_btn"));
 		btn->SetBkImage(_T("skin/folder_close.png"));
 		btn->SetFixedHeight(16);
@@ -668,9 +741,12 @@ public:
 
 
 		label->SetManager(&m_pm, NULL, false);
-		RECT rclable = { 5, 0, 0, 0 };
-		label->SetPadding(rcbtn);
-		label->SetName(_T("ui_folder_label"));
+// 		RECT rclable = { 5, 0, 0, 0 };
+// 		label->SetPadding(rcbtn);
+		label->SetAttribute(_T("padding"), _T("5,0,0,0"));
+		wxstring id;
+		id.format(L"%d", record.id);
+		label->SetName(id);
 		label->SetFixedHeight(30);
 		wxstring tmp = foldername;
 
@@ -696,7 +772,7 @@ public:
 // 		m_folder->EndDown();
 	}
 
-	void Save()
+	void CFavorEditDlg::Save()
 	{
 		favor_recode_item res = theApp.Favor()->QueryById(-1).GetResult().at(0);
 
@@ -720,7 +796,7 @@ public:
 
 	}
 
-	void Notify(TNotifyUI& msg)
+	void CFavorEditDlg::Notify(TNotifyUI& msg)
 	{
 		wxstring tmp;
 
@@ -751,6 +827,21 @@ public:
 			Save();
 			Close(IDCLOSE);
 		}
+		if (msg.pSender->GetName() == _T("ui_favor_edit_list") && msg.sType == DUI_MSGTYPE_MENU)
+		{
+			
+			CFavorEditDlgMenu* menu = new CFavorEditDlgMenu(this);
+
+			CDuiPoint point = msg.ptMouse;
+			
+			ClientToScreen(m_hWnd, &point);
+
+			
+			menu->Init(NULL, _T("skin\\favormenu.xml"), point, &m_pm, NULL, eMenuAlignment_Right | eMenuAlignment_Top);
+
+		}
+
+		
 
 		if (msg.pSender->GetName() == _T("ui_folder_edit") && msg.sType == DUI_MSGTYPE_KILLFOCUS)
 		{
@@ -763,8 +854,14 @@ public:
 			label->SetText(text);
 
 			string foldername = _encoding(text).utf8().get();
-			theApp.FavorFolder()->Add(foldername);
-
+			CFavorFolder::RECORD item;
+			item.folder = foldername;
+			theApp.FavorFolder()->Add(item);
+			item = theApp.FavorFolder()->QueryById(-1).GetResult().at(0);
+			//label->SetName()
+			wxstring fmt;
+			fmt.format(L"%d", item.id);
+			label->SetName(fmt);
 			label->SetVisible(true);
 			elmt->RemoveAt(2);
 
@@ -773,7 +870,7 @@ public:
 
 	}
 
-	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+	LRESULT CFavorEditDlg::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	{
 		LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);
 		styleValue &= ~WS_CAPTION;
@@ -787,7 +884,7 @@ public:
 		m_pm.AttachDialog(pRoot);
 		m_pm.AddNotifier(this);
 
-		LPCTSTR pTitle = m_fream->m_engine->GetAddressBar()->GetText();
+		LPCTSTR pTitle = m_frame->m_engine->GetAddressBar()->GetText();
 
 		m_folder = static_cast<CListUI*>(m_pm.FindControl(_T("ui_favor_edit_list")));
 		assert(m_folder);
@@ -797,19 +894,19 @@ public:
 		assert(m_captain);
 		assert(m_site);
 
-		wxstring sitename = m_fream->m_engine->GetContainer(m_fream->m_engine->m_crrentWebPage)->GetItemAt(0)->GetText().GetData();
-		wxstring siteaddress = m_fream->m_engine->GetAddressBar()->GetText().GetData();
+		wxstring sitename = m_frame->m_engine->GetContainer(m_frame->m_engine->m_crrentWebPage)->GetItemAt(0)->GetText().GetData();
+		wxstring siteaddress = m_frame->m_engine->GetAddressBar()->GetText().GetData();
 
 		m_captain->SetText(sitename);
 		m_site->SetText(siteaddress);
 
 
-		vector<string> otherfolders = theApp.FavorFolder()->Query();
+		vector<CFavorFolder::RECORD> otherfolders = theApp.FavorFolder()->Query();
 
 		for (int i = 0; i < otherfolders.size(); ++i)
 		{
-			wstring  tmp = (LPWSTR)_encoding(otherfolders[i]).u8_utf16().get().c_str();
-			AddExistingFolder(tmp);
+			
+			AddExistingFolder(otherfolders[i]);
 		}
 
 		//AddExistingFolder();
@@ -817,7 +914,7 @@ public:
 		return 0;
 	}
 
-	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+	LRESULT CFavorEditDlg::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		LRESULT lRes = 0;
 		BOOL bHandled = TRUE;
@@ -838,6 +935,12 @@ public:
 			}
 		}
 		break;
+		case 1234:
+			NewFolder();
+			break;
+		case 1235:
+			DeleteSelect();
+			break;
 		default:
 			bHandled = FALSE;
 		}
@@ -847,334 +950,9 @@ public:
 		return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
 	}
 
-public:
-	CPaintManagerUI m_pm;
-	CFrameWindowWnd* m_fream;
-
-	CEditUI*           m_captain;
-	CEditUI*		 m_site;
-	CListUI*        m_folder;
-};
-
-class CFavorForm : public CWindowWnd, public INotifyUI, public IMessageFilterUI  
-{
-public:
-
-	LPCTSTR GetWindowClassName() const { return _T("UIFavorForm"); };
-	LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)  
-	{
-		return false;
-	}
-	void OnFinalMessage(HWND /*hWnd*/)  
-	{  
-		m_pm.RemovePreMessageFilter(this);  
-		delete this;  
-	};
-
-	void RemoveItem(CControlUI* item)
-	{
-		CListUI *pList = static_cast<CListUI*>(m_pm.FindControl(_T("ui_favor_list")));
-
-		//处理数据
-
-		CButtonUI * pBtnTitle = static_cast<CButtonUI*>(((CListContainerElementUI*)item)->GetItemAt(1));
-		string title = Codec::wstring2string(pBtnTitle->GetText().GetData());
-		CFavor::DeleteItem(title);
-
-		//处理界面
-		pList->Remove(item);
-	}
-
-	void OpenItem(CControlUI* item)
-	{
-		static favor_recode_item fri;
-		CButtonUI * pBtnTitle = static_cast<CButtonUI*>(item);
-		string title = Codec::wstring2string(pBtnTitle->GetText().GetData());
-		CFavor::GetItem(title,fri);
-		m_fream->m_engine->Add(Codec::string2wstring(fri.url).c_str());
-	}
-
-	void Init()
-	{
-		static FAVOR_LIST hl;
-		hl.clear();
-
-		CFavor::GetAllItem(hl);
-		int listsize = hl.size();
-		auto & fs_list = hl;
-
-		CListUI *pList = static_cast<CListUI*>(m_pm.FindControl(_T("ui_favor_list")));
-		for(int i = 0; i < listsize; ++i)
-		{
-			wstring strTitle = Codec::string2wstring(fs_list[i].title);
-
-			wstring strImagePath = _T("skin//image.png");
-
-			CListContainerElementUI* item = new CListContainerElementUI;
-			item->SetMaxWidth(216);
-			item->SetMaxHeight(20);
-			RECT rc;
-			rc.left = 27;
-			rc.top = 0;
-			rc.right = 27;
-			rc.bottom = 0;
-			item->SetPadding(rc);
-
-			CLabelUI* lableImage = new CLabelUI;
-			lableImage->SetBkImage(strImagePath.c_str());
-			lableImage->SetMaxWidth(16);
-			lableImage->SetMaxHeight(16);
-			item->Add(lableImage);
 
 
-			CButtonUI* btn_title = new CButtonUI;
-			btn_title->SetText(strTitle.c_str());
-			btn_title->SetMinWidth(180);
-			btn_title->SetMinHeight(20);
-			btn_title->SetName(_T("ui_favor_item_open"));
-			item->Add(btn_title);
 
-			CButtonUI* btn_close = new CButtonUI;
-			btn_close->SetBkImage(_T("file='skin\\tab_close.png' source='16,0,32,16'"));
-			btn_close->SetHotImage(_T("file='skin\\tab_close.png' source='32,0,48,16'"));
-			btn_close->SetMaxWidth(16);
-			btn_close->SetMaxHeight(16);
-			btn_close->SetName(_T("ui_favor_item_close"));
-			item->Add(btn_close);
-
-			pList->Add(item);
-		}
-	}
-
-	void Notify(TNotifyUI& msg)  
-	{
-		Log(_T("msg.pSender->GetClass() [%s] msg[%s]"), msg.pSender->GetClass(), msg.sType);
-		if (msg.pSender->GetName() == _T("ui_favor_close") && msg.sType == DUI_MSGTYPE_CLICK)
-		{
-			this->Close(IDCLOSE);
-		}
-		else if (msg.pSender->GetName() == _T("ui_favor_add") && msg.sType == DUI_MSGTYPE_CLICK)
-		{
-			::PostMessage(m_fream->GetHWND(),WM_SHOW_FAVOR_ADD,NULL,NULL);
-		}
-		else if (msg.pSender->GetName() == _T("ui_favor_item_close") && msg.sType == DUI_MSGTYPE_CLICK)
-		{
-			this->RemoveItem(msg.pSender->GetParent());
-		}
-		else if (msg.pSender->GetName() == _T("ui_favor_item_open") && msg.sType == DUI_MSGTYPE_CLICK)
-		{
-			OpenItem(msg.pSender);
-		}
-	}
-
-	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)  
-	{  
-		LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);  
-		styleValue &= ~WS_CAPTION;  
-		::SetWindowLong(*this, GWL_STYLE, styleValue | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);  
-
-		m_pm.Init(m_hWnd);  
-		m_pm.AddPreMessageFilter(this);  
-		CDialogBuilder builder;  
-		CControlUI* pRoot = builder.Create(_T("skin//favor.xml"), (UINT)0, NULL, &m_pm);  
-		ASSERT(pRoot && "Failed to parse XML");
-		m_pm.AttachDialog(pRoot);  
-		m_pm.AddNotifier(this);
-
-		this->Init();
-
-		return 0;  
-	}  
-
-	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)  
-	{  
-		LRESULT lRes = 0;  
-		BOOL bHandled = TRUE;  
-		switch (uMsg) 
-		{  
-		case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;
-		case WM_KILLFOCUS:	  
-			{
-				this->Close(IDCLOSE);
-				return true;
-			}
-			break;
-		default:  
-			bHandled = FALSE;  
-		}  
-		if (bHandled) return lRes;  
-		if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes)) return lRes;  
-		return CWindowWnd::HandleMessage(uMsg, wParam, lParam);  
-	}
-public:
-	CPaintManagerUI m_pm;
-	CFrameWindowWnd* m_fream;
-};
-
-class CHistoryForm : public CWindowWnd, public INotifyUI, public IMessageFilterUI  
-{
-public:
-	static CHistoryForm* s_historyform;
-	static void Show(CFrameWindowWnd* fream)
-	{
-		CDuiPoint point;
-		CControlUI* pCon = fream->m_pm.FindControl(L"toolbar");
-		RECT rc = pCon->GetClientPos();
-		point.x = rc.right;
-		point.y = rc.bottom;
-		ClientToScreen(fream->GetHWND(), &point);
-
-		if(s_historyform == NULL)
-		{
-			s_historyform = new CHistoryForm;
-			s_historyform->m_fream = fream;
-			s_historyform->Create(fream->GetHWND(), _T(""), UI_WNDSTYLE_DIALOG, 0, point.x - 270, point.y, 270, 355, NULL);
-		}
-		s_historyform->ShowWindow();
-	}
-
-	LPCTSTR GetWindowClassName() const { return _T("UIHistoryForm"); };
-	LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)  
-	{
-		if(uMsg == WM_CLOSE)
-		{
-			s_historyform = NULL;
-		}
-
-		return false;
-	}
-	void OnFinalMessage(HWND /*hWnd*/)  
-	{  
-		//m_pm.RemovePreMessageFilter(this);  
-		//delete this;  
-	};
-
-	void RemoveItem(CControlUI* item)
-	{
-		CListUI *pList = static_cast<CListUI*>(m_pm.FindControl(_T("ui_history_list")));
-
-		//处理数据
-		CHistory::DeleteItem(m_mapindex[item]);
-
-		pList->Remove(item);
-	}
-
-	void Init()
-	{
-		CHistory::GetAllItem();
-		int listsize = CHistory::s_hl.size();
-		auto & fs_list = CHistory::s_hl;
-
-		CListUI *pList = static_cast<CListUI*>(m_pm.FindControl(_T("ui_history_list")));
-		for(int i = 0; i < listsize; ++i)
-		{
-			wstring strTitle = Codec::string2wstring(fs_list[i].title);
-			wstring strImagePath = _T("skin//image.png");
-
-			CListContainerElementUI* item = new CListContainerElementUI;
-			item->SetMinWidth(216);
-			item->SetMinHeight(20);
-			item->SetMaxHeight(20);
-			RECT rc;
-			rc.left = 27;
-			rc.top = 0;
-			rc.right = 27;
-			rc.bottom = 0;
-			item->SetPadding(rc);
-
-			CLabelUI* lableImage = new CLabelUI;
-			lableImage->SetBkImage(strImagePath.c_str());
-			lableImage->SetMaxWidth(16);
-			lableImage->SetMaxHeight(16);
-			item->Add(lableImage);
-
-
-			CButtonUI* btn_title = new CButtonUI;
-			btn_title->SetText(strTitle.c_str());
-			btn_title->SetMinWidth(180);
-			btn_title->SetMinHeight(20);
-			btn_title->SetName(_T("ui_history_item_open"));
-			item->Add(btn_title);
-
-			CButtonUI* btn_close = new CButtonUI;
-			btn_close->SetBkImage(_T("file='skin\\tab_close.png' source='16,0,32,16'"));
-			btn_close->SetHotImage(_T("file='skin\\tab_close.png' source='32,0,48,16'"));
-			btn_close->SetMaxWidth(16);
-			btn_close->SetMaxHeight(16);
-			btn_close->SetName(_T("ui_history_item_close"));
-			item->Add(btn_close);
-
-			pList->Add(item);
-			m_mapindex[item] = i;
-		}
-	}
-
-	void Notify(TNotifyUI& msg)  
-	{
-		if (msg.pSender->GetName() == _T("ui_history_close") && msg.sType == DUI_MSGTYPE_CLICK)
-		{
-			this->Close(IDCLOSE);
-		}
-		else if (msg.pSender->GetName() == _T("ui_history_item_close") && msg.sType == DUI_MSGTYPE_CLICK)
-		{
-			this->RemoveItem(msg.pSender->GetParent());
-		}
-		else if(msg.pSender->GetName() == _T("ui_history_item_open") && msg.sType == DUI_MSGTYPE_CLICK)
-		{
-			static favor_recode_item fri;
-			CListUI *pList = static_cast<CListUI*>(m_pm.FindControl(_T("ui_history_list")));
-			CHistory::GetItem(pList->GetItemIndex(msg.pSender->GetParent()),fri);
-			m_fream->m_engine->Add(Codec::string2wstring(fri.url).c_str());
-		}
-		else if(msg.pSender->GetName() == _T("ui_history_clear") && msg.sType == DUI_MSGTYPE_CLICK)
-		{
-			CListUI *pList = static_cast<CListUI*>(m_pm.FindControl(_T("ui_history_list")));
-			CHistory::DeleteAllItem();
-			pList->RemoveAll();
-		}
-	}
-
-	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)  
-	{  
-		LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);  
-		styleValue &= ~WS_CAPTION;  
-		::SetWindowLong(*this, GWL_STYLE, styleValue | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);  
-
-		m_pm.Init(m_hWnd);  
-		m_pm.AddPreMessageFilter(this);  
-		CDialogBuilder builder;  
-		CControlUI* pRoot = builder.Create(_T("skin//history.xml"), (UINT)0, NULL, &m_pm);  
-		ASSERT(pRoot && "Failed to parse XML");
-		m_pm.AttachDialog(pRoot);  
-		m_pm.AddNotifier(this);
-
-		this->Init();
-
-		return 0;  
-	}  
-
-	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)  
-	{  
-		LRESULT lRes = 0;  
-		BOOL bHandled = TRUE;  
-		switch (uMsg) 
-		{  
-		case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;
-		case WM_KILLFOCUS: Close(); bHandled = False; break;
-		default:  
-			bHandled = FALSE;  
-		}  
-
-		if (bHandled) return lRes;  
-		if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes)) return lRes;  
-		return CWindowWnd::HandleMessage(uMsg, wParam, lParam);  
-	}
-public:
-	CPaintManagerUI m_pm;
-	CFrameWindowWnd* m_fream;
-	map<void*,int> m_mapindex;
-};
-CHistoryForm* CHistoryForm::s_historyform = NULL;
 
 CMdWebEngine* CMdWebEngine::thisobj = new CMdWebEngine();
 
@@ -1191,7 +969,7 @@ void CFrameWindowWnd::ShowAddFavorDlg()
 
 void CFrameWindowWnd::ShowHistoryForm()
 {
-	CHistoryForm::Show(this);
+	;
 }
 
 BOOL CFrameWindowWnd::init()
@@ -1915,7 +1693,7 @@ void CFrameWindowWnd::BookmarkAdd(void)
 	if (nRet == 1000)
 	{
 		CFavorEditDlg* additemdlg = new CFavorEditDlg;
-		additemdlg->m_fream = this;
+		additemdlg->m_frame = this;
 		additemdlg->Create(GetHWND(), _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 386, 254, NULL);
 		additemdlg->CenterWindow();
 		int nRet = additemdlg->ShowModal();
@@ -1934,7 +1712,6 @@ void CFrameWindowWnd::ShowMenu(void)
 
 	m_pMenu = new CMenu(this);
 	m_pMenu->Init(NULL, _T("skin\\menu.xml"), point, &m_pm, NULL, eMenuAlignment_Right | eMenuAlignment_Top);
-	CMenuWnd::SetMenuItemInfo(_T("qianting"), true);	//设置状态
 }
 
 void CFrameWindowWnd::ShowCloseTipDlg()

@@ -100,8 +100,10 @@
     <ClInclude Include="..\thirdparty\json\json.hpp" />
     <ClInclude Include="appframe.h" />
     <ClInclude Include="app_config.h" />
+    <ClInclude Include="app_favorframe.h" />
     <ClInclude Include="CppSQLite3.h" />
     <ClInclude Include="Favor.h" />
+    <ClInclude Include="MenuWnd.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="utilities.h" />
     <ClInclude Include="webEventHandler.h" />
