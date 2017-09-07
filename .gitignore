@@ -11,6 +11,8 @@
 
 *.bak
 *.dll
+!browser/Debug/sqlite3.dll
+
 *.opensdf
 *.exe
 *.pdb
