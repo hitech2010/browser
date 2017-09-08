@@ -411,6 +411,21 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 		return xstring();
 	}
 
+	CHistoryMgr& CHistoryMgr::setTitle(string& url, string& title)
+	{
+
+		
+		xstring sql;
+		sql.format("update history set title = \"%s\" where URL = \"%s\"", title.c_str(), url.c_str());
+
+
+
+		m_db->execDML(sql.c_str());
+
+		return *this;
+
+
+	}
 
 
 
@@ -421,9 +436,10 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 		m_db = db;
 
 		string sql = "CREATE TABLE IF NOT EXISTS FAVOR_FOLDER(\
-					 ID integer primary key,\
-					 TITLE text NOT NULL);";
+					ID integer primary key,\
+					TITLE text NOT NULL);";
 		
+
 		db->execDML(sql.c_str());
 
 	}

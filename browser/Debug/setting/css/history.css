@@ -1,0 +1,168 @@
+html{
+	width: 100%;
+	height: 100%;
+}
+body{
+	width: 100%;
+	max-width: 1024px;
+	min-height: 100%;
+    background: #FBFBFC;
+    margin: 0 auto;
+	font: 12px/1.5 'microsoft yahei',tahoma,arial,sans-serif;
+}
+a:hover{
+	text-decoration: underline;
+	color: #4188E4!important;
+	cursor: pointer;
+}
+.history-box{
+	width: 800px;
+	height: auto;
+	overflow: auto;
+	margin: 0 auto;
+}
+.history-menu{
+	width: 100%;
+	height: 47px;
+	line-height: 46px;
+	padding-top: 30px;
+	position: relative;
+    border-bottom: 1px solid #E8ECF2;
+}
+.history-menu h3{
+	width: auto;
+	height: 46px;
+	line-height: 46px;
+	float: left;
+	font-size: 16px;
+	color: #4E4E4E;
+	letter-spacing: 0px;
+	font-weight: normal;
+}
+.menu-box{
+	float: right;
+	width: 390px;
+	height: 46px;
+	line-height: 46px;
+	color: #818181;
+	padding-right: 10px;
+}
+#del-select{
+	float: left;
+	margin-right: 20px;
+}
+#del-all{
+	float: left;
+}
+.history-search-div{
+	width: 160px;
+	height: 28px;
+	border: 1px solid #E8ECF2;
+	float: right;
+	margin-top: 8px;
+}
+#history-search-name{
+	width: 130px;
+	height: 28px;
+	border: 0;
+	float: left;
+	text-indent: 12px;
+	background: transparent;
+}
+#toSearch{
+	width: 30px;
+	height: 28px;
+	float: left;
+	background: url(../img/search.png) no-repeat center;
+	cursor: pointer;
+}
+/*+++++++++++历史内容++++++++++++++++++++++++*/
+.history-content{
+	width: 100%;
+	height: auto;
+}
+.page{
+	width: 100%;
+	display: block;
+}
+.part{
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+.part-border{
+	border-bottom: 1px solid #E8ECF2;
+}
+
+.part .part-left{
+	float: left;
+	width: 206px;
+	height: 50px;
+	line-height: 50px;
+	font-size: 14px;
+	color: #333333;
+}
+.part h4{
+	width: auto;
+	margin-top: 15px;
+	line-height: 20px;
+	float: left;
+	cursor: pointer;
+}
+.part h4 span{
+	float: left;
+}
+.part h4 i{
+	float: left;
+	width: 16px;
+	height: 16px;
+	margin-top: 2px;
+	margin-left:5px ;
+	background: url(../img/show.png) no-repeat;
+}
+.hide .xiala{
+	background: url(../img/hide.png) no-repeat;
+}
+.part-right{
+	width: 580px;
+	float: left;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.part-box{
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+.history-info{
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+}
+.history-info .cut{
+	width: 10px;
+	height: 11px;
+	float: left;
+	margin-right: 20px;
+	padding-top: 10px;
+}
+.history-info .cut p{
+	width: 10px;
+	height: 11px;
+	background: url(../img/del.png) no-repeat;
+	display: none;
+	cursor: pointer;
+}
+.history-info a{
+	float: left;
+	color: #333;
+}
+.history-info span{
+	float: right;
+	width: 300px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-align: right;
+	text-overflow: ellipsis;
+	display: none;
+}

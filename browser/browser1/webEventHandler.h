@@ -2,6 +2,26 @@
 #include "appframe.h"
 
 
+class CMdWebBrowserUI :public CWebBrowserUI 
+{
+public:
+	CMdWebBrowserUI();
+	~CMdWebBrowserUI();
+
+	void setTitle(const wstring& title);
+	void setUrl(const string& url);
+	string getUrl();
+	wstring getTitle();
+
+private:
+	wstring m_title;
+	string  m_url;
+
+};
+
+
+
+
 class CWebEventHandler : public IDispatch, public CWebBrowserEventHandler
 {
 
@@ -15,6 +35,7 @@ public:
 
 public:
 	CWebEventHandler(CMdWebEngine* webcore = NULL);
+
 
 	virtual void BeforeNavigate2(CWebBrowserUI* pWeb, IDispatch *pDisp,VARIANT *&url,VARIANT *&Flags,VARIANT *&TargetFrameName,VARIANT *&PostData,VARIANT *&Headers,VARIANT_BOOL *&Cancel );
 	virtual void NavigateError(CWebBrowserUI* pWeb, IDispatch *pDisp,VARIANT * &url,VARIANT *&TargetFrameName,VARIANT *&StatusCode,VARIANT_BOOL *&Cancel) ;

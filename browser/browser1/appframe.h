@@ -16,7 +16,10 @@ static CMdWebEngine* thisobj;
 
 	~CMdWebEngine();
 	static CMdWebEngine* Get();
-	int Add(LPCTSTR url = L"http://www.microdone.cn");
+// 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\index.html");
+// 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\html\\settings.html");
+// 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\html\\history.html");
+	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\html\\history.html");
 	int GetCount();
 	int Remove(CControlUI* btnCloseTab);
 	int Reload(LPCTSTR url = NULL);

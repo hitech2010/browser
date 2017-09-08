@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>新标签页</title>
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<link rel="stylesheet" href="../css/bookmark.css" />
+		<script src="../js/jquery-2.1.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/style.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/bookmark.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../microdone-h5-富民.js" ></script>
+	</head>
+	<body>
+		<div class="bookmark-box">
+			<div class="bookmark-menu">
+				<div class="menu-box">
+					<h3>书签管理</h3>
+					<button id="ImportBookmarks" class="btn">导入书签…</button>
+					<button id="ExportBookmarks" class="btn">导出书签…</button>
+					<div class="bookmark-search-div">
+						<form action method="get" id="bookmark-sec">
+							<input type="text" placeholder="搜索书签" id="bookmark-search-name" />
+							<p id="toSearch"></p>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!--书签文件夹-->
+			<div class="bookmark-content">
+				<div class="page">
+					<div class="part">
+						<div class="part-up">
+							<h4 class="bookmarksfolder1"><span>书签文件夹1</span><i class=""></i></h4>
+						</div>
+						<div class="part-down">
+							<div class="part-box">
+								<div class="history-info">
+									<input class="bookmark-name" type="text" value="北京微通新成网络科技有限公司" disabled="disabled">
+									<input class="bookmark-src" type="text" value="http://www.geemee.com" disabled="disabled"/></input>
+								</div>
+								<div class="history-info">
+									<input class="bookmark-name" type="text" value="北京微通新成网络科技有限公司" disabled="disabled">
+									<input class="bookmark-src" type="text" value="http://www.geemee.com" disabled="disabled"/></input>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="part">
+						<div class="part-up">
+							<h4 class="bookmarksfolder2"><span>书签文件夹2</span><i class=""></i></h4>
+						</div>
+						<div class="part-down">
+							<div class="part-box">
+								<div class="history-info">
+									<input class="bookmark-name" type="text" value="北京微通新成网络科技有限公司" disabled="disabled">
+									<input class="bookmark-src" type="text" value="http://www.geemee.com" disabled="disabled"/></input>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--鼠标右键框-->
+		<div class="mouseBox">
+			<ul>
+				<li>在新标签页打开(O)</li>
+				<li>在新窗口中打开(N)</li>
+				<li>在无痕窗口中打开(I)</li>
+			</ul>
+			<ul>
+				<li class="noclick">重命名(R)…</li>
+				<li class="repair">修改(E)…</li>
+				<li class="noclick">在文件夹中显示</li>
+			</ul>
+			<ul>
+				<li>剪切(T)</li>
+				<li>复制(C)…</li>
+				<li>粘贴(P)</li>
+			</ul>
+			<ul class="noborder">
+				<li>删除(D)</li>
+				<li class="noclick">撤销删除操作</li>
+				<li>添加网页(G)</li>
+				<li>添加文件夹(F)…</li>
+			</ul>
+		</div>
+	</body>
+</html>

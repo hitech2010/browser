@@ -206,7 +206,8 @@ public:
 		va_start(args, fmt);
 
 		size_t sz = vsnprintf(NULL, 0, fmt, args);
-		tmp.resize(sz);
+		tmp._Grow(sz + 1);
+
 
 
 
@@ -416,9 +417,10 @@ public:
 		int nLength = _vscwprintf(fmt, args);
 		assert(GetLastError() == ERROR_SUCCESS);
 
+		m_buffer._Grow(nLength+1);
 		m_buffer.resize(nLength);
 
-		vswprintf_s(m_buffer._Myptr(), m_buffer.size() + 1, fmt, args);
+		vswprintf_s(m_buffer._Myptr(), m_buffer.capacity(), fmt, args);
 
 		va_end(args);
 

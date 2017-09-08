@@ -28,9 +28,9 @@
                         	hotimage="file='skin\favor.png' source='24,0,48,24'" />
                         	
                     </HorizontalLayout>
-                    <Button padding="10,0,0,0" width="24" height="24" name="ui_download"  bkimage="file='skin\toolbar_ex.png' source='168,0,192,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar_ex.png' source='168,24,144,48'" pushedimage="file='skin\toolbar_ex.png' source='168,24,144,48'" />
-                    <Button padding="10,0,0,0" width="24" height="24" name="ui_restorepage"  bkimage="file='skin\toolbar_ex.png' source='192,0,216,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar_ex.png' source='192,24,144,48'" pushedimage="file='skin\toolbar_ex.png' source='192,24,144,48'" />
-                    <Button padding="10,0,10,0" width="24" height="24" name="ui_settings"  bkimage="file='skin\toolbar_ex.png' source='216,0,240,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar_ex.png' source='216,24,144,48'" pushedimage="file='skin\toolbar_ex.png' source='216,24,144,48'" />
+                    <Button padding="10,0,0,0" width="24" height="24" name="ui_download"  bkimage="file='skin\toolbar_ex.png' source='168,0,192,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar_ex.png' source='168,24,192,48'" pushedimage="file='skin\toolbar_ex.png' source='168,24,192,48'" />
+                    <Button padding="10,0,0,0" width="24" height="24" name="ui_restorepage"  bkimage="file='skin\toolbar_ex.png' source='192,0,216,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar_ex.png' source='192,24,216,48'" pushedimage="file='skin\toolbar_ex.png' source='192,24,216,48'" />
+                    <Button padding="10,0,10,0" width="24" height="24" name="ui_settings"  bkimage="file='skin\toolbar_ex.png' source='216,0,240,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar_ex.png' source='216,24,240,48'" pushedimage="file='skin\toolbar_ex.png' source='216,24,240,48'" />
                 </HorizontalLayout>
             </VerticalLayout>
         </HorizontalLayout>

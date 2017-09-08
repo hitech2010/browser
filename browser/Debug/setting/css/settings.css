@@ -1,0 +1,321 @@
+html{
+	width: 100%;
+	height: 100%;
+}
+body{
+	width: 100%;
+	max-width: 1024px;
+	min-height: 100%;
+    background: #FBFBFC;
+    margin: 0 auto;
+	font: 12px/1.5 'microsoft yahei',tahoma,arial,sans-serif;
+}
+.setting-box{
+	width: 78%;
+	height: auto;
+	overflow: auto;
+	margin: 0 auto;
+}
+.setting-menu{
+	width: 100%;
+	height: 49px;
+	padding-top: 30px;
+	position: relative;
+}
+.setting-menu ul{
+	width: 100%;
+	height: 47px;
+	border-bottom: 1px solid #E8ECF2;
+	position: absolute;
+}
+.setting-menu ul li{
+	float: left;
+	height: 46px;
+	line-height: 46px;
+	margin-right: 36px;
+	font-size: 16px;
+	cursor: pointer;
+}
+.setting-menu .select{
+	color: #4188E4;
+	border-bottom:3px solid #438BE4;
+}
+.page-box{
+	width: 100%;
+	height: auto;
+	overflow: auto;
+}
+/*++++++++++++常规设置++++++++++++*/
+.page{
+	width: 100%;
+	display: none;
+}
+.part{
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+.part2{
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	padding: 20px 0;
+}
+.part-border{
+	border-bottom: 1px solid #E8ECF2;
+}
+.part h4{
+	float: left;
+	width: 206px;
+	height: 50px;
+	line-height: 50px;
+	font-size: 14px;
+	color: #333333;
+}
+.part-right{
+	width: auto;
+	float: left;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.part-line{
+	width: auto;
+	height: 34px;
+	line-height: 34px;
+	font-size: 12px;
+	color: #333333;
+}
+.part-line label{
+	width: auto;
+	height: 34px;
+	float: left;
+	cursor: pointer;
+}
+.part-line label span{
+	float: left;
+}
+.span-radio{
+	margin-right: 8px;
+	width: 12px;
+	height: 12px;
+	border: 1px solid #979797;
+	border-radius: 50%;
+	margin-top: 10px;
+	position: relative;
+}
+.span-radio::before{
+	width: 0px;
+	height: 0px;
+    background-color: #458EE4;
+    border-radius: 100%;
+    content: '';
+    display: block;
+    left: 5px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+.radio-selected::before{
+	width: 2px;
+	height: 2px;
+    background-color: #458EE4;
+    border-radius: 100%;
+    content: '';
+    display: block;
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    top: 5px;
+    transform: scale(3);
+    transition: all 0.2s ease;
+}
+.span-check{
+	margin-right: 8px;
+	width: 12px;
+	height: 12px;
+	border: 1px solid #979797;
+	border-radius: 2%;
+	margin-top: 10px;
+	position: relative;
+}
+.span-check::before{
+	content: '\00a0';
+    display: inline-block;
+    border: 0;
+    border-top-width: 0;
+    border-right-width: 0; 
+    width: 0px;
+    height: 0px;
+    transform: rotate(-50deg);
+    position: absolute;
+    top:4px;
+    left:3px;
+}
+.check-selected::before{
+	content: '\00a0';
+    display: inline-block;
+    border: 1px solid #52627B;
+    border-top-width: 0;
+    border-right-width: 0; 
+    width: 4px;
+    height: 2px;
+    transform: rotate(-50deg) scale(2);
+    position: absolute;
+    top:4px;
+    left:3px;
+    transition: all 0.2s ease;
+}
+.radio input,.check input{
+	opacity: 0;
+	filter: alpha(opacity=0);
+	float: left;
+}
+.setting-web{
+	float: left;
+	margin-left: 48px;
+	color: #458EE4;
+	cursor: pointer;
+}
+#set-as-default-browser{
+	width: 130px;
+	height: 30px;
+	line-height: 28px;
+	font-size: 12px;
+	color: #333333;
+	letter-spacing: 0px;
+	background-image: linear-gradient(-180deg, #FFFFFF 0%, #F5F5F8 100%);
+	border: 1px solid #E8ECF2;
+	margin: 5px 0;
+	cursor: pointer;
+}
+.select-row{
+	width: 90px;
+	height: 28px;
+	font-size: 12px;
+	color: #333333;
+	letter-spacing: 0px;
+	background-image: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	border: 1px solid #E8ECF2;
+	position: relative;
+	float: left;
+	margin: 5px 0;
+	z-index: 2;
+	cursor: pointer;
+}
+#default-search-engine{
+	width: 90px;
+	height: 28px;
+	text-indent: 17px;
+	background: url(../img/drop-down.png) 71px center no-repeat;
+}
+.select-ul{
+	position: absolute;
+	top: 28px;
+	left: -1px;
+	width: auto;
+	height: auto;
+	overflow: auto;
+	padding:10px 0px;
+	border: 1px solid #E8ECF2;
+	background: #fff;
+	display: none;
+}
+.select-ul li{
+	width: 180px;
+	height: 28px;
+	line-height: 28px;
+	overflow: auto;
+	padding:0 17px;
+}
+.select-ul li span{
+	float: left;
+}
+.engine-name{
+	margin-right:20px;
+}
+#manage-default-search-engines{
+	width: 120px;
+	height: 30px;
+	line-height: 28px;
+	font-size: 12px;
+	color: #333333;
+	letter-spacing: 0px;
+	background-image: linear-gradient(-180deg, #FFFFFF 0%, #F5F5F8 100%);
+	border: 1px solid #E8ECF2;
+	margin: 5px 0 5px 11px;
+	cursor: pointer;
+}
+.select-tit{
+	color: #458EE4;
+}
+.no-tit{
+	display: none;
+}
+/*++++++++++++++++++++++下载设置+++++++++++++++++++++++++*/
+.downloadLocationPath{
+	width: 158px;
+	height: 28px;
+	line-height: 28px;
+	padding-left: 12px;
+	background-image: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	border: 1px solid #E8ECF2;
+	float: left;
+	color: #333;
+    font-size: 12px;
+}
+.downloadLocationChange{
+	width: 60px;
+	height: 30px;
+	line-height: 30px;
+	background-image: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	border: 1px solid #E8ECF2;
+	margin-left: 6px;
+	float: left;
+	cursor: pointer;
+	color: #333;
+    font-size: 12px;
+}
+.sameLine{
+	float: left;
+}
+.sameLine:first-child{
+	margin-right: 27px;
+}
+/*用户隐私*/
+#ImportBookmarks{
+	width: 80px;
+	height: 30px;
+	line-height: 30px;
+	background-image: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	border: 1px solid #E8ECF2;
+	float: left;
+	cursor: pointer;
+	color: #333;
+    font-size: 12px;
+    letter-spacing: 0;
+}
+.clearUp{
+	width: 92px;
+	height: 30px;
+	line-height: 30px;
+	background-image: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	border: 1px solid #E8ECF2;
+	float: left;
+	color: #333;
+    font-size: 12px;
+    cursor:pointer;
+    letter-spacing: 0;
+}
+.general{
+	width: 100%;
+	display: block;
+}
+
+
+
+
+
+
+
+
+

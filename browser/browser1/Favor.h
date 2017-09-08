@@ -165,7 +165,7 @@ public:
 public:
 	CHistoryMgr(CppSQLite3DB*db)throw();
 	xstring TestRoutine();
-
+	CHistoryMgr& setTitle(string& url, string& title);
 	~CHistoryMgr();
 	CHistoryMgr& Add(const RECORD& record);
 	VRECORD& Query(int query);

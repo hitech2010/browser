@@ -28,9 +28,23 @@ static std::string wstring2string(const std::wstring strIn, UINT CodePage = CP_U
 
 void CWebEventHandler::BeforeNavigate2( CWebBrowserUI* pWeb, IDispatch *pDisp,VARIANT *&url,VARIANT *&Flags,VARIANT *&TargetFrameName,VARIANT *&PostData,VARIANT *&Headers,VARIANT_BOOL *&Cancel )
 {
-	Log("void CWebEventHandler::BeforeNavigate2");
+	
+	if (!url)
+	{
+		return;
+	}
+	
 
 	string strt = wstring2string(wstring(url->bstrVal));
+	if (TargetFrameName)
+	{
+		Log(L"void CWebEventHandler::BeforeNavigate2 %s TargetFrameName[%s]", url->bstrVal, TargetFrameName->bstrVal);
+	}
+	else
+	{
+		Log(L"void CWebEventHandler::BeforeNavigate2 %s ", url->bstrVal);
+	}
+
 	if (g_um.find(strt) != g_um.end())
 	{
 		strt = g_um[strt];
@@ -41,6 +55,18 @@ void CWebEventHandler::BeforeNavigate2( CWebBrowserUI* pWeb, IDispatch *pDisp,VA
 			url->bstrVal = SysAllocString(string2wstring(strt).c_str());
 		}
 	}
+
+
+
+
+
+	CMdWebBrowserUI* pmdweb = dynamic_cast<CMdWebBrowserUI*>(pWeb);
+	if (pmdweb)
+	{
+		pmdweb->setUrl(strt);
+	}
+
+
 	
 	/*static string strUrl;
 	strUrl.assign((_bstr_t)url->bstrVal);
@@ -66,8 +92,11 @@ void CWebEventHandler::NavigateComplete2( CWebBrowserUI* pWeb, IDispatch *pDisp,
 {
 	/*CEditUI* pEdit = dynamic_cast<CEditUI*>(m_webengine->m_pm->FindControl(_T("ui_address")));
 	pEdit->SetText(url->bstrVal);*/
-	
-	Log(_T("void CWebEventHandler::NavigateComplete2 [%08x %08X]"), static_cast<IDispatch*>(pWeb), pDisp);
+	if (!url)
+	{
+		return;
+	}
+
 	/*setproxy(false);
 
 	BSTR bstr;
@@ -118,12 +147,34 @@ void CWebEventHandler::NavigateComplete2( CWebBrowserUI* pWeb, IDispatch *pDisp,
 
 void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,VARIANT *&url )
 {
+	if (!url || !url->bstrVal)
+	{
+		return;
+	}
+	Log(_T("void CWebEventHandler::DocumentComplete [%08x %08X]"), pWeb->GetWebBrowser2(), pDisp);
+
+
+	if (pWeb->GetWebBrowser2() == pDisp)
+	{
+		CMdWebBrowserUI* pmdweb = dynamic_cast<CMdWebBrowserUI*>(pWeb);
+		
+		string xurl = _encoding(url->bstrVal).astr().get();
+		 	CHistoryMgr::RECORD record;
+		 	record.folder = "";
+		 	record.img = "";
+			record.url = xurl;
+			record.title = _encoding(pmdweb->getTitle()).utf8().get();
+		 	theApp.History()->Add(record);
+
+	}
 
 	//CEditUI* pEdit = dynamic_cast<CEditUI*>(m_webengine->m_pm->FindControl(_T("ui_address")));
 	//pEdit->SetText(url->bstrVal);
 	//pWeb->SetUserData(url->bstrVal);
 	
 	//Log(_T("void CWebEventHandler::DocumentComplete [%s]"));
+
+
 	
 
 }
@@ -160,9 +211,12 @@ m_webengine = webcore;
 }
 
 
+
+
 void CWebEventHandler::TitleChange(CWebBrowserUI* pWeb, BSTR bstrTitle)
 {
 	UINT_PTR ptr = (UINT_PTR)pWeb;
+	wstring title;
 	for (auto it = this->m_webengine->m_bindings.begin(); it != this->m_webengine->m_bindings.end(); it++)
 	{
 		if ((UINT_PTR)(it->second) == ptr)
@@ -173,10 +227,21 @@ void CWebEventHandler::TitleChange(CWebBrowserUI* pWeb, BSTR bstrTitle)
 			opt->SetAttribute(L"align", L"left");
 			opt->SetAttribute(L"valign", L"vcenter");
 			opt->SetAttribute(L"endellipsis", L"true");
-			wstring title = bstrTitle;
+			 title = bstrTitle;
 			opt->SetText(title.c_str());
+
+
+
+			CMdWebBrowserUI* pmdweb = dynamic_cast<CMdWebBrowserUI*>(pWeb);
+
+			pmdweb->setTitle(title);
+			
 		}
 	}
+
+
+	
+	
 
 }
 
@@ -408,3 +473,36 @@ HRESULT STDMETHODCALLTYPE CWebEventHandler::Download( CWebBrowserUI* pWeb,
 	return S_OK;
 }
 
+
+
+
+
+
+
+CMdWebBrowserUI::CMdWebBrowserUI()
+{
+}
+
+CMdWebBrowserUI::~CMdWebBrowserUI()
+{
+}
+
+void CMdWebBrowserUI::setTitle(const wstring& title)
+{
+	m_title = title;
+}
+
+void CMdWebBrowserUI::setUrl(const string& url)
+{
+	m_url = url;
+}
+
+string CMdWebBrowserUI::getUrl()
+{
+	return m_url;
+}
+
+std::wstring CMdWebBrowserUI::getTitle()
+{
+	return m_title;
+}

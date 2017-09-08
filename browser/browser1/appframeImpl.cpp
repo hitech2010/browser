@@ -1389,7 +1389,7 @@ int CMdWebEngine::Add(LPCTSTR url)
 
 
 
-	CWebBrowserUI* ie = new CWebBrowserUI;
+	CWebBrowserUI* ie = new CMdWebBrowserUI();
 
 	m_webcontainer->Add(ie);
 

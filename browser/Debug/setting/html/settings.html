@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>选项-常规设置</title>
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<link rel="stylesheet" href="../css/settings.css" />
+		<script src="../js/jquery-2.1.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/settings.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="setting-box">
+			<div class="setting-menu">
+				<ul>
+					<li class="select">常规设置 </li>
+					<li>标签设置</li>
+					<li>下载设置</li>
+					<li>截图设置</li>
+					<li>用户与隐私</li>
+				</ul>
+			</div>
+			<div class="page-box">
+				<!--常规设置-->
+				<div class="page general">
+					<div class="part part-border">
+						<h4>启动时</h4>
+						<div class="part-right">
+							<div class="radio part-line">
+								<label for="record">
+									<span class="span-radio radio-selected"><input type="radio" checked="checked" name="Startup" id="record" value="1"/></span>
+									<span class="title">打开上次页面</span>
+								</label>
+							</div>
+							<div class="radio part-line">
+								<label for="allrecord">
+									<span class="span-radio"><input type="radio" name="Startup" id="allrecord" value="2"/></span>
+									<span class="title">继续浏览上次关闭时在看的网页</span>
+								</label>
+							</div>
+							<div class="radio part-line">
+								<label for="newpage">
+									<span class="span-radio"><input type="radio" name="Startup" id="newpage" value="3"/></span>
+									<span class="title">打开特定网页或一组网页</span>
+								</label>
+								<span class="setting-web">设置网页</span>
+							</div>
+						</div>
+					</div>
+					<div class="part part-border">
+						<h4>默认浏览器</h4>
+						<div class="part-right">
+							<div class="part-line">
+								<span>极密浏览器  目前不是默认浏览器</span>
+							</div>
+							<button id="set-as-default-browser" class="btn">设置为默认浏览器</button>
+						</div>
+					</div>
+					<div class="part part-border" style="overflow: visible;height: 60px;">
+						<h4>默认搜索引擎</h4>
+						<div class="part-right">
+							<div class="part-line">
+								<div class="select-row">
+									<div id="default-search-engine" class="select-name">百度</div>
+									<ul class="select-ul">
+										<li gm-data="百度"><span class="engine-name">百度</span><span class="select-tit no-tit">设置为默认搜索引擎</span></li>
+										<li gm-data="搜狗"><span class="engine-name">搜狗</span><span class="select-tit">设置为默认搜索引擎</span></li>
+									</ul>
+								</div>
+								<button id="manage-default-search-engines" class="btn">管理搜索引擎…</button>
+							</div>
+						</div>
+					</div>
+					<div class="part">
+						<h4>主界面</h4>
+						<div class="part-right">
+							<div class="check part-line">
+								<label for="main-page">
+									<span class="span-check"><input type="checkbox" name="mainSet" id="main-page" value="1"/></span>
+									<span class="title">显示“主页”按钮</span>
+								</label>
+								<span class="setting-web">设置网页</span>
+							</div>
+							<div class="check part-line">
+								<label for="show-bookmarks">
+									<span class="span-check"><input type="checkbox" name="mainSet" id="show-bookmarks" value="2"/></span>
+									<span class="title">显示书签栏</span>
+								</label>
+							</div>
+							<div class="check part-line">
+								<label for="screenshot">
+									<span class="span-check"><input type="checkbox" name="mainSet" id="screenshot" value="3"/></span>
+									<span class="title">显示“截图”按钮</span>
+								</label>
+							</div>
+							<div class="check part-line">
+								<label for="Restore">
+									<span class="span-check"><input type="checkbox" name="mainSet" id="Restore" value="4"/></span>
+									<span class="title">显示“恢复最近关闭标签页”按钮</span>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--标签设置-->
+				<div class="page label-setting">
+					<div class="part part-border">
+						<h4>点击链接时</h4>
+						<div class="part-right">
+							<div class="radio part-line">
+								<label for="Reception">
+									<span class="span-radio radio-selected"><input type="radio" checked="checked" name="pageSet1" id="Reception" value="1"/></span>
+									<span class="title">前台打开</span>
+								</label>
+							</div>
+							<div class="radio part-line">
+								<label for="Backstage">
+									<span class="span-radio"><input type="radio" name="pageSet1" id="Backstage" value="2"/></span>
+									<span class="title">后台打开</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="part part-border">
+						<h4>关闭标签页方式</h4>
+						<div class="part-right">
+							<div class="check part-line">
+								<label for="double-click-off">
+									<span class="span-check"><input type="checkbox" name="pageSet2" id="double-click-off" value="1"/></span>
+									<span class="title">双击关闭标签页</span>
+								</label>
+							</div>
+							<div class="check part-line">
+								<label for="right-click-off">
+									<span class="span-check"><input type="checkbox" name="pageSet2" id="right-click-off" value="2"/></span>
+									<span class="title">右键关闭标签页（shift+右键可打开菜单）</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="part part-border">
+						<h4>关闭最后标签页时</h4>
+						<div class="part-right">
+							<div class="check part-line">
+								<label for="close-browser">
+									<span class="span-check"><input type="checkbox" name="pageSet3" id="close-browser" value="1"/></span>
+									<span class="title">关闭浏览器窗口</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="part part-border">
+						<h4>点击书签时</h4>
+						<div class="part-right">
+							<div class="radio part-line">
+								<label for="cover-page">
+									<span class="span-radio radio-selected"><input type="radio" checked="checked" name="pageSet4" id="cover-page" value="1"/></span>
+									<span class="title">覆盖当前页</span>
+								</label>
+							</div>
+							<div class="radio part-line">
+								<label for="opennewpage">
+									<span class="span-radio"><input type="radio" name="pageSet4" id="opennewpage" value="2"/></span>
+									<span class="title">在新标签页打开</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="part part-border">
+						<h4>地址栏输入内容时</h4>
+						<div class="part-right">
+							<div class="radio part-line">
+								<label for="cover-page2">
+									<span class="span-radio radio-selected"><input type="radio" checked="checked" name="pageSet5" id="cover-page2" value="1"/></span>
+									<span class="title">覆盖当前页</span>
+								</label>
+							</div>
+							<div class="radio part-line">
+								<label for="opennewpage2">
+									<span class="span-radio"><input type="radio" name="pageSet5" id="opennewpage2" value="2"/></span>
+									<span class="title">在新标签页打开</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="part part-border">
+						<h4>点击链接打开标签页位置</h4>
+						<div class="part-right">
+							<div class="radio part-line">
+								<label for="default">
+									<span class="span-radio radio-selected"><input type="radio" checked="checked" name="pageSet6" id="default" value="1"/></span>
+									<span class="title">默认</span>
+								</label>
+							</div>
+							<div class="radio part-line">
+								<label for="current-right-side">
+									<span class="span-radio"><input type="radio" name="pageSet6" id="current-right-side" value="2"/></span>
+									<span class="title">当前标签页右侧</span>
+								</label>
+							</div>
+							<div class="radio part-line">
+								<label for="Rightmost">
+									<span class="span-radio"><input type="radio" name="pageSet6" id="Rightmost" value="2"/></span>
+									<span class="title">所在标签页右侧</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="part">
+						<h4>关闭标签时</h4>
+						<div class="part-right">
+							<div class="radio part-line">
+								<label for="default2">
+									<span class="span-radio radio-selected"><input type="radio" checked="checked" name="pageSet7" id="default2" value="1"/></span>
+									<span class="title">默认</span>
+								</label>
+							</div>
+							<div class="radio part-line">
+								<label for="Activate-left">
+									<span class="span-radio"><input type="radio" name="pageSet7" id="Activate-left" value="2"/></span>
+									<span class="title">激活左侧标签页</span>
+								</label>
+							</div>
+							<div class="radio part-line">
+								<label for="Activate-right">
+									<span class="span-radio"><input type="radio" name="pageSet7" id="Activate-right" value="2"/></span>
+									<span class="title">激活右侧标签页</span>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--下载设置-->
+				<div class="page download">
+					<div class="part part2 part-border">
+						<h4>下载位置</h4>
+						<div class="part-right">
+							<input type="text" readonly="readonly" id="downloadLocationPath" class="downloadLocationPath"/>
+							<button id="downloadLocationChangeButton" class="downloadLocationChange btn">更改</button>
+						</div>
+					</div>
+					<div class="part part2 part-border">
+						<h4>下载前询问</h4>
+						<div class="part-right">
+							<div class="check part-line">
+								<label for="download-before">
+									<span class="span-check"><input type="checkbox" name="mainSet" id="download-before" value="1"/></span>
+									<span class="title">新建任务时弹出下载确认框（可以修改保存位置和文件）</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="part part2">
+						<h4>下载任务完成时</h4>
+						<div class="part-right">
+							<div class="check part-line">
+								<label for="download-complate">
+									<span class="span-check"><input type="checkbox" name="mainSet" id="download-complate" value="1"/></span>
+									<span class="title">弹出提示面板</span>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--截图设置-->
+				<div class="page picture-format">
+					<div class="part part2 part-border">
+						<h4>图片格式</h4>
+						<div class="part-right">
+							<div class="radio part-line sameLine">
+								<label for="png-format">
+									<span class="span-radio radio-selected"><input type="radio" checked="checked" name="pageSet8" id="png-format" value="1"/></span>
+									<span class="title">png</span>
+								</label>
+							</div>
+							<div class="radio part-line sameLine">
+								<label for="jpg-format">
+									<span class="span-radio"><input type="radio" name="pageSet8" id="jpg-format" value="2"/></span>
+									<span class="title">jpg</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="part part2">
+						<h4>保存位置</h4>
+						<div class="part-right">
+							<input type="text" readonly="readonly" id="downloadLocationPath2" class="downloadLocationPath"/>
+							<button id="downloadLocationChangeButton2" class="downloadLocationChange btn">更改</button>
+						</div>
+					</div>
+				</div>
+				<!--用户与隐私-->
+				<div class="page User-privacy">
+					<div class="part part2 part-border">
+						<h4>书签</h4>
+						<div class="part-right">
+							<button id="ImportBookmarks" class="btn">导入书签…</button>
+						</div>
+					</div>
+					<div class="part part2">
+						<h4>保存位置</h4>
+						<div class="part-right">
+							<div class="part-line">
+								<button class="clearUp btn">清除上网痕迹</button>
+							</div>
+							<div class="check part-line">
+								<label for="autoClear">
+									<span class="span-check"><input type="checkbox" name="autoClear" id="autoClear" value="1"/></span>
+									<span class="title">每次关闭浏览器时自动清除</span>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/style.js" type="text/javascript" charset="utf-8"></script>
+</html>

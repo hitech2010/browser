@@ -143,7 +143,7 @@ unsigned int __stdcall  sync_setting_proc(void* para)
 
 			string result = Json::writeString(b, root);
 			ofstream ofs;
-			ofs.open(theApp.getConfigFile().c_str());
+			//ofs.open(theApp.getConfigFile().c_str());
 
 			if (ofs.is_open())
 			{
