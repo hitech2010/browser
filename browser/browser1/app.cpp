@@ -118,6 +118,12 @@ bool isGMSSL(string &strt, bool &b)
 	}
 
 
+	string BrowserApp::getAppdir()
+	{
+		return m_appdir;
+	}
+
+
 
 BrowserApp theApp;
 
@@ -187,7 +193,7 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 	pFrame->Create(NULL, _T("极密浏览器"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
 	pFrame->CenterWindow(); // 窗口居中
 	pFrame->ShowWindow(true);
-	pFrame->m_engine->Add();
+	pFrame->m_engine->Add(pFrame->m_engine->getIndexPage());
 
 	
 	// 显示

@@ -37,7 +37,12 @@ namespace DuiLib
 		virtual HRESULT STDMETHODCALLTYPE GetHostInfo(CWebBrowserUI* pWeb, 
 			/* [out][in] */ DOCHOSTUIINFO __RPC_FAR *pInfo)
 		{
-			return E_NOTIMPL;
+			if (pInfo != NULL)
+			{
+				pInfo->dwFlags |= DOCHOSTUIFLAG_NO3DBORDER;
+			}
+
+			return S_OK;
 		}
 
 		virtual HRESULT STDMETHODCALLTYPE ShowUI(CWebBrowserUI* pWeb, 

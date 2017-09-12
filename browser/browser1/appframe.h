@@ -17,14 +17,19 @@ static CMdWebEngine* thisobj;
 	~CMdWebEngine();
 	static CMdWebEngine* Get();
 // 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\index.html");
-// 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\html\\settings.html");
-// 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\html\\history.html");
-	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\html\\history.html");
+// 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\settings.html");
+// 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\history.html");
+	int Add(LPCTSTR url );
 	int GetCount();
 	int Remove(CControlUI* btnCloseTab);
 	int Reload(LPCTSTR url = NULL);
 	int Switch(CControlUI* pOption);
 	CWebBrowserUI* GetWebPage(UINT_PTR tab = NULL);
+
+	LPCTSTR getHistoryPage();
+	LPCTSTR getIndexPage();
+	LPCTSTR getBookmarkPage();
+	LPCTSTR getSettingsPage();
 protected:
 
 	void Bind(CContainerUI* tab, CWebBrowserUI* page);
@@ -32,6 +37,12 @@ protected:
 	
 public:
 	CEditUI* GetAddressBar();
+
+protected:
+	wxstring m_history_page;
+	wxstring m_settings_page;
+	wxstring m_index_page;
+	wxstring m_bookmark_page;
 
 
 

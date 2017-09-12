@@ -13,7 +13,9 @@ enum
 	q_all		= 0,
 	q_thisweek = 1,
 	q_thismonth = 2,
-	q_rest     =3
+	q_rest     =3,
+	q_today	= 4,
+	q_yesterday = 5
 
 };
 
@@ -140,7 +142,7 @@ public:
 	VRECORD& Query();
 	CFavorFolder& Add(const RECORD& record);
 
-	CFavorFolder& clear();
+	CFavorFolder& Clear();
 	CFavorFolder& QueryById(int id);
 	CFavorFolder& Delete(int startpos, int endpos);
 };
@@ -169,5 +171,7 @@ public:
 	~CHistoryMgr();
 	CHistoryMgr& Add(const RECORD& record);
 	VRECORD& Query(int query);
-	CHistoryMgr& clear();
+	CHistoryMgr::VRECORD& Query(const string& keyword);
+	CHistoryMgr& Clear();
+	CHistoryMgr& Delete(const string& tuple);
 };

@@ -18,44 +18,75 @@ $(function(){
     });
     var bookmarkThis;
     $(".history-info").mousedown(function(e){
-    	var Width = $("body").width();
-    	var Height= $("body").height();
-    	if(e.which==3){
+    	var event = e;
+    	if(event.which==3){
+	    	if(bookmarkThis!==undefined){
+		    	disabledTrue();
+	    	}
 	    	bookmarkThis = $(this);
-    		var mouseHeight = $(".mouseBox").height();
-    		$(".mouseBox").show();	
-    		if((e.clientX+220)>Width){
-    			if((mouseHeight+e.clientY)>Height){
-    				$(".mouseBox").css({top:Height-mouseHeight+"px",left:(e.clientX-180)+"px"});
-    			}else{
-	    			$(".mouseBox").css({top:e.clientY+"px",left:(e.clientX-180)+"px"});
-    			}
-    		}else{
-    			if((mouseHeight+e.clientY)>Height){
-    				$(".mouseBox").css({top:Height-mouseHeight+"px",left:e.clientX+"px"});
-    			}else{
-		    		$(".mouseBox").css({top:e.clientY+"px",left:e.clientX+"px"})
-    			}
-    		}
+    		fixed(event);
     	}
     });
     function disabledFalse() {
-		bookmarkThis.find("input").addClass("inputChange").attr("disabled", false);
+    	bookmarkThis.addClass("inputChange");
+		bookmarkThis.find("input").addClass("inputCh").attr("disabled", false);
 	};
 	function disabledTrue() {
-		bookmarkThis.find("input").removeClass("inputChange").attr("disabled", "disabled");
+		bookmarkThis.removeClass("inputChange");
+		bookmarkThis.find("input").removeClass("inputCh").attr("disabled", "disabled");
 	};
-	$(".mouseBox").click(function(){
-		$(".mouseBox").hide()
-	})
     $(".repair").click(function(){
     	disabledFalse();
     	$(".mouseBox").hide();
     	return false;
     });
-    $(document).click(function(e){
-    	if(e.target.className.indexOf('inputChange')<0){
-	    	disabledTrue()
+    function fixed(e){
+    	var Width = $("body").width();
+    	var Height= $("body").height();
+    	var mouseHeight = $(".mouseBox").height();
+		$(".mouseBox").show();	
+		if((e.clientX+220)>Width){
+			if((mouseHeight+e.clientY)>Height){
+				$(".mouseBox").css({top:Height-mouseHeight+"px",left:(e.clientX-180)+"px"});
+			}else{
+    			$(".mouseBox").css({top:e.clientY+"px",left:(e.clientX-180)+"px"});
+			}
+		}else{
+			if((mouseHeight+e.clientY)>Height){
+				$(".mouseBox").css({top:Height-mouseHeight+"px",left:e.clientX+"px"});
+			}else{
+	    		$(".mouseBox").css({top:e.clientY+"px",left:e.clientX+"px"})
+			}
+		}
+    }
+    //右击事件
+    $(document).mousedown(function(e){
+    	if(e.which==3){
+    		if($(".history-info").has(e.target).length === 0){
+    		}
     	}
     });
+    $(document).click(function(e){
+    	if($(".mouseBox").has(e.target).length === 0){
+    		$(".mouseBox").hide();
+	    	if(e.target.className.indexOf('inputCh')<0){
+		    	disabledTrue()
+	    	};
+    	}
+    	e.preventDefault();
+    });
+    //搜索框
+	$("#bookmark-search-name").on('input propertychange', function() {
+	    alert()
+	});
+	$("#bookmark-search-name").focus(function(){
+		$(".page").hide();
+		$(".page2").show();
+	});
+	$("#bookmark-search-name").blur(function(){
+		if($(this).val()==""){
+			$(".page").show();
+			$(".page2").hide();
+		}
+	});
 })

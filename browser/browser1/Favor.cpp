@@ -297,7 +297,7 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 	}
 
 
-	CHistoryMgr& CHistoryMgr::clear()
+	CHistoryMgr& CHistoryMgr::Clear()
 	{
 		string sql = "DELETE FROM HISTORY";
 		m_db->execDML(sql.c_str());
@@ -340,26 +340,79 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 	CHistoryMgr::~CHistoryMgr(){
 	}
 
+	CHistoryMgr::VRECORD& CHistoryMgr::Query(const string& keyword)
+	{
+		m_result.clear();
 
+		xstring sql;
+		sql.format( "select * from history where Title like '%%%s%%' or \
+			URL like '%%%s%%'", keyword.c_str(), keyword.c_str());
+
+
+		m_dbtable = m_db->getTable(sql.c_str());
+
+
+
+		for (int j = 0; j < m_dbtable.numRows(); ++j)
+		{
+			RECORD rc;
+			for (int i = 0; i < m_dbtable.numFields(); ++i)
+			{
+				m_dbtable.setRow(j);
+
+
+				rc.id = m_dbtable.getIntField("ID");
+				rc.folder = m_dbtable.getStringField("FOLDER");
+				const  char* blob = m_dbtable.getStringField("IMG");
+				CppSQLite3Binary bin;
+				bin.setEncoded((const unsigned char*)blob);
+				rc.img.assign((const char*)bin.getBinary(), bin.getBinaryLength());
+
+
+				rc.title = m_dbtable.getStringField("TITLE");
+				rc.url = m_dbtable.getStringField("URL");
+				rc.time = m_dbtable.getStringField("ADDDATE");
+			}
+			m_result.push_back(rc);
+
+		}
+
+
+		return m_result;
+
+	}
 	CHistoryMgr::VRECORD& CHistoryMgr::Query(int query)
 	{
 
+		m_result.clear();
 		string sql;
 		if(query == q_all)
 		{
 			sql = "select * from history;";
 		}
+		else if (query == q_today)
+		{
+			sql = "select * from history where ADDDATE "
+				"between datetime('now','start of day')"
+				"and datetime('now');";
+		}
+		else if (query == q_yesterday)
+		{
+			sql = "select * from history where ADDDATE "
+				"between datetime('now','start of day','-1 days')"
+				"and datetime('now','start of day', '-1 seconds');";
+		}
 		else if(query == q_thisweek)
 		{
 			sql = "select * from history where ADDDATE "
-				"between datetime('now','start of week')"
-				"and datetime('now');";
+				"between datetime('now','start of day','-6 days')"
+				"and datetime('now','start of day','-2 days','-1 seconds');";
 		}
 		else if(query == q_thismonth)
 		{
 			sql = "select * from history where ADDDATE "
-				"between datetime('now','start of month', '-1 second')"
-				"and datetime('now');";
+				"between datetime('now','start of day', '-30 days')"
+				"and datetime('now','start of day', '-6 days','-1 seconds');";
 		}
 		else if(query == q_rest)
 		{
@@ -404,6 +457,16 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 
 		return m_result;
 
+	}
+
+
+	CHistoryMgr& CHistoryMgr::Delete(const string& tuple)
+	{
+		xstring sql;
+		sql.format("DELETE FROM HISTORY WHERE ID IN %s;", tuple.c_str());
+
+		m_db->execDML(sql.c_str());
+		return *this;
 	}
 
 	xstring CHistoryMgr::TestRoutine()
@@ -486,7 +549,7 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 	}
 
 
-	CFavorFolder& CFavorFolder::clear()
+	CFavorFolder& CFavorFolder::Clear()
 	{
 		string sql = "DELETE FROM FAVOR_FOLDER";
 		m_db->execDML(sql.c_str());

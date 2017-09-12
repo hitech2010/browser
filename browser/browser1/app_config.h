@@ -43,7 +43,9 @@ public:
 	CHistoryMgr* History();
 	CFavorManager* Favor();
 	CFavorFolder*  FavorFolder();
+	string         getAppdir();
 };
+
 
 
 

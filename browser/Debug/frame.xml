@@ -39,8 +39,8 @@
         
   	
 
-    <TabLayout name="ui_webcontainer" bordersize="2,0,2,2" inset="2,0,2,2"  bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" menu="true" selectedid="-1"  >
-    	
+    <TabLayout name="ui_webcontainer" bordersize="1,0,1,2" inset="1,0,1,2" bordercolor="0xFFE0E0E0" bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" menu="true" selectedid="-1"  >
+ 
     </TabLayout></VerticalLayout>
 				
 

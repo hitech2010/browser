@@ -1046,7 +1046,7 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 	}
 	else if(msg.pSender->GetName() == _T("ui_addtab"))
 	{
-		m_engine->Add();
+		m_engine->Add(m_engine->getHistoryPage());
 	}
 	else if(msg.pSender->GetUserData().Find(_T("ui_closetab")) != -1)
 	{
@@ -1319,6 +1319,12 @@ CMdWebEngine* CMdWebEngine::Get()
 CMdWebEngine::CMdWebEngine()
 {
 	thisobj = NULL;
+	
+	m_bookmark_page.format(_T("file:\\\\\\%ssetting\\html\\%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("bookmark.html"));
+	m_index_page.format(_T("file:\\\\\\%ssetting\\%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("index.html"));
+	m_history_page.format(_T("file:\\\\\\%ssetting\\html\\%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("history.html"));
+	m_settings_page.format(_T("file:\\\\\\%ssetting\\html\\%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("settings.html"));
+
 }
 
 CMdWebEngine::~CMdWebEngine()
@@ -1575,7 +1581,27 @@ CWebBrowserUI* CMdWebEngine::GetWebPage(UINT_PTR tab)
 	}
 }
 
-int CMdWebEngine::Reload( LPCTSTR url /*= NULL*/ )
+LPCTSTR CMdWebEngine::getHistoryPage()
+{
+	return m_history_page;
+}
+
+LPCTSTR CMdWebEngine::getIndexPage()
+{
+	return m_index_page;
+}
+
+LPCTSTR CMdWebEngine::getBookmarkPage()
+{
+	return m_bookmark_page;
+}
+
+LPCTSTR CMdWebEngine::getSettingsPage()
+{
+	return m_settings_page;
+}
+
+int CMdWebEngine::Reload(LPCTSTR url /*= NULL*/)
 {
 	CWebBrowserUI* pWebBrowserUI  = dynamic_cast<CWebBrowserUI*>(
 		m_webcontainer->GetItemAt(m_webcontainer->GetCurSel()) );
@@ -1604,7 +1630,7 @@ int CMdWebEngine::Reload( LPCTSTR url /*= NULL*/ )
 		}
 		else
 		{
-			Add();
+			Add(m_index_page);
 		}
 
 

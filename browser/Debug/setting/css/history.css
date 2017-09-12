@@ -18,7 +18,7 @@ a:hover{
 .history-box{
 	width: 800px;
 	height: auto;
-	overflow: auto;
+	overflow: hidden;
 	margin: 0 auto;
 }
 .history-menu{
@@ -50,9 +50,11 @@ a:hover{
 #del-select{
 	float: left;
 	margin-right: 20px;
+	cursor: pointer;
 }
 #del-all{
 	float: left;
+	cursor: pointer;
 }
 .history-search-div{
 	width: 160px;
@@ -138,31 +140,92 @@ a:hover{
 	width: 100%;
 	height: 30px;
 	line-height: 30px;
+	display: block;
+}
+.span-check{
+    margin-right: 8px;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #979797;
+    border-radius: 2%;
+    margin-top: 8px;
+    position: relative;
+    float: left;
+    display: block;
+}
+.span-check input{
+	opacity: 0;
+    filter: alpha(opacity=0);
+    float: left;
+}
+.span-check::before {
+    content: '\00a0';
+    display: inline-block;
+    border: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    width: 0px;
+    height: 0px;
+    transform: rotate(-50deg);
+    position: absolute;
+    top: 4px;
+    left: 3px;
+}
+.check-selected::before{
+	content: '\00a0';
+    display: inline-block;
+    border: 1px solid #52627B;
+    border-top-width: 0;
+    border-right-width: 0; 
+    width: 4px;
+    height: 2px;
+    transform: rotate(-50deg) scale(2);
+    position: absolute;
+    top:4px;
+    left:3px;
+    transition: all 0.2s ease;
 }
 .history-info .cut{
 	width: 10px;
 	height: 11px;
-	float: left;
-	margin-right: 20px;
+	float: right;
+	margin-left: 20px;
 	padding-top: 10px;
 }
-.history-info .cut p{
+.history-info .cut span{
 	width: 10px;
 	height: 11px;
 	background: url(../img/del.png) no-repeat;
 	display: none;
 	cursor: pointer;
+	float: left;
 }
 .history-info a{
 	float: left;
 	color: #333;
+	max-width: 240px;
 }
 .history-info span{
 	float: right;
-	width: 300px;
+	width: 280px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-align: right;
 	text-overflow: ellipsis;
 	display: none;
+}
+/*搜索框下的记录*/
+.search-box{
+	width: 700px;
+	margin: 20px auto 0;
+	display: none;	
+}
+.search-box .history-info{
+	width: 700px;
+	}
+.search-box .history-info a{
+	max-width: 300px;
+}
+.history-info .history-info span{
+	width: 300px;
 }

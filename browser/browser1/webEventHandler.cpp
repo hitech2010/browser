@@ -33,6 +33,8 @@ void CWebEventHandler::BeforeNavigate2( CWebBrowserUI* pWeb, IDispatch *pDisp,VA
 	{
 		return;
 	}
+
+	
 	
 
 	string strt = wstring2string(wstring(url->bstrVal));
@@ -164,7 +166,12 @@ void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,V
 		 	record.img = "";
 			record.url = xurl;
 			record.title = _encoding(pmdweb->getTitle()).utf8().get();
-		 	theApp.History()->Add(record);
+
+			if (xurl.find("history.html") == std::string::npos)
+			{
+				theApp.History()->Add(record);
+			}
+		 	
 
 	}
 
@@ -360,6 +367,18 @@ STDMETHODIMP CWebEventHandler::GetIDsOfNames(
 		
 		return S_OK;
 	}
+	else if (_tcscmp((const wchar_t*)*rgszNames, L"jnotify_asyn") == 0)
+	{
+		*rgdispid = FUN_GET_ASYNCALL;
+
+		return S_OK;
+	}
+	else if (_tcscmp((const wchar_t*)*rgszNames, L"jnotify") == 0)
+	{
+		*rgdispid = FUN_GET_CALL;
+
+		return S_OK;
+	}
 	*rgdispid = -1;
 	return E_FAIL;
 }
@@ -393,6 +412,190 @@ STDMETHODIMP CWebEventHandler::Invoke(
 	case FUN_GET_FAVOR:
 	{
 		vector<favor_recode_item> res = theApp.Favor()->Query(V_I4(&pdispparams->rgvarg[0])); break;
+	}
+	case FUN_GET_ASYNCALL:
+	{
+
+		pvarResult->vt = VT_I4; V_I4(pvarResult) = 5;	break;
+
+				
+		break;
+	}
+	case FUN_GET_CALL:
+	{
+
+		VARIANT p0 = pdispparams->rgvarg[4];
+		VARIANT p1 = pdispparams->rgvarg[3];
+		VARIANT p2 = pdispparams->rgvarg[2];
+		VARIANT p3 = pdispparams->rgvarg[1];
+		VARIANT p4 = pdispparams->rgvarg[0];
+
+		try
+		{
+			wxstring fun = p0.bstrVal;
+			if (fun == L"history_query_today")
+			{
+				CHistoryMgr::VRECORD res = theApp.History()->Query(q_today);
+
+				xstring querydata;
+
+				for (int i = 0; i < res.size(); ++i)
+				{
+					CHistoryMgr::RECORD record = res[i];
+					xstring tmp;
+					tmp.format("<label for=\"history%d\" class=\"history-info\" data-index=\"%d\">"
+						"<p class = \"span-check\"><input type = \"checkbox\" name = \"min-history\" data-index = \"%d\"></p>"
+						"<a href = \"%s\">%s</a>"
+						"<em class = \"cut\"><span style = \"display: none;\"></span></em>"
+						"<span style = \"display: none;\">%s</span>"
+						"</label>\r\n", record.id, record.id, record.id, record.url.c_str(), record.title.c_str(), record.url.c_str());
+					querydata.append(tmp);
+				}
+
+
+				pvarResult->vt = VT_BSTR;
+				pvarResult->bstrVal = ::SysAllocString(_encoding(querydata).u8_utf16().getutf16().c_str());
+				break;
+				
+
+
+
+			}
+			if (fun == L"history_query_yesterday")
+			{
+				CHistoryMgr::VRECORD res = theApp.History()->Query(q_yesterday);
+
+				xstring querydata;
+
+				for (int i = 0; i < res.size(); ++i)
+				{
+					CHistoryMgr::RECORD record = res[i];
+					xstring tmp;
+					tmp.format("<label for=\"history%d\" class=\"history-info\" data-index=\"%d\">"
+						"<p class = \"span-check\"><input type = \"checkbox\" name = \"min-history\" data-index = \"%d\"></p>"
+						"<a href = \"%s\">%s</a>"
+						"<em class = \"cut\"><span style = \"display: none;\"></span></em>"
+						"<span style = \"display: none;\">%s</span>"
+						"</label>\r\n", record.id, record.id, record.id, record.url.c_str(), record.title.c_str(), record.url.c_str());
+					querydata.append(tmp);
+
+				}
+
+
+				pvarResult->vt = VT_BSTR;
+				pvarResult->bstrVal = ::SysAllocString(_encoding(querydata).u8_utf16().getutf16().c_str());
+				break;
+				break;
+			}
+			if (fun == L"history_query_thisweek")
+			{
+				CHistoryMgr::VRECORD res = theApp.History()->Query(q_thisweek);
+
+				xstring querydata;
+
+				for (int i = 0; i < res.size(); ++i)
+				{
+					CHistoryMgr::RECORD record = res[i];
+					xstring tmp;
+					tmp.format("<label for=\"history%d\" class=\"history-info\" data-index=\"%d\">"
+						"<p class = \"span-check\"><input type = \"checkbox\" name = \"min-history\" data-index = \"%d\"></p>"
+						"<a href = \"%s\">%s</a>"
+						"<em class = \"cut\"><span style = \"display: none;\"></span></em>"
+						"<span style = \"display: none;\">%s</span>"
+						"</label>\r\n", record.id, record.id, record.id, record.url.c_str(), record.title.c_str(), record.url.c_str());
+					querydata.append(tmp);
+				}
+
+
+				pvarResult->vt = VT_BSTR;
+				pvarResult->bstrVal = ::SysAllocString(_encoding(querydata).u8_utf16().getutf16().c_str());
+				break;
+				break;
+			}
+			if (fun == L"history_query_thismonth")
+			{
+				CHistoryMgr::VRECORD res = theApp.History()->Query(q_thismonth);
+
+				xstring querydata;
+
+				for (int i = 0; i < res.size(); ++i)
+				{
+					CHistoryMgr::RECORD record = res[i];
+					xstring tmp;
+					tmp.format("<label for=\"history%d\" class=\"history-info\" data-index=\"%d\">"
+						"<p class = \"span-check\"><input type = \"checkbox\" name = \"min-history\" data-index = \"%d\"></p>"
+						"<a href = \"%s\">%s</a>"
+						"<em class = \"cut\"><span style = \"display: none;\"></span></em>"
+						"<span style = \"display: none;\">%s</span>"
+						"</label>\r\n", record.id, record.id, record.id, record.url.c_str(), record.title.c_str(), record.url.c_str());
+					querydata.append(tmp);
+
+				}
+
+
+				pvarResult->vt = VT_BSTR;
+				pvarResult->bstrVal = ::SysAllocString(_encoding(querydata).u8_utf16().getutf16().c_str());
+				break;
+			}
+
+
+			if (fun == L"history_delete")
+			{
+				
+
+				wxstring tuple = p1.bstrVal;
+
+				theApp.History()->Delete(_encoding(tuple).utf8().get());
+
+				break;
+			}
+			if (fun == L"history_clear")
+			{
+
+				theApp.History()->Clear();
+
+				break;
+			}
+
+			if (fun == L"history_search")
+			{
+				wxstring keyword = p1.bstrVal;
+
+				xstring querydata;
+
+				CHistoryMgr::VRECORD res = theApp.History()->Query(_encoding(keyword).utf8().get());
+
+
+				for (int i = 0; i < res.size(); ++i)
+				{
+					CHistoryMgr::RECORD record = res[i];
+					xstring tmp;
+					tmp.format("<label class = \"history-info\" for = \"history_2\">"
+						"<p class = \"span-check\"><input type = \"checkbox\" name = \"min-history\" data-index = \"%d\" /></p>"
+						"<a href = \"%s\">%s</a>"
+						"<em class = \"cut\"><span></span></em>"
+						"<span>%s</span>"
+						"</label>\r\n", record.id, record.url.c_str(), record.title.c_str(), record.url.c_str()
+						);
+					querydata.append(tmp);
+
+				}
+
+
+				pvarResult->vt = VT_BSTR;
+				pvarResult->bstrVal = ::SysAllocString(_encoding(querydata).u8_utf16().getutf16().c_str());
+
+				break;
+			}
+
+			
+		}
+		catch (std::exception& e)
+		{
+			pvarResult->vt = VT_I4; V_I4(pvarResult) = 5;	break;
+		}
+		
+		break;
 	}
 	default:;
 	}

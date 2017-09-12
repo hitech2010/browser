@@ -207,6 +207,7 @@ public:
 
 		size_t sz = vsnprintf(NULL, 0, fmt, args);
 		tmp._Grow(sz + 1);
+		tmp.resize(sz);
 
 
 
@@ -250,7 +251,6 @@ public:
 	{
 		return m_buffer._Myptr();
 	}
-
 
 
 
@@ -360,6 +360,11 @@ public:
 	bool Find(const wstring& src)
 	{
 		return (m_buffer.find(src.c_str()) != -1);
+	}
+
+	bool operator==(const wchar_t* src)
+	{
+		return m_buffer == src;
 	}
 
 	_xstring& operator=(int tmp)

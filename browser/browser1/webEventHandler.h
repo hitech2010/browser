@@ -30,7 +30,9 @@ public:
 	{
 		FUN_TEST = 1000,
 		FUN_GET_HISTORY,
-		FUN_GET_FAVOR
+		FUN_GET_FAVOR,
+		FUN_GET_ASYNCALL,
+		FUN_GET_CALL
 	};
 
 public:
