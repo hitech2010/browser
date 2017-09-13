@@ -988,7 +988,6 @@ BOOL CFrameWindowWnd::init()
 
 	m_engine->Init(&m_pm);
 
-	CHistory::GetAllItem();
 
 
 	//SetIcon(IDR_MAINFRAME);
@@ -1046,7 +1045,7 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 	}
 	else if(msg.pSender->GetName() == _T("ui_addtab"))
 	{
-		m_engine->Add(m_engine->getHistoryPage());
+		m_engine->Add(m_engine->getBookmarkPage());
 	}
 	else if(msg.pSender->GetUserData().Find(_T("ui_closetab")) != -1)
 	{

@@ -1,4 +1,12 @@
 $(function(){
+
+	var bq 			= new BookmarkQuery();
+
+	var res 		= bq.Query();
+
+	$(".bookmark-content .page").html(res);
+
+
 	$(".part h4").click(function(){
 		var $parents = $(this).parent().parent();
 		if(!$(this).hasClass("hide")){
@@ -77,7 +85,7 @@ $(function(){
     });
     //搜索框
 	$("#bookmark-search-name").on('input propertychange', function() {
-	    alert()
+	    
 	});
 	$("#bookmark-search-name").focus(function(){
 		$(".page").hide();
@@ -88,5 +96,20 @@ $(function(){
 			$(".page").show();
 			$(".page2").hide();
 		}
+	});
+
+
+	$("#toSearch").click(function(){
+		var keyword = $("#bookmark-search-name").val();
+
+		if(keyword == "")
+		{
+			return ;
+		}
+
+		var ret = bq.Search(keyword);
+
+		$(".part-box").html(ret);
+
 	});
 })

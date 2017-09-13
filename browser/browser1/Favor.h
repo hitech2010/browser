@@ -49,36 +49,6 @@ struct favorfolder_recode_item
 typedef vector<favor_recode_item> FAVOR_LIST;
 typedef int H_INDEX;
 
-class CFavor
-{
-	static const string s_dbpath;
-	static const string s_tablename;
-public:
-	CFavor(void);
-	~CFavor(void);
-	static bool GetAllItem(FAVOR_LIST& fl);
-	static bool AddItem(const favor_recode_item& fri);
-	static bool DeleteItem(string title);
-	static bool ModifyItem(string title,string newtitle);
-	static bool GetItem(string title,favor_recode_item& fri);
-};
-
-class CHistory
-{
-	static const string s_dbpath;
-	static const string s_tablename;
-public:
-	static FAVOR_LIST s_hl;
-	CHistory(void);
-	~CHistory(void);
-	static bool GetAllItem(FAVOR_LIST& fl = s_hl);
-	static bool AddItem(const favor_recode_item& fri);
-	static bool DeleteItem(int index);
-	static bool ModifyItem(int index,string newtitle);
-	static bool GetItem(int index,favor_recode_item& fri);
-	static bool DeleteAllItem();
-};
-
 
 
 
@@ -105,14 +75,15 @@ public:
 	CFavorManager& Add(const RECORD& record);
 	CFavorManager& Edit(const RECORD& newRecord);
 	CFavorManager& QueryById(int id = -1);
+	CFavorManager& QueryByFolder(const string& folder);
 	const VRECORD& GetResult();
 	CFavorManager& Delete(int startpos, int endpos);
 	CFavorManager& Delete(int startpos, int endpos, const string& folder);
 	CFavorManager& clear();
-
+	VRECORD& Query(const string& keyword);
 
 	xstring TestRoutine();//·µ»Ø²âÊÔ½á¹û
-
+	vector<string> QueryFolders();
 
 
 };

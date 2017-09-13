@@ -20,13 +20,13 @@ var items = new Array();
 var search_items = new Array();
 var page = 0;
 
-function HistoryQuery(a)
+function BookmarkQuery(a)
 {
 	this.m_type = a;
 
 }
 
-HistoryQuery.prototype.Query = function (qtype) 
+BookmarkQuery.prototype.Query = function (qtype) 
 								{
 									if(qtype == "today")
 									{
@@ -48,24 +48,26 @@ HistoryQuery.prototype.Query = function (qtype)
 									{
 										return  result = call("history_query_thismonth");	
 									}
+
+									return  result = call("bookmark_query");	
 									
 								}
 
 
-HistoryQuery.prototype.Delete = function (tuple) 
+BookmarkQuery.prototype.Delete = function (tuple) 
 								{
-									return  result = call("history_delete", tuple);
+									return  result = call("bookmark_delete", tuple);
 								}
 
-HistoryQuery.prototype.Clear = function () 
+BookmarkQuery.prototype.Clear = function () 
 								{
-									return  result = call("history_clear");
+									return  result = call("bookmark_clear");
 								}
 
-HistoryQuery.prototype.Search = function (keyword) 
+BookmarkQuery.prototype.Search = function (keyword) 
 								{
-									
-									return  result = call("history_search", keyword);
+									alert(keyword);
+									return  result = call("bookmark_search", keyword);
 								}
 
   	

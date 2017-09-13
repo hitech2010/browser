@@ -29,6 +29,33 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 		;
 	}
 
+	vector<string>   CFavorManager::QueryFolders()
+	{
+		vector<string> folders;
+
+		string sql = "select DISTINCT FOLDER from favor ";
+
+		m_dbtable = m_db->getTable(sql.c_str());
+
+		for (int j = 0; j < m_dbtable.numRows(); ++j)
+		{
+			string folder;
+			for (int i = 0; i < m_dbtable.numFields(); ++i)
+			{
+				m_dbtable.setRow(j);
+
+
+				
+				folder = m_dbtable.getStringField("FOLDER");
+				
+			}
+			folders.push_back(folder);
+
+		}
+
+		return folders;
+	}
+
 	 CFavorManager::VRECORD& CFavorManager::Query(int query )
 	 {
 
@@ -94,6 +121,46 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 		return m_result;
 
 	}
+
+	 CFavorManager::VRECORD& CFavorManager::Query(const string& keyword)
+	 {
+		 m_result.clear();
+
+		 xstring sql;
+		 sql.format("select * from favor where Title like '%%%s%%' or \
+													URL like '%%%s%%'", keyword.c_str(), keyword.c_str());
+
+
+		 m_dbtable = m_db->getTable(sql.c_str());
+
+		 for (int j = 0; j < m_dbtable.numRows(); ++j)
+		 {
+			 RECORD rc;
+			 for (int i = 0; i < m_dbtable.numFields(); ++i)
+			 {
+				 m_dbtable.setRow(j);
+
+
+				 rc.id = m_dbtable.getIntField("ID");
+				 rc.folder = m_dbtable.getStringField("FOLDER");
+				 const  char* blob = m_dbtable.getStringField("IMG");
+				 CppSQLite3Binary bin;
+				 bin.setEncoded((const unsigned char*)blob);
+				 rc.img.assign((const char*)bin.getBinary(), bin.getBinaryLength());
+
+
+				 rc.title = m_dbtable.getStringField("TITLE");
+				 rc.url = m_dbtable.getStringField("URL");
+				 rc.time = m_dbtable.getStringField("ADDDATE");
+			 }
+			 m_result.push_back(rc);
+
+		 }
+
+
+		 return m_result;
+
+	 }
 
 	 CFavorManager& CFavorManager::Add(const RECORD& record)
 	 {
@@ -277,6 +344,43 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 		 return m_result;
 	 }
 
+	 CFavorManager& CFavorManager::QueryByFolder(const string& folder)
+	 {
+		 xstring sql;
+		 sql.format("select * from favor  where folder = \"%s\"", folder.c_str());
+
+		 m_dbtable = m_db->getTable(sql.c_str());
+		 m_result.clear();
+
+
+		 for (int j = 0; j < m_dbtable.numRows(); ++j)
+		 {
+			 RECORD rc;
+			 for (int i = 0; i < m_dbtable.numFields(); ++i)
+			 {
+				 m_dbtable.setRow(j);
+
+
+				 rc.id = m_dbtable.getIntField("ID");
+				 rc.folder = m_dbtable.getStringField("FOLDER");
+				 const  char* blob = m_dbtable.getStringField("IMG");
+				 CppSQLite3Binary bin;
+				 bin.setEncoded((const unsigned char*)blob);
+				 rc.img.assign((const char*)bin.getBinary(), bin.getBinaryLength());
+
+
+				 rc.title = m_dbtable.getStringField("TITLE");
+				 rc.url = m_dbtable.getStringField("URL");
+				 rc.time = m_dbtable.getStringField("ADDDATE");
+			 }
+			 m_result.push_back(rc);
+
+		 }
+
+		 return *this;
+
+
+	 }
 
 
 	CHistoryMgr::CHistoryMgr(CppSQLite3DB*db) throw()
@@ -621,6 +725,8 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 		return m_result;
 
 	}
+
+
 
 	const CFavorFolder::VRECORD& CFavorFolder::GetResult()
 	{
@@ -991,87 +1097,10 @@ namespace SQLiteHelper
 	}
 };
 
-const string CFavor::s_dbpath = "GMBrowser.db";
-const string CFavor::s_tablename = "FAVOR";
-
-CFavor::CFavor(void)
-{
-}
 
 
-CFavor::~CFavor(void)
-{
-}
-
-bool CFavor::GetAllItem(FAVOR_LIST& hl)
-{
-	return SQLiteHelper::GetAllItem(s_dbpath,hl,s_tablename);
-}
-
-bool CFavor::AddItem(const favor_recode_item& hri)
-{
-	return SQLiteHelper::InsertItem(s_dbpath,hri.title,hri.url,s_tablename);
-}
-
-bool CFavor::DeleteItem(string title)
-{
-	return SQLiteHelper::DeleteItem(s_dbpath,title,s_tablename);
-}
-
-bool CFavor::ModifyItem(string title, string newtitle)
-{
-	return SQLiteHelper::ModifyItem(s_dbpath,title,newtitle,s_tablename);
-}
-
-bool CFavor::GetItem(string title,favor_recode_item& fri)
-{
-	return SQLiteHelper::GetItem(s_dbpath,title,fri,s_tablename);
-}
 
 
-const string CHistory::s_dbpath = "GMBrowser.db";
-const string CHistory::s_tablename = "HISTORY";
-FAVOR_LIST CHistory::s_hl;
 
-CHistory::CHistory(void)
-{
-}
-
-
-CHistory::~CHistory(void)
-{
-}
-
-bool CHistory::GetAllItem(FAVOR_LIST& hl)
-{
-	s_hl.clear();
-	return SQLiteHelper::GetAllItem(s_dbpath,hl,s_tablename);
-}
-
-bool CHistory::AddItem(const favor_recode_item& hri)
-{
-	return SQLiteHelper::InsertItem(s_dbpath,hri.title,hri.url,s_tablename);
-}
-
-bool CHistory::DeleteItem(int index)
-{
-	return SQLiteHelper::DeleteItem(s_dbpath,s_hl[index].id,s_tablename);
-}
-
-bool CHistory::ModifyItem(int index, string newtitle)
-{
-	return SQLiteHelper::ModifyItem(s_dbpath,s_hl[index].id,newtitle,s_tablename);
-}
-
-bool CHistory::GetItem(int index,favor_recode_item& fri)
-{
-	return SQLiteHelper::GetItem(s_dbpath,s_hl[index].id,fri,s_tablename);
-}
-
-bool CHistory::DeleteAllItem()
-{
-	s_hl.clear();
-	return SQLiteHelper::DeleteAllItem(s_dbpath,s_tablename);
-}
 
 

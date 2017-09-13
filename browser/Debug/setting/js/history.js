@@ -52,8 +52,14 @@ $(function(){
 		$(this).find("span").fadeToggle(0);
 	});
 
-	$(".history-content").on("click",".cut span",function(){
+	$("body").on("click",".cut span",function(){
 		$(this).parent().parent().remove();
+		
+		var list = new String();
+		list += "(";
+		list += $(this).data("index");
+		list += ")";
+		hq.Delete(list);
 	})
 	//多项选择(checkbox)
 	$(".history-content").on("click", ".span-check input",function(){
@@ -61,37 +67,94 @@ $(function(){
 		if (self.attr("checked")) {
 			self.attr("checked",false);
 			self.parent().removeClass("check-selected");
-			self.parent().parent().removeClass("selected");
-			items[self.data("index")] = 0;
+			if(page == 0)
+			{
+				self.parent().parent().removeClass("selected");
+				items[self.data("index")] = 0;	
+			}
+			else if(page == 1)
+			{
+				self.parent().parent().removeClass("searchselected");
+				search_items[self.data("index")] = 0;	
+			}	
+			
 		}else{
 			self.attr("checked",true);
 			self.parent().addClass("check-selected");
-			self.parent().parent().addClass("selected");
-			items[self.data("index")] = 1;
+
+			if(page == 0)
+			{
+				self.parent().parent().addClass("selected");
+				items[self.data("index")] = 1;
+			}
+			else if(page == 1)
+			{
+				self.parent().parent().addClass("searchselected");
+				search_items[self.data("index")] = 1;	
+			}
+			
 		}
 	});
 	//删除选中项
-	$(".history-content").on("click","#del-select",function(){
+	$(".history-box").on("click","#del-select",function(){
+
 		var list = new String();
 		list +="(";
-		for (index in items)
-		{
-			if(items[index] == 1)
+
+			if(page == 0)
 			{
-				list+=index;
-				list+=","
+				for (index in items)
+				{
+					if(items[index] == 1)
+					{
+						list+=index;
+						list+=","
+					}
+				}
+			
+				if(list.charAt(list.length -1) == ",")
+				{
+					list = list.substring(0,list.length-1);
+				}
+				list+=")";
+				$(".part-box .selected").remove();
+				
+
+				hq.Delete(list);
+				items=[];	
+
 			}
-		}
-		if(list.charAt(list.length -1) == ",")
-		{
-			list = list.substring(0,list.length-1);
-		}
-		list+=")";
+			else if(page == 1)
+			{
 
-		$(".part-box .selected").remove();
+				for (index in search_items)
+				{
+					if(search_items[index] == 1)
+					{
+						list+=index;
+						list+=","
+					}
+				}
+			
+				if(list.charAt(list.length -1) == ",")
+				{
+					list = list.substring(0,list.length-1);
+				}
+				list+=")";
 
-		hq.Delete(list);
-		items=[];
+				$(".search-box .searchselected").remove();
+
+				hq.Delete(list);
+
+
+				search_items=[];
+
+			}
+
+
+			
+
+
 
 	});
 	//清空
@@ -107,12 +170,14 @@ $(function(){
 	$("#history-search-name").focus(function(){
 		$(".page").hide();
 		$(".search-box").show();
+		page = 1;
 
 	});
 	$("#history-search-name").blur(function(){
 		if($("#history-search-name").val()==""){
 	    	$(".page").show();
 			$(".search-box").hide();
+			page = 0;
 
 	    }
 	});

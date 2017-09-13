@@ -167,7 +167,8 @@ void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,V
 			record.url = xurl;
 			record.title = _encoding(pmdweb->getTitle()).utf8().get();
 
-			if (xurl.find("history.html") == std::string::npos)
+			if (xurl.find("history.html") == std::string::npos &&
+				xurl.find("bookmark.html") == std::string::npos)
 			{
 				theApp.History()->Add(record);
 			}
@@ -446,9 +447,9 @@ STDMETHODIMP CWebEventHandler::Invoke(
 					tmp.format("<label for=\"history%d\" class=\"history-info\" data-index=\"%d\">"
 						"<p class = \"span-check\"><input type = \"checkbox\" name = \"min-history\" data-index = \"%d\"></p>"
 						"<a href = \"%s\">%s</a>"
-						"<em class = \"cut\"><span style = \"display: none;\"></span></em>"
+						"<em class = \"cut\"><span data-index=\"%d\" style = \"display: none;\"></span></em>"
 						"<span style = \"display: none;\">%s</span>"
-						"</label>\r\n", record.id, record.id, record.id, record.url.c_str(), record.title.c_str(), record.url.c_str());
+						"</label>\r\n", record.id, record.id, record.id, record.url.c_str(), record.title.c_str(), record.id, record.url.c_str());
 					querydata.append(tmp);
 				}
 
@@ -474,9 +475,9 @@ STDMETHODIMP CWebEventHandler::Invoke(
 					tmp.format("<label for=\"history%d\" class=\"history-info\" data-index=\"%d\">"
 						"<p class = \"span-check\"><input type = \"checkbox\" name = \"min-history\" data-index = \"%d\"></p>"
 						"<a href = \"%s\">%s</a>"
-						"<em class = \"cut\"><span style = \"display: none;\"></span></em>"
+						"<em class = \"cut\"><span data-index=\"%d\" style = \"display: none;\"></span></em>"
 						"<span style = \"display: none;\">%s</span>"
-						"</label>\r\n", record.id, record.id, record.id, record.url.c_str(), record.title.c_str(), record.url.c_str());
+						"</label>\r\n", record.id, record.id, record.id, record.url.c_str(), record.title.c_str(), record.id, record.url.c_str());
 					querydata.append(tmp);
 
 				}
@@ -500,9 +501,9 @@ STDMETHODIMP CWebEventHandler::Invoke(
 					tmp.format("<label for=\"history%d\" class=\"history-info\" data-index=\"%d\">"
 						"<p class = \"span-check\"><input type = \"checkbox\" name = \"min-history\" data-index = \"%d\"></p>"
 						"<a href = \"%s\">%s</a>"
-						"<em class = \"cut\"><span style = \"display: none;\"></span></em>"
+						"<em class = \"cut\"><span data-index=\"%d\" style = \"display: none;\"></span></em>"
 						"<span style = \"display: none;\">%s</span>"
-						"</label>\r\n", record.id, record.id, record.id, record.url.c_str(), record.title.c_str(), record.url.c_str());
+						"</label>\r\n", record.id, record.id, record.id, record.url.c_str(), record.title.c_str(), record.id, record.url.c_str());
 					querydata.append(tmp);
 				}
 
@@ -525,9 +526,9 @@ STDMETHODIMP CWebEventHandler::Invoke(
 					tmp.format("<label for=\"history%d\" class=\"history-info\" data-index=\"%d\">"
 						"<p class = \"span-check\"><input type = \"checkbox\" name = \"min-history\" data-index = \"%d\"></p>"
 						"<a href = \"%s\">%s</a>"
-						"<em class = \"cut\"><span style = \"display: none;\"></span></em>"
+						"<em class = \"cut\"><span data-index=\"%d\" style = \"display: none;\"></span></em>"
 						"<span style = \"display: none;\">%s</span>"
-						"</label>\r\n", record.id, record.id, record.id, record.url.c_str(), record.title.c_str(), record.url.c_str());
+						"</label>\r\n", record.id, record.id, record.id, record.url.c_str(), record.title.c_str(), record.id, record.url.c_str());
 					querydata.append(tmp);
 
 				}
@@ -570,11 +571,12 @@ STDMETHODIMP CWebEventHandler::Invoke(
 				{
 					CHistoryMgr::RECORD record = res[i];
 					xstring tmp;
-					tmp.format("<label class = \"history-info\" for = \"history_2\">"
-						"<p class = \"span-check\"><input type = \"checkbox\" name = \"min-history\" data-index = \"%d\" /></p>"
-						"<a href = \"%s\">%s</a>"
-						"<em class = \"cut\"><span></span></em>"
-						"<span>%s</span>"
+					tmp.format(
+						"<label class = \"history-info\" for = \"history_2\">"
+							"<p class = \"span-check\"><input type = \"checkbox\" name = \"min-history\" data-index = \"%d\" /></p>"
+							"<a href = \"%s\">%s</a>"
+							"<em class = \"cut\"><span></span></em>"
+							"<span>%s</span>"
 						"</label>\r\n", record.id, record.url.c_str(), record.title.c_str(), record.url.c_str()
 						);
 					querydata.append(tmp);
@@ -587,12 +589,99 @@ STDMETHODIMP CWebEventHandler::Invoke(
 
 				break;
 			}
+			if (fun == L"bookmark_search")
+			{
+				wxstring keyword = p1.bstrVal;
+
+				xstring querydata;
+
+				CFavorManager::VRECORD res = theApp.Favor()->Query(_encoding(keyword).utf8().get());
+
+
+				for (int i = 0; i < res.size(); ++i)
+				{
+					CFavorManager::RECORD record = res[i];
+					xstring tmp;
+					tmp.format(
+						"<div class = \"history-info\">"
+							"<div class = \"bookmark-name-div\">"
+								"<input class = \"bookmark-name\" type = \"text\" value = \"%s\" disabled = \"disabled\">"
+							"</div>"
+							"<div class = \"bookmark-src-div\">"
+								"<input class = \"bookmark-src\" type = \"text\" value = \"%s\" disabled = \"disabled\" /></input>"
+							"</div>"
+						"</div>", record.title.c_str(), record.url.c_str()
+						);
+					querydata.append(tmp);
+
+				}
+
+
+				pvarResult->vt = VT_BSTR;
+				pvarResult->bstrVal = ::SysAllocString(_encoding(querydata).u8_utf16().getutf16().c_str());
+
+				break;
+			}
+			if (fun == L"bookmark_query")
+			{
+
+
+				xstring querydata;
+
+				vector<string> folders = theApp.Favor()->QueryFolders();
+
+				for (int i = 0; i < folders.size(); ++i)
+				{
+					CFavorManager::VRECORD folder_record = theApp.Favor()->QueryByFolder(folders[i]).GetResult();
+
+					xstring part;;
+					part.format(
+						"<div class=\"part\">"
+						"<div class=\"part-up\">"
+						"<h4 class = \"bookmarksfolder1\"><span>%s</span><i></i></h4>"
+						"</div>", folders[i].c_str());
+
+					xstring part_down = "<div class=\"part-down\"><div class=\"part-box\">";
+					
+
+					for (int i = 0; i < folder_record.size(); ++i)
+					{
+						CFavorManager::RECORD record = folder_record[i];
+						xstring tmp;
+						tmp.format(
+							"<div class = \"history-info\">"
+							"<div class = \"bookmark-name-div\">"
+							"<input class = \"bookmark-name\" type=\"text\" value = \"%s\" disabled = \"disabled\">"
+							"</div>"
+							"<div class = \"bookmark-src-div\">"
+							"<input class = \"bookmark-src\" type = \"text\" value = \"%s\" disabled = \"disabled\">"
+							"</div>"
+							"</div>",record.title.c_str(), record.url.c_str());
+
+						part_down.append(tmp);
+
+					}
+					part_down.append("</div></div>");
+					part.append(part_down).append("</div>");
+					querydata.append(part);
+
+				}
+
+
+				
+
+
+				pvarResult->vt = VT_BSTR;
+				pvarResult->bstrVal = ::SysAllocString(_encoding(querydata).u8_utf16().getutf16().c_str());
+
+				break;
+			}
 
 			
 		}
 		catch (std::exception& e)
 		{
-			pvarResult->vt = VT_I4; V_I4(pvarResult) = 5;	break;
+			pvarResult->vt = VT_I4; V_I4(pvarResult) = -1;	break;
 		}
 		
 		break;
