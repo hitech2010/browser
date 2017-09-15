@@ -1,8 +1,11 @@
 $(function(){
 
+
 	var bq 			= new BookmarkQuery();
 
 	var res 		= bq.Query();
+
+
 
 	$(".bookmark-content .page").html(res);
 

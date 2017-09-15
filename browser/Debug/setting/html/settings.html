@@ -5,6 +5,7 @@
 		<title>选项-常规设置</title>
 		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
 		<link rel="stylesheet" href="../css/settings.css" />
+		<script src="../js/settingimpl.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/jquery-2.1.4.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/settings.js" type="text/javascript" charset="utf-8"></script>
 	</head>
@@ -22,24 +23,24 @@
 			<div class="page-box">
 				<!--常规设置-->
 				<div class="page general">
-					<div class="part part-border">
+					<div class="part part-border item-startup">
 						<h4>启动时</h4>
 						<div class="part-right">
 							<div class="radio part-line">
 								<label for="record">
-									<span class="span-radio radio-selected"><input type="radio" checked="checked" name="Startup" id="record" value="1"/></span>
-									<span class="title">打开上次页面</span>
+									<span class="span-radio"><input type="radio" checked="checked" name="Startup" id="startup_page_policy_0" value="1"/></span>
+									<span class="title">打开上次主页</span>
 								</label>
 							</div>
 							<div class="radio part-line">
 								<label for="allrecord">
-									<span class="span-radio"><input type="radio" name="Startup" id="allrecord" value="2"/></span>
+									<span class="span-radio"><input type="radio" name="Startup" id="startup_page_policy_1" value="2"/></span>
 									<span class="title">继续浏览上次关闭时在看的网页</span>
 								</label>
 							</div>
 							<div class="radio part-line">
 								<label for="newpage">
-									<span class="span-radio"><input type="radio" name="Startup" id="newpage" value="3"/></span>
+									<span class="span-radio"><input type="radio" name="Startup" id="startup_page_policy_2" value="3"/></span>
 									<span class="title">打开特定网页或一组网页</span>
 								</label>
 								<span class="setting-web">设置网页</span>

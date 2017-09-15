@@ -677,6 +677,25 @@ STDMETHODIMP CWebEventHandler::Invoke(
 				break;
 			}
 
+			if (fun == L"setting_query")
+			{
+				Json::StreamWriterBuilder b;
+				string content = Json::writeString(b, theApp.getJsonValue());
+
+
+				pvarResult->vt = VT_BSTR;
+				pvarResult->bstrVal = ::SysAllocString(_encoding(content).u8_utf16().getutf16().c_str());
+
+				break;
+			}
+
+			if (fun == L"setting_update")
+			{
+				
+				
+				break;
+			}
+
 			
 		}
 		catch (std::exception& e)

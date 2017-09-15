@@ -96,6 +96,15 @@ public:
 	void ShowCloseTipDlg();
 	void SetNeedTip(bool need);
 
+#define NOTIFY_ON
+#ifdef NOTIFY_ON
+#define LOGNOTIFY wxstring tmp;\
+	tmp.format(L"CMenu::NOTIFY-psender[%s], sType[%s]", msg.pSender->GetName().GetData(), msg.sType);\
+	Log(tmp);
+#else
+#define LOGNOTIFY __noop
+#endif
+
 public:
 	::CPaintManagerUI m_pm;
 	CMdWebEngine*   m_engine;

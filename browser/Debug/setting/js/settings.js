@@ -1,5 +1,45 @@
+
+function loading_settings(jappconfig)
+{
+	$(".item-startup .radio-selected").removeClass("radio-selected");
+	if(jappconfig.startup_page_policy == "0")
+	{
+		var self = $("#startup_page_policy_0");
+
+		self.parent().addClass("radio-selected");
+	}
+	else if(jappconfig.startup_page_policy == "1")
+	{
+		
+		var self = $("#startup_page_policy_1");
+
+
+		self.parent().addClass("radio-selected");
+	}
+	else
+	{
+		var self = $("#startup_page_policy_2");
+
+		self.parent().addClass("radio-selected");	
+	}
+	
+}
+
+
 $(function(){
 	//设置菜单
+	//
+	//
+	var bs = new BrowserSetting();
+	var config = bs.Query();
+	var jconfig = eval('(' + config + ')');
+
+
+	
+	loading_settings(jconfig.appconfig);
+
+
+
 	$(".setting-menu ul li").click(function(){
 		var self = $(this);
 		var $index = self.index();

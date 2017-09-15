@@ -357,7 +357,7 @@ public:
 #define NOTIFY_ON
 #ifdef NOTIFY_ON
 #define LOGNOTIFY wxstring tmp;\
-	tmp.format(L"CFavorEditDlgMenu::NOTIFY-psender[%s], sType[%s]", msg.pSender->GetName().GetData(), msg.sType);\
+	tmp.format(L"CMenu::NOTIFY-psender[%s], sType[%s]", msg.pSender->GetName().GetData(), msg.sType);\
 	Log(tmp);
 #else
 #define LOGNOTIFY __noop
@@ -365,41 +365,38 @@ public:
 
 	void Notify(TNotifyUI& msg)
 	{
-		if (msg.pSender->GetName() == _T("seting_homepage") && msg.sType == DUI_MSGTYPE_CLICK)
+		LOGNOTIFY;
+
+		if (msg.pSender->GetName() == _T("menu_bookmark") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			m_frame->m_engine->m_crrentWebPage->SetHomePage(L"www.baidu.com");
-			MessageBox(m_frame->GetHWND(), L"设为主页成功", tip, MB_OK);
+			m_frame->m_engine->Add(m_frame->m_engine->getBookmarkPage());
 		}
-		else if (msg.pSender->GetName() == _T("ebank_safe") && msg.sType == DUI_MSGTYPE_CLICK)
+		else if (msg.pSender->GetName() == _T("menu_history") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			MessageBox(m_frame->GetHWND(), L"该功能暂不支持", tip, MB_OK);
+			m_frame->m_engine->Add(m_frame->m_engine->getHistoryPage());
 		}
-		else if (msg.pSender->GetName() == _T("clear") && msg.sType == DUI_MSGTYPE_CLICK)
+		else if (msg.pSender->GetName() == _T("menu_setting") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			m_frame->m_engine->Add(m_frame->m_engine->getSettingsPage());
+		}
+		else if (msg.pSender->GetName() == _T("menu_clearcache") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			//WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 255", 9);
 			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 8", 9);
 			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 2", 9);
 			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 16", 9);
 			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 32", 9);
-			MessageBox(m_frame->GetHWND(), L"清理缓存成功", tip, MB_OK);
+			MessageBox(m_frame->GetHWND(), L"清理缓存成功", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
 		}
-		else if (msg.pSender->GetName() == _T("history") && msg.sType == DUI_MSGTYPE_CLICK)
+		else if (msg.pSender->GetName() == _T("menu_print") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			::SendMessage(this->GetHWND(),WM_KILLFOCUS,NULL,NULL);
-			::PostMessage(m_frame->GetHWND(),WM_SHOW_HISTORY,NULL,NULL);
+			MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
 		}
-		else if (msg.pSender->GetName() == _T("setings") && msg.sType == DUI_MSGTYPE_CLICK)
+		else if (msg.pSender->GetName() == _T("menu_download") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			WinExec("rundll32.exe shell32.dll, Control_RunDLL Inetcpl.cpl", 9);
+			MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
 		}
-		else if (msg.pSender->GetName() == _T("about") && msg.sType == DUI_MSGTYPE_CLICK)
-		{
-			m_frame->ShowAboutDlg();
-		}
-		else if (msg.pSender->GetName() == _T("go_homepage") && msg.sType == DUI_MSGTYPE_CLICK)
-		{
-			m_frame->m_engine->m_crrentWebPage->NavigateHomePage();
-		}
+
 	}
 };
 
@@ -1078,7 +1075,7 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 }
 void CFrameWindowWnd::Notify(TNotifyUI& msg)
 {
-	Log(_T("msg.pSender->GetClass() [%s] msg[%s]"), msg.pSender->GetClass(), msg.sType);
+	LOGNOTIFY;
 
 	if (msg.pSender->GetName() == _T("ui_settings") && msg.sType == DUI_MSGTYPE_CLICK)
 	{

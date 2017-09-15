@@ -28,29 +28,8 @@ function BookmarkQuery(a)
 
 BookmarkQuery.prototype.Query = function (qtype) 
 								{
-									if(qtype == "today")
-									{
-										var  result = call("history_query_today");	
-										return result;
-									}
 
-									if(qtype == "yesterday")
-									{
-										return  result = call("history_query_yesterday");	
-									}
-
-									if(qtype == "thisweek")
-									{
-										return  result = call("history_query_thisweek");	
-									}
-
-									if(qtype == "thismonth")
-									{
-										return  result = call("history_query_thismonth");	
-									}
-
-									return  result = call("bookmark_query");	
-									
+									return  result = call("bookmark_query");							
 								}
 
 
