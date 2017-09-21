@@ -12,6 +12,7 @@ public:
 	void setUrl(const string& url);
 	string getUrl();
 	wstring getTitle();
+	IWebBrowser2* GetIWebBrowser();
 
 private:
 	wstring m_title;

@@ -103,6 +103,7 @@
     <ClInclude Include="app_favorframe.h" />
     <ClInclude Include="CppSQLite3.h" />
     <ClInclude Include="Favor.h" />
+    <ClInclude Include="eventpool.h" />
     <ClInclude Include="MenuWnd.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="utilities.h" />

@@ -30,7 +30,7 @@ BrowserSetting.prototype.Query = function (qtype)
 								}
 
 
-BrowserSetting.prototype.Update = function (jstring) 
+BrowserSetting.prototype.Sync = function (jstring) 
 								{
 									return  result = call("setting_update", jstring);
 								}

@@ -394,7 +394,8 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 					 IMG blob NOT NULL,\
 					 FOLDER text ,\
 					 URL text NOT NULL,\
-					 ADDDATE DATETIME NOT NULL);";
+					 ADDDATE DATETIME NOT NULL,\
+					 SHORTCUT text);";
 
 		db->execDML(sql.c_str());
 
@@ -424,7 +425,7 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 		blob.setBinary((const unsigned char*)record.img.c_str(), record.img.size());
 
 		sql.format("INSERT INTO HISTORY "
-			"VALUES(NULL,%Q,%Q,%Q,%Q, datetime('now'));", 
+			"VALUES(NULL,%Q,%Q,%Q,%Q, datetime('now'),NULL);", 
 			record.title.c_str(), blob.getEncoded(), record.folder.c_str(), record.url.c_str());
 
 		try
@@ -490,7 +491,12 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 
 		m_result.clear();
 		string sql;
-		if(query == q_all)
+		if (query == -1)
+		{
+			sql = "SELECT * FROM    history WHERE   ID = (SELECT MAX(ID)  FROM history)";
+		}
+
+		else if(query == q_all)
 		{
 			sql = "select * from history;";
 		}
@@ -594,6 +600,67 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 
 	}
 
+	CHistoryMgr& CHistoryMgr::AddShotcut(string id, string filename)
+	{
+
+		xstring sql0 = "select * from history where shortcut is not NULL ORDER BY ID DESC liMIT 19";
+		m_dbtable = m_db->getTable(sql0.c_str());
+		int cnt = m_dbtable.numRows();
+
+
+		xstring  tuple = "update history set SHORTCUT = NULL where SHORTCUT is not NULL and id not in (";
+		for (int j = 0; j < m_dbtable.numRows(); ++j)
+		{
+			if (j != 0)
+			{
+				tuple.append(",");
+			}
+
+			 xstring tmp;
+			m_dbtable.setRow(j);
+			int id = m_dbtable.getIntField("ID");
+			tmp.format("%d", id);
+			tuple.append(tmp);
+		}
+
+		tuple.append(")");
+		m_db->execDML(tuple.c_str());
+		
+
+		xstring sql;
+		sql.format("update history set SHORTCUT = \"%s\" where id = \"%s\"", _encoding(filename).en_base64().get().c_str(), id.c_str());
+		m_db->execDML(sql.c_str());
+		return *this;
+
+	}
+
+
+
+	CHistoryMgr& CHistoryMgr::GetTop4ShortCut(map<int, string>& result)
+	{
+
+		xstring sql0 = "select * from history where shortcut is not NULL ORDER BY ID DESC liMIT 4";
+		m_dbtable = m_db->getTable(sql0.c_str());
+		int cnt = m_dbtable.numRows();
+
+
+		
+		for (int j = 0; j < m_dbtable.numRows(); ++j)
+		{
+			int nCnt = m_dbtable.numFields();
+
+			xstring tmp;
+			m_dbtable.setRow(j);
+
+			result[j] = _encoding(m_dbtable.getStringField("SHORTCUT", "")).de_base64().get();
+			result[j + 4] = m_dbtable.getStringField("URL", "#");
+			result[j + 8] = m_dbtable.getStringField("TITLE", "#");
+		
+		}
+
+		return *this;
+
+	}
 
 
 

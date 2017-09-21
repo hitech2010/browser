@@ -4,38 +4,59 @@
   <VerticalLayout width="270" height="456" bkcolor="#FFFFFFFF">
   	<HorizontalLayout  height="70" padding="0,40,0,0" >
 
-		      <VerticalLayout bkcolor="#FFAAAAAA" width="70" height="70" padding="14,0,0,0">
+		      <VerticalLayout bkcolor="#FFFFFFFF"  width="70" height="70" padding="14,0,0,0">
 		      	<Button name="menu_bookmark" padding="23,13,0,0" width="24" height="24"  bkimage="file='skin\menu_bookmark.png'" />
 		      	<Button width="28" padding="21,0,0,0" height="20" text="书签"/>
 		      </VerticalLayout>
 		      
-		      <VerticalLayout hotcolor="#FFAAAAAA" width="70" height="70" padding="14,0,0,0">
+		      <VerticalLayout hotcolor="#FFFFFFFF" width="70" height="70" padding="14,0,0,0">
 		      	<Button name="menu_history" padding="23,13,0,0" width="24" height="24"  bkimage="file='skin\menu_history.png'" />
 		      	<Button width="28" padding="21,0,0,0" height="20" text="历史"/>
 		      </VerticalLayout>
 		      
-		      <VerticalLayout bkcolor="#FFAAAAAA" width="70" height="70" padding="14,0,0,0">
+		      <VerticalLayout bkcolor="#FFFFFFFF" width="70" height="70" padding="14,0,0,0">
 		      	<Button name="menu_clearcache" padding="23,13,0,0" width="24" height="24"  bkimage="file='skin\menu_clearcache.png'" />
 		      	<Button width="56" padding="7,0,0,0" height="20" text="清理痕迹"/>
 		      </VerticalLayout>
     </HorizontalLayout>
     <HorizontalLayout  padding="0,20,0,0" height="70">
-		      <VerticalLayout bkcolor="#FFAAAAAA" width="70" height="70" padding="14,0,0,0">
+		      <VerticalLayout bkcolor="#FFFFFFFF" width="70" height="70" padding="14,0,0,0">
 		      	<Button name="menu_setting" padding="23,13,0,0" width="24" height="24"  bkimage="file='skin\menu_setting.png'" />
 		      	<Button width="28" padding="21,0,0,0" height="20" text="设置"/>
 		      </VerticalLayout>
 		      
-		      <VerticalLayout bkcolor="#FFAAAAAA" width="70" height="70" padding="14,0,0,0">
+		      <VerticalLayout bkcolor="#FFFFFFFF" width="70" height="70" padding="14,0,0,0">
 		      	<Button name="menu_download" padding="23,13,0,0" width="24" height="24"  bkimage="file='skin\menu_download.png'" />
 		      	<Button width="28" padding="21,0,0,0" height="20" text="下载"/>
 		      </VerticalLayout>
 		      
-		      <VerticalLayout bkcolor="#FFAAAAAA" width="70" height="70" padding="14,0,0,0">
+		      <VerticalLayout bkcolor="#FFFFFFFF" width="70" height="70" padding="14,0,0,0">
 		      	<Button name="menu_print" padding="23,13,0,0" width="24" height="24"  bkimage="file='skin\menu_print.png'" />
 		      	<Button width="28" padding="21,0,0,0" height="20" text="打印"/>
 		      </VerticalLayout>
 	  </HorizontalLayout>
-	  <HorizontalLayout padding="0,20,0,0" bkcolor="#FFEBEBEB">
+	  <HorizontalLayout padding="0,28,0,0"  height="248" bkcolor="#FFEBEBEB">
+	  	<Button float="true" pos="32,18,80,35"  text="新建窗口"></Button>
+	  	<Button float="true" pos="113,16,161,38" bordersize="1" bordercolor="#FF1979CA" text="普通"></Button>
+	  	<Button float="true" pos="160,16,208,38" bordersize="1" bordercolor="#FF1979CA" text="小号"></Button>
+	  	<Button float="true" pos="207,16,255,38" bordersize="1" bordercolor="#FF1979CA"  text="无痕"></Button>
+
+	  	<Button float="true" pos="32,55,92,72" text="目标另存为"></Button>
+	  	<Button float="true" pos="113,53,161,75" bordersize="1" bordercolor="#FF1979CA" text="小号"></Button>
+	  	<Button float="true" pos="160,53,208,75" bordersize="1" bordercolor="#FF1979CA"  text="无痕"></Button>
+	  	
+	  	<Button float="true" pos="32,92,56,109" text="缩放"></Button>
+	  	<Button float="true" pos="113,90,187,112" bordersize="1" bordercolor="#FF1979CA" text="小号"></Button>
+	  	<Button float="true" pos="186,90,208,112" bordersize="1" bordercolor="#FF1979CA"  text="无"></Button>
+	  	<Button float="true" pos="207,90,229,112" bordersize="1" bordercolor="#FF1979CA"  text="无"></Button>
+	  	
+	  	<Button float="true" pos="32,129,56,144" bordersize="0" bordercolor="#FF1979CA"  text="工具"></Button>
+	  	<Button float="true" pos="247,129,56,144" bordersize="0" bordercolor="#FF1979CA"  text="工具"></Button>
+	  	
+	  	
+	  	<Button float="true" pos="32,166,80,183" bordersize="0" bordercolor="#FF1979CA"  text="反馈建议"></Button>
+	  	<Button float="true" pos="32,203,56,220" bordersize="0" bordercolor="#FF1979CA"  text="帮助"></Button>
+	  	
 	  	
 	  </HorizontalLayout>
 

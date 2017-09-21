@@ -12,7 +12,7 @@ class CMdWebEngine
 public:
 static CMdWebEngine* thisobj;
 	CMdWebEngine();
-	void Init(CPaintManagerUI* pm);
+	void Init(CPaintManagerUI* pm , CWindowWnd* wnd);
 
 	~CMdWebEngine();
 	static CMdWebEngine* Get();
@@ -54,6 +54,7 @@ public:
 
 	CTabLayoutUI*         m_webcontainer;
 	CContainerUI*		  m_tabcontainer;
+	CWindowWnd*			  m_pWnd;
 
 	CWebBrowserUI* m_crrentWebPage;
 	CContainerUI* GetContainer(CWebBrowserUI*pWeb)
@@ -99,7 +100,7 @@ public:
 #define NOTIFY_ON
 #ifdef NOTIFY_ON
 #define LOGNOTIFY wxstring tmp;\
-	tmp.format(L"CMenu::NOTIFY-psender[%s], sType[%s]", msg.pSender->GetName().GetData(), msg.sType);\
+	tmp.format(L"CFrameWindowWnd::NOTIFY-psender[%s], sType[%s]", msg.pSender->GetName().GetData(), msg.sType);\
 	Log(tmp);
 #else
 #define LOGNOTIFY __noop

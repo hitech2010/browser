@@ -3,6 +3,14 @@
 
 #include "json/json.h"
 
+#include <atlstr.h>
+#include <atlimage.h>
+
+string HttpDownloadEvent( std::map<string,string>& para);
+string HttpWebShortcutEvent( std::map<string, string>& para);
+
+
+
 class AppConfig
 {
 
@@ -129,6 +137,8 @@ class BrowserApp :public AppConfig
 	CHistoryMgr*   m_history;
 	CRegKey        m_regedit;
 	
+	CGeeMeeEventPool m_pool;
+	
 	Json::Value   m_jroot;
 public:
 
@@ -139,7 +149,12 @@ public:
 	CFavorFolder*  FavorFolder();
 	string         getAppdir();
 	Json::Value&   getJsonValue();
+
+	CGeeMeeEventPool& Pool();
+
 };
+
+
 
 
 

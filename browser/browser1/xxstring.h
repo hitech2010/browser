@@ -1,5 +1,4 @@
-#ifndef _INLCUDE_XSTRING_H
-#define _INLCUDE_XSTRING_H
+#pragma once
 
 #include <stdio.h>
 #include <varargs.h>
@@ -439,4 +438,3 @@ typedef _wxstring wxstring;
 
 
 
-#endif 

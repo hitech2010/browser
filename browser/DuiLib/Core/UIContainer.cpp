@@ -889,6 +889,7 @@ namespace DuiLib
 		if( iIndex < 0 || iIndex >= m_items.GetSize() ) return;
 
 		CControlUI* pControl = static_cast<CControlUI*>(m_items[iIndex]);
+		const wchar_t* pszname = pControl->GetName().GetData();
 
 		if( !pControl->IsVisible() ) return;
 		if( !pControl->IsFloat() ) return;

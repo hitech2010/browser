@@ -1,5 +1,48 @@
 $(function(){
 	//定义不同大小的浏览器的推荐框大小
+	//
+	//
+	
+	
+	function index_delete_history(index)
+	{
+		Ipage.Delete(index);
+	}
+
+	function index_query()
+	{
+		var config = Ipage.Query();
+	
+
+		var jconfig = eval('(' + config + ')');
+
+		$("#h_img1").attr("src", jconfig.p1);	
+		$("#h_img2").attr("src", jconfig.p2);
+		$("#h_img3").attr("src", jconfig.p3);
+		$("#h_img4").attr("src", jconfig.p4);
+
+
+		$("#h_link1").attr("href", jconfig.a1);	
+		$("#h_link2").attr("href", jconfig.a2);
+		$("#h_link3").attr("href", jconfig.a3);
+		$("#h_link4").attr("href", jconfig.a4);
+
+
+		$("#h_title1").text( jconfig.t1);	
+		$("#h_title2").text( jconfig.t2);
+		$("#h_title3").text( jconfig.t3);
+		$("#h_title4").text( jconfig.t4);
+
+
+
+		//setTimeout(function(){index_query();},200);
+	}
+
+	Ipage = new IndexPage();
+	index_query();
+
+
+
 	function call1(){
 		$(".most-visited").css({width:"592px"});
 		$(".gm-li").css({width:"180px",height:"120px",margin:"8.6px"});

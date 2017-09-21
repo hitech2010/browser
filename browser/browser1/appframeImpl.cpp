@@ -983,7 +983,7 @@ BOOL CFrameWindowWnd::init()
 
 	m_engine = CMdWebEngine::Get();
 
-	m_engine->Init(&m_pm);
+	m_engine->Init(&m_pm,this);
 
 
 
@@ -1328,9 +1328,10 @@ CMdWebEngine::~CMdWebEngine()
 	thisobj = NULL;
 }
 
-void CMdWebEngine::Init( CPaintManagerUI* pm )
+void CMdWebEngine::Init(CPaintManagerUI* pm, CWindowWnd* wnd)
 {
 	m_pm = pm;
+	m_pWnd = wnd;
 	m_webcontainer = dynamic_cast<CTabLayoutUI*>(m_pm->FindControl(_T("ui_webcontainer")));
 	assert(m_webcontainer);
 	m_tabcontainer = dynamic_cast<CContainerUI*>(m_pm->FindControl(_T("htab")));
@@ -1342,52 +1343,52 @@ int CMdWebEngine::Add(LPCTSTR url)
 	Log("COptionUIMgr::Add");
 
 	CButtonUI* pBtn = new CButtonUI();
+	CButtonUI* pBtnClose = new CButtonUI();
 	COptionUI* pOpt  = new COptionUI();
 	CContainerUI* pContainer = new CContainerUI();
 
 
-	if(pBtn == NULL ||
-		pOpt == NULL ||
-		pContainer == NULL)
-	{
-		if(pBtn) delete pBtn;
-		if(pOpt) delete pOpt;
-		if(pContainer) delete pContainer;
-		return -1;
-	}
-
-	pContainer->SetFixedWidth(132);
-	m_tabcontainer->AddAt(pContainer,m_tabcontainer->GetCount()-1);
-
-	Log("COptionUIMgr::New Option %08X", pOpt);
-
-
-
+	m_tabcontainer->AddAt(pContainer, m_tabcontainer->GetCount() - 1);
+	pContainer->SetName(_T("123421341234"));
+	pContainer->SetFixedWidth(130);
+	RECT rc0 = {1,1,1,1};
+	pContainer->SetBorderSize(rc0);
+	pContainer->SetBorderColor(0xFF1979CA);
+	m_pWnd->SendMessageW(WM_PAINT);
+	
+	
 
 	pContainer->Add(pOpt);
+	pContainer->Add(pBtnClose);
 	pContainer->Add(pBtn);
 
+	m_pWnd->SendMessageW(WM_PAINT);
+
+	pBtn->SetName(L"pbtn");
 	pBtn->SetFloat(true);
-	pBtn->SetFixedWidth(16);
-	pBtn->SetFixedHeight(16);
-
-	pBtn->SetBkImage(_T("file='skin\\tab_close.png' source='16,0,32,16'"));
-	pBtn->SetHotImage(_T("file='skin\\tab_close.png' source='32,0,48,16'"));
-	pBtn->SetUserData(_T("ui_closetab"));
-	pBtn->SetAttribute(_T("pos"), _T("-16,0,0,16"));
-	pBtn->SetAttribute(_T("floatalign"), _T("right"));
-	pBtn->SetAttribute(_T("floatalign"), _T("vcenter"));
+	pBtn->SetAttribute(L"pos", L"13,8,29,24");
+	pBtn->SetBkColor(0xFF1979CA);
 
 
 
 
-	pOpt->SetBkImage(_T("skin\\tab.png"));
-	pOpt->SetGroup(_T("webpage"));
-	pOpt->SetTag((UINT_PTR)pOpt);
+	pOpt->SetName(L"popt");
 	pOpt->SetBkImage(_T("skin\\tab_bkgd.png"));
 	pOpt->SetSelectedImage(_T("skin\\tab_focus.png"));
+// 	pOpt->SetBkColor(0xFFFF0000);
+// 	pOpt->SetSelectedBkColor(0xFF00FFFF);
+	pOpt->SetGroup(_T("webpage"));
 	pOpt->SetUserData(_T("ui_option"));
+	pOpt->SetTag((UINT_PTR)pOpt);
 	pOpt->Selected(true);
+	
+
+	pBtnClose->SetName(L"pbtnclose");
+	pBtnClose->SetUserData(_T("ui_closetab"));
+	pBtnClose->SetFloat(true);
+	pBtnClose->SetAttribute(L"pos", L"114,13,121,21");
+	pBtnClose->SetUserData(_T("ui_closetab"));
+	pBtnClose->SetBkImage(L"skin\\page_close.png");
 
 
 

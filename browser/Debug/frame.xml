@@ -3,45 +3,47 @@
 	<Font id="0" name="微软雅黑" size="16" bold="false" default="true"/>
 	<Font id="1" name="幼圆" size="5" bold="false" default="true"/>
 	<Font id="2" name="微软雅黑" size="12" bold="false" default="true"/>
-    <VerticalLayout name="VL_main" width="529" height="80" bkcolor="#FFFFFFFF">
-        <HorizontalLayout height="80" bkcolor="#FFF7F7FA">
-            <!--Button width="80" height="80" bkimage="skin\app.png" bkcolor="#FFF7F7FA" /-->
-            <VerticalLayout height="80">
-                <HorizontalLayout height="40" bkcolor="#FFF0F0F1" padding="0,0,8,0">
-                    <HorizontalLayout name="htab" height="32" padding="0,8,0,0">
-                      <Button name="ui_addtab" width="24" height="24" padding="0,4,0,0" bkimage="file='skin\toolbar1.png' source='0,0,24,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar1.png' source='0,24,24,48'" pushedimage="file='skin\toolbar1.png' source='0,24,24,48'" />
-                    </HorizontalLayout>
-                    <Button name="ui_minimize" width="24" height="24" padding="0,8,0,0" bkimage="file='skin\toolbar1.png' source='24,0,48,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar1.png' source='24,24,48,48'" pushedimage="file='skin\toolbar1.png' source='24,24,48,48'" />
-                    <Button name="ui_maximize" width="24" height="24" padding="0,8,0,0" bkimage="file='skin\toolbar1.png' source='96,0,120,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar1.png' source='96,24,120,48'" pushedimage="file='skin\toolbar1.png' source='96,24,120,48'" />
-                    <Button name="ui_restore" visible="true" width="24" height="24" padding="0,8,0,0" bkimage="file='skin\toolbar1.png' source='48,0,72,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar1.png' source='48,24,72,48'" pushedimage="file='skin\toolbar1.png' source='48,24,72,48'" />
-                    <Button name="ui_close" width="24" height="24" padding="0,8,0,0" bkimage="file='skin\toolbar1.png' source='72,0,96,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar1.png' source='72,24,96,48'" pushedimage="file='skin\toolbar1.png' source='72,24,96,48'" />
-                </HorizontalLayout>
-                <HorizontalLayout name="toolbar" height="29" padding="0,5,0,5"  relativepos="0,0,0,0">
-                    <button padding="10,0,0,0" name="ui_back" width="24" height="24" 			bkimage="file='skin\toolbar_ex.png' source='48,0,72,24'" textcolor="#ff000000" disabledtextcolor="#ffa7a6aa" align="center" hotimage="file='skin\toolbar_ex.png' source='48,24,72,48'" pushedimage="file='skin\toolbar_ex.png' source='48,24,72,48'" />
-                    <button padding="10,0,0,0" name="ui_forward" width="24" height="24" 		bkimage="file='skin\toolbar_ex.png' source='72,0,96,24'" textcolor="#ff000000" disabledtextcolor="#ffa7a6aa" align="center" hotimage="file='skin\toolbar_ex.png' source='72,24,96,48'" pushedimage="file='skin\toolbar_ex.png' source='72,24,96,48'" />
-                    <button padding="10,0,0,0" name="ui_refreshed" width="24" height="24" 	bkimage="file='skin\toolbar_ex.png' source='96,0,120,24'" textcolor="#ff000000" disabledtextcolor="#ffa7a6aa" align="center" hotimage="file='skin\toolbar_ex.png' source='96,24,120,48'" pushedimage="file='skin\toolbar_ex.png' source='96,24,120,48'" />
-                    <button padding="10,0,0,0" name="ui_home" width="24" height="24" 	    bkimage="file='skin\toolbar_ex.png' source='120,0,144,24'" textcolor="#ff000000" disabledtextcolor="#ffa7a6aa" align="center" hotimage="file='skin\toolbar_ex.png' source='120,24,144,48'" pushedimage="file='skin\toolbar_ex.png' source='120,24,144,48'" />
-                    <HorizontalLayout padding="10,0,0,0" height="30">
-                        <Edit name="ui_address" bkcolor="#FFFFFFFF" font="0" textcolor="0x00000000" bordersize="1" size="18" bordercolor="0xFF5B5B5B" textpadding="34,1,30,1" disabledtextcolor="#FFA7A6AA" />
-                        <Control float="true" pos="6,7,18,19"      bkimage="file='skin\greenlock.png' source='0,0,16,16'" />                        
-                        <Button float="true" floatalign="right" name="ui_favor" pos="-24,0,0,24"  childalign="right" bkimage="file='skin\favor.png' source='0,0,24,24'" 
-                        	hotimage="file='skin\favor.png' source='24,0,48,24'" />
-                        	
-                    </HorizontalLayout>
-                    <Button padding="10,0,0,0" width="24" height="24" name="ui_download"  bkimage="file='skin\toolbar_ex.png' source='168,0,192,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar_ex.png' source='168,24,192,48'" pushedimage="file='skin\toolbar_ex.png' source='168,24,192,48'" />
-                    <Button padding="10,0,0,0" width="24" height="24" name="ui_restorepage"  bkimage="file='skin\toolbar_ex.png' source='192,0,216,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar_ex.png' source='192,24,216,48'" pushedimage="file='skin\toolbar_ex.png' source='192,24,216,48'" />
-                    <Button padding="10,0,10,0" width="24" height="24" name="ui_settings"  bkimage="file='skin\toolbar_ex.png' source='216,0,240,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar_ex.png' source='216,24,240,48'" pushedimage="file='skin\toolbar_ex.png' source='216,24,240,48'" />
-                </HorizontalLayout>
-            </VerticalLayout>
+  <VerticalLayout name="VL_main" width="727" height="80" bkcolor="#FFFFFFFF">
+
+        <!--Button width="80" height="80" bkimage="skin\app.png" bkcolor="#FFF7F7FA" /-->
+
+        <HorizontalLayout height="40" bkcolor="#FFF0F0F1" padding="0,0,8,0">
+            <HorizontalLayout font="2" name="htab" height="32" padding="0,8,0,0">
+
+             <Button name="ui_addtab" width="24" height="24" padding="0,4,0,0" bkimage="file='skin\toolbar1.png' source='0,0,24,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar1.png' source='0,24,24,48'" pushedimage="file='skin\toolbar1.png' source='0,24,24,48'" />
+            </HorizontalLayout>
+            <Button name="ui_minimize" width="24" height="24" padding="0,8,0,0" bkimage="file='skin\toolbar1.png' source='24,0,48,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar1.png' source='24,24,48,48'" pushedimage="file='skin\toolbar1.png' source='24,24,48,48'" />
+            <Button name="ui_maximize" width="24" height="24" padding="0,8,0,0" bkimage="file='skin\toolbar1.png' source='96,0,120,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar1.png' source='96,24,120,48'" pushedimage="file='skin\toolbar1.png' source='96,24,120,48'" />
+            <Button name="ui_restore" visible="true" width="24" height="24" padding="0,8,0,0" bkimage="file='skin\toolbar1.png' source='48,0,72,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar1.png' source='48,24,72,48'" pushedimage="file='skin\toolbar1.png' source='48,24,72,48'" />
+            <Button name="ui_close" width="24" height="24" padding="0,8,0,0" bkimage="file='skin\toolbar1.png' source='72,0,96,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar1.png' source='72,24,96,48'" pushedimage="file='skin\toolbar1.png' source='72,24,96,48'" />
         </HorizontalLayout>
-        <!--ChildLayout float="true" width="270" height="320" floatalign="right" xmlfile="skina.xml">
-        </ChildLayout--> 
-        
+        <HorizontalLayout name="toolbar" height="40" padding="0,5,0,5"  relativepos="0,0,0,0">
+            <button padding="10,0,0,0" name="ui_back" width="24" height="24" 			bkimage="file='skin\toolbar_ex.png' source='48,0,72,24'" textcolor="#ff000000" disabledtextcolor="#ffa7a6aa" align="center" hotimage="file='skin\toolbar_ex.png' source='48,24,72,48'" pushedimage="file='skin\toolbar_ex.png' source='48,24,72,48'" />
+            <button padding="10,0,0,0" name="ui_forward" width="24" height="24" 		bkimage="file='skin\toolbar_ex.png' source='72,0,96,24'" textcolor="#ff000000" disabledtextcolor="#ffa7a6aa" align="center" hotimage="file='skin\toolbar_ex.png' source='72,24,96,48'" pushedimage="file='skin\toolbar_ex.png' source='72,24,96,48'" />
+            <button padding="10,0,0,0" name="ui_refreshed" width="24" height="24" 	bkimage="file='skin\toolbar_ex.png' source='96,0,120,24'" textcolor="#ff000000" disabledtextcolor="#ffa7a6aa" align="center" hotimage="file='skin\toolbar_ex.png' source='96,24,120,48'" pushedimage="file='skin\toolbar_ex.png' source='96,24,120,48'" />
+            <button padding="10,0,0,0" name="ui_home" width="24" height="24" 	    bkimage="file='skin\toolbar_ex.png' source='120,0,144,24'" textcolor="#ff000000" disabledtextcolor="#ffa7a6aa" align="center" hotimage="file='skin\toolbar_ex.png' source='120,24,144,48'" pushedimage="file='skin\toolbar_ex.png' source='120,24,144,48'" />
+            <HorizontalLayout padding="10,0,0,0" height="30">
+                <Edit name="ui_address" bkcolor="#FFFFFFFF" font="0" textcolor="0x00000000" bordersize="1" size="18" bordercolor="0xFF5B5B5B" textpadding="34,1,30,1" disabledtextcolor="#FFA7A6AA" />
+                <Control float="true" pos="6,7,18,19"      bkimage="file='skin\greenlock.png' source='0,0,16,16'" />                        
+                <Button float="true" floatalign="right" name="ui_favor" pos="-24,0,0,24"  childalign="right" bkimage="file='skin\favor.png' source='0,0,24,24'" 
+                hotimage="file='skin\favor.png' source='24,0,48,24'" />
+                    	
+            </HorizontalLayout>
+            <Button padding="10,0,0,0" width="24" height="24" name="ui_download"  bkimage="file='skin\toolbar_ex.png' source='168,0,192,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar_ex.png' source='168,24,192,48'" pushedimage="file='skin\toolbar_ex.png' source='168,24,192,48'" />
+            <Button padding="10,0,0,0" width="24" height="24" name="ui_restorepage"  bkimage="file='skin\toolbar_ex.png' source='192,0,216,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar_ex.png' source='192,24,216,48'" pushedimage="file='skin\toolbar_ex.png' source='192,24,216,48'" />
+            <Button padding="10,0,10,0" width="24" height="24" name="ui_settings"  bkimage="file='skin\toolbar_ex.png' source='216,0,240,24'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file='skin\toolbar_ex.png' source='216,24,240,48'" pushedimage="file='skin\toolbar_ex.png' source='216,24,240,48'" />
+        </HorizontalLayout>
+
+
+    <!--ChildLayout float="true" width="270" height="320" floatalign="right" xmlfile="skina.xml">
+    </ChildLayout--> 
+    
   	
 
     <TabLayout name="ui_webcontainer" bordersize="1,0,1,2" inset="1,0,1,2" bordercolor="0xFFE0E0E0" bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" menu="true" selectedid="-1"  >
- 
-    </TabLayout></VerticalLayout>
+    </TabLayout>
+    
+  </VerticalLayout>
 				
 
 </Window>

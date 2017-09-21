@@ -66,6 +66,7 @@ void CWebEventHandler::BeforeNavigate2( CWebBrowserUI* pWeb, IDispatch *pDisp,VA
 	if (pmdweb)
 	{
 		pmdweb->setUrl(strt);
+
 	}
 
 
@@ -155,10 +156,71 @@ void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,V
 	}
 	Log(_T("void CWebEventHandler::DocumentComplete [%08x %08X]"), pWeb->GetWebBrowser2(), pDisp);
 
+	
 
 	if (pWeb->GetWebBrowser2() == pDisp)
 	{
 		CMdWebBrowserUI* pmdweb = dynamic_cast<CMdWebBrowserUI*>(pWeb);
+		IWebBrowser2* wb = pmdweb->GetIWebBrowser();
+
+		//wb->ExecWB(OLECMDID_SAVEAS, OLECMDEXECOPT_PROMPTUSER, NULL, NULL);
+
+		CComPtr<IDispatch> pDoc;
+		HRESULT hr = wb->get_Document(&pDoc);
+		if (FAILED(hr))
+			return ;
+		CComQIPtr<IHTMLDocument2> pDoc2 = pDoc;
+		if (NULL == pDoc2)
+			return ;
+		CComPtr<IHTMLElementCollection> pBody = NULL;
+		hr = pDoc2->get_all(&pBody);
+
+		long len = 0;
+		pBody->get_length(&len);
+
+		CComPtr<IHTMLElement> elmt;
+		for (int i = 0; i < len; ++i)
+		{
+			_variant_t index = i;
+			IDispatch *pdisp;
+			CComPtr<IHTMLElement> elem;
+			HRESULT hResult = pBody->item(index, index, &pdisp);
+			
+			hResult = pdisp->QueryInterface(IID_IHTMLElement,
+				(void **)&elem);
+
+			pdisp->Release();
+			BSTR p;
+			hr = elem->get_innerHTML(&p);   //类似的还有put_innerTEXT //put_innerHTML
+			if (p)
+			{
+				wstring strContext = p;
+			}
+
+		}
+
+		//获得句柄
+		IOleWindow *pOWin;
+		HWND hBWnd;
+		HWND hTar;
+
+		HRESULT hRes = wb->QueryInterface(IID_IOleWindow, (void **)&pOWin);
+		if (SUCCEEDED(hRes)) {
+			hRes = pOWin->GetWindow(&hBWnd);
+			if (SUCCEEDED(hRes)) {
+				// Place hBWnd-manipulating code here
+
+				HWND child =  GetWindow(hBWnd, GW_CHILD);
+
+				if (child)
+				{
+					hTar = GetWindow(child, GW_CHILD);
+				}
+
+			}
+		}
+
+
 		
 		string xurl = _encoding(url->bstrVal).astr().get();
 		 	CHistoryMgr::RECORD record;
@@ -168,10 +230,41 @@ void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,V
 			record.title = _encoding(pmdweb->getTitle()).utf8().get();
 
 			if (xurl.find("history.html") == std::string::npos &&
-				xurl.find("bookmark.html") == std::string::npos)
+				xurl.find("bookmark.html") == std::string::npos &&
+				xurl.find("index.html") == std::string::npos)
 			{
-				theApp.History()->Add(record);
+				CHistoryMgr::RECORD rd = theApp.History()->Add(record).Query(-1).at(0);
+
+
+				xstring tmp;
+				tmp.format("%u", hTar);
+				xstring filepath;
+				filepath.format("%s%s%d%s", theApp.getAppdir().c_str(),"tempfiles\\", rd.id,".png");
+				
+				map<string, string> para;
+				para["hwnd"] = tmp.c_str();
+				xstring idstr;
+				idstr.format("%d", rd.id);
+				para["id"] = idstr.c_str();
+
+
+				para["filename"] = filepath.operator std::string();
+				CGeeMeeEvent event(HttpWebShortcutEvent, para);
+				theApp.Pool().AddPool(event);
+
 			}
+		
+			
+			if (xurl[xurl.length() - 1] != '/')
+			{
+				xurl.append("/");
+			}
+			xurl.append("favicon.ico");
+
+			map<string, string> p;
+			p["url"] = xurl;
+			CGeeMeeEvent event = CGeeMeeEvent(HttpDownloadEvent, p);
+			theApp.Pool().AddPool(event);
 		 	
 
 	}
@@ -231,7 +324,7 @@ void CWebEventHandler::TitleChange(CWebBrowserUI* pWeb, BSTR bstrTitle)
 		{
 			CContainerUI* pCon = (CContainerUI*)it->first;
 			COptionUI* opt = (COptionUI*)pCon->GetItemAt(0);
-			opt->SetAttribute(L"textpadding", L"15,0,15,0");
+			opt->SetAttribute(L"textpadding", L"33,0,15,0");
 			opt->SetAttribute(L"align", L"left");
 			opt->SetAttribute(L"valign", L"vcenter");
 			opt->SetAttribute(L"endellipsis", L"true");
@@ -691,8 +784,56 @@ STDMETHODIMP CWebEventHandler::Invoke(
 
 			if (fun == L"setting_update")
 			{
+				wxstring json = p1.bstrVal;
+
+				Json::Reader reader;
+				reader.parse(_encoding(json).utf8().get(), theApp.getJsonValue(), false);
 				
+				break;
+			}
+
+
+			if (fun == L"index_delete_history")
+			{
 				
+
+				break;
+			}
+
+			if (fun == L"index_query")
+			{
+				
+				Json::StreamWriterBuilder b;
+				Json::Value  root;
+
+				map<int, string> mp;
+				theApp.History()->GetTop4ShortCut(mp);
+
+				int sz = mp.size();
+
+				xstring filepath;
+				filepath.format("%s%s%d%s", theApp.getAppdir().c_str(), "tempfiles\\", 312, ".png");
+				
+				root["p4"] = sz >= 1 * 3 ? mp[0] : filepath.c_str();
+				root["p3"] = sz >= 2 * 3 ? mp[1] : filepath.c_str();
+				root["p2"] = sz >= 3 * 3 ? mp[2] : filepath.c_str();
+				root["p1"] = sz >= 4 * 3 ? mp[3] : filepath.c_str();
+
+				root["a4"] = sz >= 1 * 3 ? mp[4] : "#";
+				root["a3"] = sz >= 2 * 3 ? mp[5] : "#";
+				root["a2"] = sz >= 3 * 3 ? mp[6] : "#";
+				root["a1"] = sz >= 4 * 3 ? mp[7] : "#";
+
+				root["t4"] = sz >= 1 * 3 ? mp[8] : "";
+				root["t3"] = sz >= 2 * 3 ? mp[9] : "";
+				root["t2"] = sz >= 3 * 3 ? mp[10] : "";
+				root["t1"] = sz >= 4 * 3 ? mp[11] : "";
+
+				string content = Json::writeString(b, root);
+
+				pvarResult->vt = VT_BSTR;
+				pvarResult->bstrVal = ::SysAllocString(_encoding(content).u8_utf16().getutf16().c_str());
+
 				break;
 			}
 
@@ -816,4 +957,9 @@ string CMdWebBrowserUI::getUrl()
 std::wstring CMdWebBrowserUI::getTitle()
 {
 	return m_title;
+}
+
+IWebBrowser2* CMdWebBrowserUI::GetIWebBrowser()
+{
+	return m_pWebBrowser2;
 }

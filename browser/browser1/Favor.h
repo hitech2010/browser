@@ -130,7 +130,7 @@ public:
 	typedef history_recode_item  RECORD;
 	typedef vector<RECORD>     VRECORD;
 	VRECORD                   m_result;
-
+	
 
 
 
@@ -145,4 +145,9 @@ public:
 	CHistoryMgr::VRECORD& Query(const string& keyword);
 	CHistoryMgr& Clear();
 	CHistoryMgr& Delete(const string& tuple);
+	CHistoryMgr& AddShotcut(string id, string filename);
+	CHistoryMgr& GetTop4ShortCut(map<int,string>& result);
 };
+
+
+

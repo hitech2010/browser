@@ -20,11 +20,12 @@
 #include<string>
 #include <map>
 #include <vector>
+#include <queue>
 using namespace std;
+
 
 //string 
 #include "xxstring.h"
-
 
 
 //Log
@@ -39,6 +40,7 @@ void Log(const char* format, ... );
 
 
 
+#include "eventpool.h"
 
 
 

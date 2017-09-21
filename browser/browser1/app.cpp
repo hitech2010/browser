@@ -4,8 +4,9 @@
 
 #include "app_config.h"
 #include "appframe.h"
-
-
+//winhttp
+#include <winhttp.h>
+#pragma  comment(lib, "Winhttp.lib")
 #pragma  comment(lib, "jsoncpp.lib")
 
 bool isGMSSL(string &strt, bool &b)
@@ -13,6 +14,200 @@ bool isGMSSL(string &strt, bool &b)
 	return false;
 }
 
+
+string HttpWebShortcutEvent( std::map<std::string, string>& para)
+{
+	string para_hwnd = "hwnd";
+	string para_file = "filename";
+	
+	HWND wnd = (HWND)atoi(para[para_hwnd].c_str());
+	string file = para[para_file];
+	
+	HDC hDCSrc = GetDC(wnd);
+	RECT rc;
+	GetWindowRect(wnd, &rc);
+	if (hDCSrc)
+	{
+		//// 得到当前显示设备的水平像素
+
+		
+		int nWidth = rc.right - rc.left;
+		int nHeight = rc.bottom - rc.top;
+
+
+		int nBitPerPixel = GetDeviceCaps(hDCSrc, BITSPIXEL);//获取到每个像素的bit数目
+		
+		
+		CImage cImage;//使用CImage能省好多截图的代码  
+
+		::CreateCompatibleBitmap(hDCSrc, nWidth, nHeight);
+		cImage.Create(nWidth, nHeight, nBitPerPixel);
+
+		BitBlt(cImage.GetDC(), 0, 0, nWidth, nHeight, hDCSrc, 0, 0, SRCCOPY);
+
+
+// 		CImage smallImage;
+// 		bool bRet = smallImage.Create(336, 200, nBitPerPixel);
+// 		SetStretchBltMode(smallImage.GetDC(), COLORONCOLOR);
+// 		 bRet = cImage.StretchBlt(smallImage.GetDC(), 0, 0, 336, 200, SRCCOPY);
+// 
+// 		//直接保存吧  
+		HRESULT hr = cImage.Save(_encoding(file).a_utf16().getutf16().c_str(), Gdiplus::ImageFormatPNG);
+		if (SUCCEEDED(hr))
+		{
+			theApp.History()->AddShotcut(para["id"], file);
+		}
+
+
+// 
+// 		
+// 		smallImage.ReleaseDC();
+// 		smallImage.ReleaseDC();
+
+		cImage.ReleaseDC();//截图的代码到这里就结束了  
+		::ReleaseDC(NULL, hDCSrc);
+	}
+
+	return "ok";
+}
+
+string HttpDownloadEvent( std::map<string, string>& para)
+{
+	DWORD dwSize = 0;
+	DWORD dwDownloaded = 0;
+	LPSTR pszOutBuffer;
+	BOOL  bResults = FALSE;
+	HINTERNET  hSession = NULL,
+		hConnect = NULL,
+		hRequest = NULL;
+
+	string para_url = "url";
+	string tmp = para[para_url];
+	tmp = tmp.substr(tmp.find_first_not_of("http://"));
+	tmp = tmp.substr(tmp.find_first_not_of("https://"));
+	string getpara;
+
+	if (-1 != tmp.find_first_of("/"))
+	{
+		getpara = tmp.substr(tmp.find_first_of("/"));
+		tmp = tmp.substr(0, tmp.find_first_of("/"));
+	}
+	else
+	{
+		getpara = "/";
+	}
+	
+
+
+
+
+	string response;
+
+	do
+	{
+		// Use WinHttpOpen to obtain a session handle.
+		hSession = WinHttpOpen(L"WinHTTP Example/1.0",
+			WINHTTP_ACCESS_TYPE_DEFAULT_PROXY,
+			WINHTTP_NO_PROXY_NAME,
+			WINHTTP_NO_PROXY_BYPASS, 0);
+
+		// Specify an HTTP server.
+		if (hSession)
+			hConnect = WinHttpConnect(hSession, _encoding(tmp).u8_utf16().getutf16().c_str(),
+			INTERNET_DEFAULT_HTTPS_PORT, 0);
+		else break;
+
+		// Create an HTTP request handle.
+		if (hConnect)
+			hRequest = WinHttpOpenRequest(hConnect, L"GET", _encoding(getpara).u8_utf16().getutf16().c_str(),
+			NULL, WINHTTP_NO_REFERER,
+			WINHTTP_DEFAULT_ACCEPT_TYPES,
+			WINHTTP_FLAG_SECURE);
+		else break;
+
+		// Send a request.
+		if (hRequest)
+			bResults = WinHttpSendRequest(hRequest,
+			WINHTTP_NO_ADDITIONAL_HEADERS, 0,
+			WINHTTP_NO_REQUEST_DATA, 0,
+			0, 0);
+		else break;
+
+
+		// End the request.
+		if (bResults)
+			bResults = WinHttpReceiveResponse(hRequest, NULL);
+		else break;
+
+		// Keep checking for data until there is nothing left.
+		if (bResults)
+		{
+			do
+			{
+				// Check for available data.
+				dwSize = 0;
+				if (!WinHttpQueryDataAvailable(hRequest, &dwSize))
+				{
+					break;
+				}
+
+				// Allocate space for the buffer.
+				pszOutBuffer = new char[dwSize + 1];
+				if (!pszOutBuffer)
+				{
+					printf("Out of memory\n");
+					response = "";
+					dwSize = 0;
+				}
+				else
+				{
+					// Read the data.
+					ZeroMemory(pszOutBuffer, dwSize + 1);
+
+					if (!WinHttpReadData(hRequest, (LPVOID)pszOutBuffer,
+						dwSize, &dwDownloaded))
+					{
+						response = "";
+					}
+						
+					string tmp;
+					tmp.assign(pszOutBuffer, dwDownloaded);
+					response.append(tmp);
+					// Free the memory allocated to the buffer.
+					delete[] pszOutBuffer;
+				}
+			} while (dwSize > 0);
+		}
+
+
+		// Report any errors.
+		if (!bResults)
+			printf("Error %d has occurred.\n", GetLastError());
+
+
+
+
+	} while (false);
+
+	// Close any open handles.
+	if (hRequest) WinHttpCloseHandle(hRequest);
+	if (hConnect) WinHttpCloseHandle(hConnect);
+	if (hSession) WinHttpCloseHandle(hSession);
+
+	const char* data = response.c_str();
+	unsigned int sz = response.size();
+
+	ofstream of;
+	of.open("b.ico", ios::trunc);
+	of.write(data, sz);
+	of.close();
+	return response;
+
+}
+
+
+
+int nExitFlag;
 
 
 
@@ -363,6 +558,12 @@ bool isGMSSL(string &strt, bool &b)
 
 
 	}
+
+	CGeeMeeEventPool& BrowserApp::Pool()
+	{
+		return m_pool;
+	}
+
 	BrowserApp::~BrowserApp()
 	{
 		db.close();
@@ -372,6 +573,9 @@ bool isGMSSL(string &strt, bool &b)
 	{
 		return m_history;
 	}
+
+	
+
 	CFavorManager* BrowserApp::Favor()
 	{
 		
@@ -449,11 +653,14 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 
 {
 
+
 	_beginthreadex(NULL, 0, sync_setting_proc, NULL, 0, NULL);
+	map<string, string> para;
 
 
-	string a;
-	a.resize(79);
+
+// 	string a;
+// 	a.resize(79);
 
 
 	//string tmp = theApp.Favor()->TestRoutine().c_str();
