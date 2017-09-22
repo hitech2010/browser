@@ -69,6 +69,14 @@ public:
 		}
 		return NULL;
 	}
+
+	CWebBrowserUI* GetCurrentWebBrowserUI()
+	{
+		
+
+		return m_crrentWebPage;
+	}
+
 	
 };
 
@@ -77,6 +85,8 @@ class CFrameWindowWnd : public CWindowWnd, public INotifyUI
 public:
 
 	CFrameWindowWnd();
+
+
 	LPCTSTR GetWindowClassName() const;
 	UINT GetClassStyle();
 	void OnFinalMessage(HWND /*hWnd*/);

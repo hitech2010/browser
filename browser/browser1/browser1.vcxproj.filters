@@ -118,4 +118,18 @@
       <Filter>资源文件</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon2.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="icon3.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\Debug\logo64.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Debug\skin\menu.xml" />
+  </ItemGroup>
 </Project>

@@ -292,6 +292,7 @@ namespace DuiLib {
 	}
 
 
+
 	void CMenuWnd::OnFinalMessage(HWND hWnd)
 	{
 		RemoveObserver();

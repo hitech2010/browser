@@ -150,6 +150,9 @@ public:
 	string         getAppdir();
 	Json::Value&   getJsonValue();
 
+
+	void			RunSelf();
+
 	CGeeMeeEventPool& Pool();
 
 };

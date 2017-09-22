@@ -183,15 +183,16 @@ $(function(){
 		return false;
 	});
 	//选择搜索
-	$(".select-ul li").click(function(e){
-		var $Name = $(this).attr("gm-data");
-		var $Name2 = $(".select-name").html();
+$(".engine-list li").click(function(e){
+		var $Name = $(this)[0].className;
+		var $web = $(this).attr("data-web");
+		var $Name2 = $(".more").attr("gm-data");
 		if($Name2!=$Name){
-			$(".select-name").html($Name);
-			$(".select-tit").removeClass("no-tit");
-			$(this).find(".select-tit").addClass("no-tit")
-		}else{
-			return false;
+			$(".more").removeClass("gm-"+$Name2)
+			$(".more").addClass("gm-"+$Name);
+			$(".more").attr("gm-data",$Name);
+			$(".more").attr("data-web",$web);
+			$("#sc").attr("action",$web);
 		}
 	});
 	$(window).click(function(e){

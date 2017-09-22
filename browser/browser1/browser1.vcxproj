@@ -138,6 +138,14 @@
     </None>
     <None Include="xml1.bin" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Debug\logo64.ico" />
+    <Image Include="icon2.ico" />
+    <Image Include="icon3.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Debug\skin\menu.xml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

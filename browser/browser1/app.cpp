@@ -599,6 +599,40 @@ int nExitFlag;
 		return m_jroot;
 	}
 
+	void BrowserApp::RunSelf()
+	{
+
+		STARTUPINFO si;
+		PROCESS_INFORMATION pi;
+
+		ZeroMemory(&si, sizeof(si));
+		si.cb = sizeof(si);
+		ZeroMemory(&pi, sizeof(pi));
+
+		TCHAR pathfile[MAX_PATH] = { 0 };
+		GetModuleFileName(NULL, pathfile, MAX_PATH);
+
+		// Start the child process. 
+		if (!CreateProcess(NULL,   // No module name (use command line)
+			pathfile,        // Command line
+			NULL,           // Process handle not inheritable
+			NULL,           // Thread handle not inheritable
+			FALSE,          // Set handle inheritance to FALSE
+			0,              // No creation flags
+			NULL,           // Use parent's environment block
+			NULL,           // Use parent's starting directory 
+			&si,            // Pointer to STARTUPINFO structure
+			&pi)           // Pointer to PROCESS_INFORMATION structure
+			)
+		{
+
+			return;
+		}
+
+
+
+	}
+
 
 
 
@@ -671,6 +705,8 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 	
 	CFrameWindowWnd* pFrame = new CFrameWindowWnd; // 生成对象
 	pFrame->Create(NULL, _T("极密浏览器"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
+
+
 	pFrame->CenterWindow(); // 窗口居中
 	pFrame->ShowWindow(true);
 	pFrame->m_engine->Add(pFrame->m_engine->getIndexPage());

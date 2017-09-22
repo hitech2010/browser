@@ -390,14 +390,136 @@ public:
 		}
 		else if (msg.pSender->GetName() == _T("menu_print") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
+			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
+			IWebBrowser2* wb = ui->GetWebBrowser2();
+			CComVariant var((int)0);
+			wb->ExecWB(OLECMDID_PRINT, OLECMDEXECOPT_DODEFAULT, NULL, NULL);
 		}
 		else if (msg.pSender->GetName() == _T("menu_download") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
 		}
+		else if (msg.pSender->GetName() == _T("putong") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			theApp.RunSelf();
+		}
+		else if (msg.pSender->GetName() == _T("xiaohao") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			theApp.RunSelf();
+		}
+		else if (msg.pSender->GetName() == _T("wuhen") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			theApp.RunSelf();
+		}
+		else if (msg.pSender->GetName() == _T("suofang_minus") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			//MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
+			CButtonUI* btn = dynamic_cast<CButtonUI*>(m_pm.FindControl(_T("suofang_number")));
+			wstring tmp = btn->GetText().GetData();
+			wstring radio;
+			int		nradio;
+			if (tmp == L"400%") { radio = L"200%", nradio = 200; };
+			if (tmp == L"200%") { radio = L"150%", nradio = 150; };
+			if (tmp == L"150%") { radio = L"100%", nradio = 100; };
+			if (tmp == L"100%") { radio = L"75%", nradio = 75; };
+			if (tmp == L"75%") { radio = L"50%", nradio = 50; };
+			if (tmp == L"50%") return;
+
+
+			btn->SetText(radio.c_str());
+
+			btn->SetText(radio.c_str());
+			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
+			IWebBrowser2* wb = ui->GetWebBrowser2();
+			CComVariant varZoom((int)nradio);
+			wb->ExecWB(OLECMDID_OPTICAL_ZOOM, OLECMDEXECOPT_DODEFAULT, &varZoom, NULL);
+		}
+		else if (msg.pSender->GetName() == _T("suofang_plus") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			CButtonUI* btn = dynamic_cast<CButtonUI*>(m_pm.FindControl(_T("suofang_number")));
+			wstring tmp = btn->GetText().GetData();
+			wstring radio;
+
+			int		nradio;
+
+
+			if (tmp == L"200%") { radio = L"400%", nradio = 400; };
+			if (tmp == L"150%") { radio = L"200%", nradio = 200; };
+			if (tmp == L"100%") { radio = L"150%", nradio = 150; };
+			if (tmp == L"75%")  { radio = L"100%", nradio = 100; };
+			if (tmp == L"50%")  { radio = L"75%", nradio = 75; };
+			if (tmp == L"400%") return;
+
+
+			btn->SetText(radio.c_str());
+			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
+			IWebBrowser2* wb = ui->GetWebBrowser2();
+			CComVariant varZoom((int)nradio);
+			wb->ExecWB(OLECMDID_OPTICAL_ZOOM, OLECMDEXECOPT_DODEFAULT, &varZoom, NULL);
+
+			//MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
+		}
+		else if (msg.pSender->GetName() == _T("suofang_restore") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			CButtonUI* btn = dynamic_cast<CButtonUI*>(m_pm.FindControl(_T("suofang_number")));
+			wstring tmp = btn->GetText().GetData();
+			wstring radio;
+			radio = L"100%";
+
+
+			btn->SetText(radio.c_str());
+
+			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
+			IWebBrowser2* wb = ui->GetWebBrowser2();
+			CComVariant varZoom((int)100);
+
+			wb->ExecWB(OLECMDID_OPTICAL_ZOOM, OLECMDEXECOPT_DODEFAULT, &varZoom, NULL);
+
+			//MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
+		}
+
+		else if (msg.pSender->GetName() == _T("suofang_max") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			CButtonUI* btn = dynamic_cast<CButtonUI*>(m_pm.FindControl(_T("suofang_number")));
+			wstring tmp = btn->GetText().GetData();
+			wstring radio = L"400%";
+
+
+			btn->SetText(radio.c_str());
+
+
+			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
+			IWebBrowser2* wb = ui->GetWebBrowser2();
+			CComVariant varZoom((int)400);
+
+			wb->ExecWB(OLECMDID_OPTICAL_ZOOM, OLECMDEXECOPT_DODEFAULT, &varZoom, NULL);
+
+			//MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
+		}
 
 	}
+// 
+// 	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+// 	{
+// 		LRESULT lRes = 0;
+// 		BOOL bHandled = TRUE;
+// 		switch (uMsg)
+// 		{
+// 
+// 		case WM_KEYDOWN:
+// 			if (wParam == VK_ESCAPE || wParam == VK_LEFT)
+// 				Close();
+// 			break;
+// 
+// 		default:
+// 			
+// 			break;
+// 		}
+// 
+// 		return CMenu::HandleMessage(uMsg, wParam, lParam);
+// 	}
+
+
 };
 
 //CFavorAddItemDlg
@@ -513,7 +635,7 @@ public:
 		LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);  
 		styleValue &= ~WS_CAPTION;  
 		::SetWindowLong(*this, GWL_STYLE, styleValue | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);  
-
+		this->SetIcon(IDI_APP);
 		m_pm.Init(m_hWnd);  
 		m_pm.AddPreMessageFilter(this);  
 		CDialogBuilder builder;  
@@ -872,6 +994,7 @@ public:
 		LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);
 		styleValue &= ~WS_CAPTION;
 		::SetWindowLong(*this, GWL_STYLE, styleValue | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
+		this->SetIcon(IDI_APP);
 
 		m_pm.Init(m_hWnd);
 		m_pm.AddPreMessageFilter(this);
@@ -1071,6 +1194,11 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 	}
 
 
+	else if (msg.pSender->GetName() == _T("ui_resotrepage")) {
+		SendMessage(WM_SYSCOMMAND, SC_MINIMIZE, 0);
+	}
+
+
 
 }
 void CFrameWindowWnd::Notify(TNotifyUI& msg)
@@ -1216,6 +1344,7 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			m_pm.AttachDialog(m_pRoot); 
 			m_pm.AddNotifier(this);
+			this->SetIcon(IDI_APP);
 
 			init();
 

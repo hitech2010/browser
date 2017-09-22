@@ -91,11 +91,29 @@ $(function(){
 	$(".engine-list li").click(function(e){
 		var $Name = $(this)[0].className;
 		var $Name2 = $(".more").attr("gm-data");
+		
+
+		if($Name == "sougou")
+		{
+			$("#sc").attr("action", "https://www.sogou.com/web");
+			$("#query").attr("name", "query");
+		} 
+		else if($Name == "baidu")
+		{
+			$("#sc").attr("action", "https://www.baidu.com/s");
+			$("#query").attr("name", "wd");
+		}
+
+
+
 		if($Name2!=$Name){
 			$(".more").removeClass("gm-"+$Name2)
 			$(".more").addClass("gm-"+$Name);
 			$(".more").attr("gm-data",$Name);
 		}
+
+
+
 	});
 	$(window).click(function(e){
 		//下拉框消失
