@@ -6,6 +6,9 @@ using namespace DuiLib;
 typedef map<string, string> urlmap;
 extern urlmap g_um;
 
+#include <stack>
+using namespace std;
+
 class CMdWebEngine
 {
 	
@@ -30,10 +33,16 @@ static CMdWebEngine* thisobj;
 	LPCTSTR getIndexPage();
 	LPCTSTR getBookmarkPage();
 	LPCTSTR getSettingsPage();
+	void RestorePage();
 protected:
 
 	void Bind(CContainerUI* tab, CWebBrowserUI* page);
 	void UnBind(CContainerUI* tab);
+	void Push(string & url);
+	string Pop();
+
+
+	stack<string> m_deleted;
 	
 public:
 	CEditUI* GetAddressBar();
@@ -106,6 +115,8 @@ public:
 	void ShowMenu(void);
 	void ShowCloseTipDlg();
 	void SetNeedTip(bool need);
+
+
 
 #define NOTIFY_ON
 #ifdef NOTIFY_ON

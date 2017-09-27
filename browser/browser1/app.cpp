@@ -9,6 +9,13 @@
 #pragma  comment(lib, "Winhttp.lib")
 #pragma  comment(lib, "jsoncpp.lib")
 
+
+// #pragma  comment(lib, "gmssld.lib")
+// #pragma  comment(lib, "http_proxy_serverd.lib")
+// #pragma  comment(lib, "libeay32mtd.lib")
+// #pragma  comment(lib, "mdsmd.lib")
+// #pragma  comment(lib, "smd.lib")
+
 bool isGMSSL(string &strt, bool &b)
 {
 	return false;
@@ -494,6 +501,8 @@ int nExitFlag;
 
 	BrowserApp::BrowserApp():AppConfig()
 	{
+
+		Log("BrowserApp::1");
 		char szPath[MAX_PATH];
 		ULONG nSize = _countof(szPath);
 		::GetModuleFileNameA(NULL, szPath, _countof(szPath));
@@ -501,13 +510,37 @@ int nExitFlag;
 		m_appdir.assign(szPath);
 		::PathAppendA(szPath, "gmbrowser.db");
 
-		db.open(szPath);
+		Log("BrowserApp::2 %s", szPath);
+		xstring tmp = szPath;
+
+		string utf8path = _encoding(tmp).a_utf16().utf8().get();
+
+		
+
+		try
+		{
+			db.open(utf8path.c_str());
+		}
+		catch (CppSQLite3Exception& e)
+		{
+			MessageBoxA(NULL, e.errorMessage(), "∑¢…˙“Ï≥£", MB_OK);
+
+		}
+		
+			
+
+
 
 		inipath = m_appdir + inifile;
 
 		m_favor = new CFavorManager(&db);
+
+
 		m_history = new CHistoryMgr(&db);
+
 		m_favorfolder = new CFavorFolder(&db);
+
+
 
 
 		ifstream ifs;
@@ -551,11 +584,12 @@ int nExitFlag;
 		}
 		catch (...)
 		{
-			throw std::exception("wrong ini file");
+			MessageBoxA(NULL, "wrong ini file", NULL, MB_OK);
+			// throw std::exception("wrong ini file");
 		}
 		
 
-
+		Log("BrowserApp::7");
 
 	}
 
@@ -641,7 +675,7 @@ BrowserApp theApp;
 unsigned int __stdcall  sync_setting_proc(void* para)
 {
 
-	while (1)
+	if (1)
 	{
 
 		
@@ -650,17 +684,13 @@ unsigned int __stdcall  sync_setting_proc(void* para)
 		{
 			
 			Json::Reader reader;
-			Json::Value  root;
+
 			Json::StreamWriterBuilder b;
 
 
-
-			root["appname"] = "gmbrowser";
-			root["appconfig"]["ask_before_close"] = theApp.getAskBeforeClose();
-
-			string result = Json::writeString(b, root);
+			string result = Json::writeString(b, theApp.getJsonValue());
 			ofstream ofs;
-			//ofs.open(theApp.getConfigFile().c_str());
+			ofs.open(theApp.getConfigFile().c_str());
 
 			if (ofs.is_open())
 			{
@@ -673,7 +703,7 @@ unsigned int __stdcall  sync_setting_proc(void* para)
 		{
 			
 		}
-		Sleep(100);
+
 	}
 
 	return 0;
@@ -687,11 +717,12 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 
 {
 
+	CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
-	_beginthreadex(NULL, 0, sync_setting_proc, NULL, 0, NULL);
+	//_beginthreadex(NULL, 0, sync_setting_proc, NULL, 0, NULL);
 	map<string, string> para;
 
-
+	Log("_tWinMain(");
 
 // 	string a;
 // 	a.resize(79);

@@ -66,6 +66,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)../module;$(SolutionDir)../sqlite;$(SolutionDir)../openssl;$(SolutionDir)../SM;$(SolutionDir)../MDSM;$(SolutionDir)../GMSSL;$(SolutionDir)../GMSSL_Proxy</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
+      <AdditionalOptions> /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

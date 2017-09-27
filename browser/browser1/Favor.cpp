@@ -498,37 +498,37 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 
 		else if(query == q_all)
 		{
-			sql = "select * from history;";
+			sql = "select * from history order by ID DESC;";
 		}
 		else if (query == q_today)
 		{
 			sql = "select * from history where ADDDATE "
 				"between datetime('now','start of day')"
-				"and datetime('now');";
+				"and datetime('now') order by ID DESC;";
 		}
 		else if (query == q_yesterday)
 		{
 			sql = "select * from history where ADDDATE "
 				"between datetime('now','start of day','-1 days')"
-				"and datetime('now','start of day', '-1 seconds');";
+				"and datetime('now','start of day', '-1 seconds') order by ID DESC;";
 		}
 		else if(query == q_thisweek)
 		{
 			sql = "select * from history where ADDDATE "
 				"between datetime('now','start of day','-6 days')"
-				"and datetime('now','start of day','-2 days','-1 seconds');";
+				"and datetime('now','start of day','-2 days','-1 seconds') order by ID DESC;";
 		}
 		else if(query == q_thismonth)
 		{
 			sql = "select * from history where ADDDATE "
 				"between datetime('now','start of day', '-30 days')"
-				"and datetime('now','start of day', '-6 days','-1 seconds');";
+				"and datetime('now','start of day', '-6 days','-1 seconds') order by ID DESC;";
 		}
 		else if(query == q_rest)
 		{
 			sql = "select * from history where ADDDATE "
 				"between datetime('1900-01-01 00:00:00')"
-				"and datetime('now','start of month', '-1 second');";
+				"and datetime('now','start of month', '-1 second') order by ID DESC;";
 		}
 		else
 		{
@@ -652,7 +652,7 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 			xstring tmp;
 			m_dbtable.setRow(j);
 
-			result[j] = _encoding(m_dbtable.getStringField("SHORTCUT", "")).de_base64().get();
+			result[j] = _encoding(m_dbtable.getStringField("SHORTCUT", "")).de_base64().a_utf16().utf8().get();
 			result[j + 4] = m_dbtable.getStringField("URL", "#");
 			result[j + 8] = m_dbtable.getStringField("TITLE", "#");
 		

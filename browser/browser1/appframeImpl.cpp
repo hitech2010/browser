@@ -52,6 +52,7 @@ public:
 
 	void Notify(TNotifyUI& msg)  
 	{
+		LOGNOTIFY;
 		if (msg.pSender->GetName() == _T("ui_about_close") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			this->Close(IDCLOSE);
@@ -174,6 +175,7 @@ public:
 
 	void Notify(TNotifyUI& msg)  
 	{
+		LOGNOTIFY;
 		if (msg.pSender->GetName() == _T("ui_closetipdlg_close") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			this->Close(IDCLOSE);
@@ -1140,7 +1142,7 @@ void CFrameWindowWnd::ShowAboutDlg()
 
 void CFrameWindowWnd::OnSelectChanged(TNotifyUI& msg)
 {
-
+	Log("OnSelectChanged %08X", msg.pSender);
 
 	if(msg.pSender->GetUserData().Find(_T("ui_option")) != -1)
 	{
@@ -1165,7 +1167,7 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 	}
 	else if(msg.pSender->GetName() == _T("ui_addtab"))
 	{
-		m_engine->Add(m_engine->getBookmarkPage());
+		m_engine->Add(m_engine->getIndexPage());
 	}
 	else if(msg.pSender->GetUserData().Find(_T("ui_closetab")) != -1)
 	{
@@ -1194,10 +1196,17 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 	}
 
 
-	else if (msg.pSender->GetName() == _T("ui_resotrepage")) {
-		SendMessage(WM_SYSCOMMAND, SC_MINIMIZE, 0);
+	else if (msg.pSender->GetName() == _T("ui_restorepage")) {
+		
+		m_engine->RestorePage();
+
 	}
 
+	else if (msg.pSender->GetName() == _T("ui_home")) {
+
+		m_engine->Add(L"http://www.microdone.cn/");
+
+	}
 
 
 }
@@ -1601,10 +1610,11 @@ int CMdWebEngine::Remove( CControlUI* btnCloseTab )
 			if(pOpt->IsSelected())
 			{
 				pOptPrev->Selected(true);
+				pNewSelected = GetWebPage((UINT_PTR)pContainerPrev);
 
 			}
 
-			pNewSelected = GetWebPage((UINT_PTR)pContainerPrev);
+			
 
 
 
@@ -1617,30 +1627,36 @@ int CMdWebEngine::Remove( CControlUI* btnCloseTab )
 			if(pOpt->IsSelected())
 			{
 				pOptNext->Selected(true);
-
+				pNewSelected = GetWebPage((UINT_PTR)pContainerNext);
 			}
 
-			pNewSelected = GetWebPage((UINT_PTR)pContainerNext);
+
+			
 		}
 	}
 
 
-	m_tabcontainer->Remove(pContainer);
+	CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(GetWebPage((UINT_PTR)pContainer));
+	if (ui)
+	{
+		string url = ui->getUrl();
+		Push(url);
+	}
+
+
+	UnBind(pContainer);
 	m_webcontainer->Remove(GetWebPage((UINT_PTR)pContainer));
+	m_tabcontainer->Remove(pContainer);
+
+
 
 	if(pNewSelected)
 	{
-
-		//m_webcontainer->SelectItem(pNewSelected);
-		m_webcontainer->NeedParentUpdate();
+		m_webcontainer->SelectItem(pNewSelected);
 		m_crrentWebPage = pNewSelected;
 	}
 
-	UnBind(pContainer);
-
-
 	
-
 
 	return true;
 }
@@ -1673,6 +1689,22 @@ void CMdWebEngine::UnBind( CContainerUI* tab)
 
 	}
 
+}
+
+void CMdWebEngine::Push(string & url)
+{
+	m_deleted.push(url);
+}
+
+string CMdWebEngine::Pop()
+{
+	if (m_deleted.size())
+	{
+		string tmp = m_deleted.top();
+		m_deleted.pop();
+		return tmp;
+	}
+	return "";
 }
 
 CEditUI* CMdWebEngine::GetAddressBar()
@@ -1727,6 +1759,15 @@ LPCTSTR CMdWebEngine::getSettingsPage()
 	return m_settings_page;
 }
 
+void CMdWebEngine::RestorePage()
+{
+	string tmp = Pop();
+	if (tmp.size())
+	{
+		Add(_encoding(tmp).u8_utf16().getutf16().c_str());
+	}
+}
+
 int CMdWebEngine::Reload(LPCTSTR url /*= NULL*/)
 {
 	CWebBrowserUI* pWebBrowserUI  = dynamic_cast<CWebBrowserUI*>(
@@ -1778,6 +1819,8 @@ int CMdWebEngine::Reload(LPCTSTR url /*= NULL*/)
 
 int CMdWebEngine::Switch( CControlUI* pOption )
 {
+
+	Log("CMdWebEngine::Switch");
 	CContainerUI* pContainer = dynamic_cast<CContainerUI*>(pOption->GetParent());
 
 	if(pContainer)
@@ -1787,6 +1830,11 @@ int CMdWebEngine::Switch( CControlUI* pOption )
 		{
 
 			CWebBrowserUI* ie = reinterpret_cast<CWebBrowserUI*>(m_bindings[(UINT_PTR)pContainer]);
+
+			if (!ie)
+			{
+				return 0;
+			}
 
 			Log(_T("SWITCHTO CWEBBROWSER[%s]"),ie->GetUserData());
 
@@ -1813,10 +1861,6 @@ int CMdWebEngine::Switch( CControlUI* pOption )
 
 	return 0;
 }
-
-
-
-
 
 void CFrameWindowWnd::BookmarkAdd(void)
 {
@@ -1886,3 +1930,4 @@ void CFrameWindowWnd::SetNeedTip(bool need)
 		theApp.setAskBeforeClose("no");
 	}
 }
+

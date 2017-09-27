@@ -8,7 +8,7 @@
 
 string HttpDownloadEvent( std::map<string,string>& para);
 string HttpWebShortcutEvent( std::map<string, string>& para);
-
+unsigned int __stdcall  sync_setting_proc(void* para);
 
 
 class AppConfig

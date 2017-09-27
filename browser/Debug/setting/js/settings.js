@@ -117,7 +117,112 @@ function loading_settings(jappconfig)
 
 function sync_settings(jconfig)
 {
-	bs.Sync(jconfig);
+		//page general(常规设置)
+		//
+		//
+
+	var jappconfig = jconfig.appconfig;
+	
+;	if($("#startup_page_policy_0").parent().is(".radio-selected"))
+	{
+		jappconfig.startup_page_policy = "0";
+	}
+	else if($("#startup_page_policy_0").parent().is(".radio-selected"))
+	{	
+		jappconfig.startup_page_policy = "1";
+	}
+	else
+	{
+		jappconfig.startup_page_policy = "2";	
+	}
+
+
+	jappconfig.ui_show_homepage = "0";
+	jappconfig.ui_show_bookmark = "0";
+	jappconfig.ui_show_shortcut = "0";
+	jappconfig.ui_show_restore_recent = "0";
+
+	if($("#main-page").parent().is(".check-selected"))
+	{
+		jappconfig.ui_show_homepage = "1"
+	}
+	if($("#show-bookmarks").parent().is(".check-selected"))
+	{
+		jappconfig.ui_show_bookmark = "1";
+	}
+	if($("#screenshot").parent().is(".check-selected"))
+	{
+		jappconfig.ui_show_shortcut = "1";	
+	}
+	if($("#Restore").parent().is(".check-selected"))
+	{
+		jappconfig.ui_show_restore_recent = "1";	
+	}
+
+
+
+
+	//page label setting(书签设置)
+	//
+
+	jappconfig.tabset_qiantaitiaozhuan = "0";
+	jappconfig.tabset_close_dblclick = "0";
+	jappconfig.tabset_close_rightclick = "0";
+	jappconfig.tabset_quit_whencloselast = "0";
+
+
+	if($("#Reception").parent().is(".radio-selected")) jappconfig.tabset_qiantaitiaozhuan = "1";
+	if($("#double-click-off").parent().is(".check-selected"))  jappconfig.tabset_close_dblclick = "1";	
+	if($("#right-click-off").parent().is(".check-selected"))jappconfig.tabset_close_rightclick = "1";	
+	if($("#close-browser").parent().is(".check-selected")) jappconfig.tabset_quit_whencloselast = "1";;	
+
+
+
+	jappconfig.tabset_newtab_whenclickbookmark = "0";
+	jappconfig.tabset_newtab_navigateaddress = "0";
+	jappconfig.tabset_newtab_position = "0";
+	jappconfig.tabset_activepos_whenclosetab = "0";
+
+	if($("#opennewpage").parent().is(".radio-selected")) jappconfig.tabset_newtab_whenclickbookmark = "1";
+	
+	if($("#opennewpage2").parent().is("radio-selected")) jappconfig.tabset_newtab_navigateaddress = "1";;
+
+	if($("#current-right-side").parent().is("radio-selected")) jappconfig.tabset_newtab_position = "1";;
+
+	if($("#Activate-left").parent().is("radio-selected")) jappconfig.tabset_activepos_whenclosetab = "1";
+	
+
+	//下载页面
+
+
+	var download_path = $("#downloadLocationPath").attr("value");
+	if(download_path.length)
+	{
+		jappconfig.dnload_location = download_path;
+	}
+	
+	jappconfig.dnload_ask_befroe_newtask = "0";
+	jappconfig.dnload_info_whenover = "0";
+
+	if($("#download-before").parent().is(".check-selected"))  jappconfig.dnload_ask_befroe_newtask = "1";;
+	if($("#download-complate").parent().is(".check-selected"))  jappconfig.dnload_info_whenover = "1";;
+
+
+	//截图设置
+
+
+	if($("#png-format").parent().addClass("radio-selected"))
+		jappconfig.shortcut_ext = "png"；
+	else jappconfig.shortcut_ext = "jpg"；
+	
+
+	var download_path2 = $("#downloadLocationPath2").attr("value");
+	if(download_path2.length)
+	{
+		jappconfig.location = download_path2;
+	}
+	
+	bs.Sync(JSON.stringify(jconfig));
 	setTimeout(function(){sync_settings(jconfig);},300);
 }
 
@@ -139,7 +244,7 @@ $(function(){
 
 	
 
-	setTimeout(function(){sync_settings(JSON.stringify(jconfig));},300);
+	setTimeout(function(){sync_settings(jconfig);},300);
 
 	
 

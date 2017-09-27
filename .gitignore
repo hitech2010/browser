@@ -1,4 +1,4 @@
-﻿*.sdf
+*.sdf
 *.exp
 *.obj
 
@@ -23,3 +23,7 @@
 **/Tmp/
 **/tempfiles/
 **/ipch/
+browser - 副本/
+browser/Debug.rar
+browser/Debug/ie10.reg
+browser/Debug/ie11.reg

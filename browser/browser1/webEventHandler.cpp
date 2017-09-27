@@ -788,6 +788,9 @@ STDMETHODIMP CWebEventHandler::Invoke(
 
 				Json::Reader reader;
 				reader.parse(_encoding(json).utf8().get(), theApp.getJsonValue(), false);
+
+
+				//sync_setting_proc(NULL);
 				
 				break;
 			}
