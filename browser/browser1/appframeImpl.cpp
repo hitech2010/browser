@@ -645,6 +645,77 @@ public:
 		
 	}
 
+	LRESULT CFavorAddItemDlg::OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+	{
+		POINT pt; pt.x = GET_X_LPARAM(lParam); pt.y = GET_Y_LPARAM(lParam);
+		::ScreenToClient(*this, &pt);
+
+		RECT rcClient;
+		::GetClientRect(*this, &rcClient);
+		Log("OnNcHitTest"
+			);
+
+		if(::IsZoomed(*this))
+		{
+			return HTCLIENT;
+		}
+
+
+
+
+		int nPos = 0;
+
+		RECT rcSizeBox = m_pm.GetSizeBox();
+		if (pt.y < rcClient.top + rcSizeBox.top)
+		{
+			if (pt.x < rcClient.left + rcSizeBox.left) return HTTOPLEFT;
+			if (pt.x > rcClient.right - rcSizeBox.right) return HTTOPRIGHT;
+			return HTTOP;
+		}
+		else if (pt.y > rcClient.bottom - rcSizeBox.bottom)
+		{
+			if (pt.x < rcClient.left + rcSizeBox.left) return HTBOTTOMLEFT;
+			if (pt.x > rcClient.right - rcSizeBox.right) return HTBOTTOMRIGHT;
+			return HTBOTTOM;
+		}
+
+		if (pt.x < rcClient.left + rcSizeBox.left) return HTLEFT;
+		if (pt.x > rcClient.right - rcSizeBox.right) return HTRIGHT;
+
+
+
+		RECT rcCaption = m_pm.GetCaptionRect();
+
+
+		if( pt.x >= rcClient.left + rcCaption.left && pt.x < rcClient.right - rcCaption.right \
+			&& pt.y >= rcCaption.top && pt.y < rcCaption.bottom ) 
+		{
+			CControlUI* pControl = static_cast<CControlUI*>(m_pm.FindControl(pt));
+
+			if( pControl && (_tcscmp(pControl->GetClass(), _T("ButtonUI")) != 0 &&
+				_tcscmp(pControl->GetClass(), _T("OptionUI")) != 0 &&
+				_tcscmp(pControl->GetClass(), _T("ControlUI")) !=  0 &&
+				_tcscmp(pControl->GetClass(), _T("ContainerUI")) !=  0 )
+				)
+			{
+				Log("OnNcHitTest() HTCAPTION ");
+				return HTCAPTION;  //如果鼠标在CAPTION区域中按钮容器控件上面，则不允许拖动
+			}
+
+
+		}
+		else
+		{
+			;
+		}
+
+
+
+
+
+		return HTCLIENT;
+	}
+
 	LRESULT CFavorAddItemDlg::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	{  
 		LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);  
@@ -724,6 +795,7 @@ public:
 				} 
 			}
 			break;
+		case WM_NCHITTEST:     lRes = OnNcHitTest(uMsg, wParam, lParam, bHandled); Log("OnNcHitTest %d", lRes); break;
 		default:  
 			bHandled = FALSE;  
 		}  
@@ -1048,6 +1120,76 @@ public:
 
 		return 0;
 	}
+	LRESULT CFavorEditDlg::OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+	{
+		POINT pt; pt.x = GET_X_LPARAM(lParam); pt.y = GET_Y_LPARAM(lParam);
+		::ScreenToClient(*this, &pt);
+
+		RECT rcClient;
+		::GetClientRect(*this, &rcClient);
+		Log("OnNcHitTest"
+			);
+
+		if(::IsZoomed(*this))
+		{
+			return HTCLIENT;
+		}
+
+
+
+
+		int nPos = 0;
+
+		RECT rcSizeBox = m_pm.GetSizeBox();
+		if (pt.y < rcClient.top + rcSizeBox.top)
+		{
+			if (pt.x < rcClient.left + rcSizeBox.left) return HTTOPLEFT;
+			if (pt.x > rcClient.right - rcSizeBox.right) return HTTOPRIGHT;
+			return HTTOP;
+		}
+		else if (pt.y > rcClient.bottom - rcSizeBox.bottom)
+		{
+			if (pt.x < rcClient.left + rcSizeBox.left) return HTBOTTOMLEFT;
+			if (pt.x > rcClient.right - rcSizeBox.right) return HTBOTTOMRIGHT;
+			return HTBOTTOM;
+		}
+
+		if (pt.x < rcClient.left + rcSizeBox.left) return HTLEFT;
+		if (pt.x > rcClient.right - rcSizeBox.right) return HTRIGHT;
+
+
+
+		RECT rcCaption = m_pm.GetCaptionRect();
+
+
+		if( pt.x >= rcClient.left + rcCaption.left && pt.x < rcClient.right - rcCaption.right \
+			&& pt.y >= rcCaption.top && pt.y < rcCaption.bottom ) 
+		{
+			CControlUI* pControl = static_cast<CControlUI*>(m_pm.FindControl(pt));
+
+			if( pControl && (_tcscmp(pControl->GetClass(), _T("ButtonUI")) != 0 &&
+				_tcscmp(pControl->GetClass(), _T("OptionUI")) != 0 &&
+				_tcscmp(pControl->GetClass(), _T("ControlUI")) !=  0 &&
+				_tcscmp(pControl->GetClass(), _T("ContainerUI")) !=  0 )
+				)
+			{
+				Log("OnNcHitTest() HTCAPTION ");
+				return HTCAPTION;  //如果鼠标在CAPTION区域中按钮容器控件上面，则不允许拖动
+			}
+
+
+		}
+		else
+		{
+			;
+		}
+
+
+
+
+
+		return HTCLIENT;
+	}
 
 	LRESULT CFavorEditDlg::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
@@ -1076,6 +1218,8 @@ public:
 		case 1235:
 			DeleteSelect();
 			break;
+		case WM_NCHITTEST:     lRes = OnNcHitTest(uMsg, wParam, lParam, bHandled); Log("OnNcHitTest %d", lRes); break;
+		
 		default:
 			bHandled = FALSE;
 		}
@@ -1263,6 +1407,8 @@ public:
 		LRESULT lRes = 0;
 		BOOL bHandled = TRUE;
 
+		Log("CCacheClearDlg::HandleMessage %d",uMsg);
+
 		switch (uMsg)
 		{
 		case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;
@@ -1279,6 +1425,7 @@ public:
 				}
 			}
 			break;
+		case WM_NCHITTEST:     lRes = OnNcHitTest(uMsg, wParam, lParam, bHandled); Log("OnNcHitTest %d", lRes); break;
 		default:
 			bHandled = FALSE;
 		}
@@ -1288,7 +1435,76 @@ public:
 		return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
 	}
 
+	LRESULT CCacheClearDlg::OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+	{
+		POINT pt; pt.x = GET_X_LPARAM(lParam); pt.y = GET_Y_LPARAM(lParam);
+		::ScreenToClient(*this, &pt);
 
+		RECT rcClient;
+		::GetClientRect(*this, &rcClient);
+		Log("OnNcHitTest"
+			);
+
+		if(::IsZoomed(*this))
+		{
+			return HTCLIENT;
+		}
+
+		
+
+
+		int nPos = 0;
+
+		RECT rcSizeBox = m_pm.GetSizeBox();
+		if (pt.y < rcClient.top + rcSizeBox.top)
+		{
+			if (pt.x < rcClient.left + rcSizeBox.left) return HTTOPLEFT;
+			if (pt.x > rcClient.right - rcSizeBox.right) return HTTOPRIGHT;
+			return HTTOP;
+		}
+		else if (pt.y > rcClient.bottom - rcSizeBox.bottom)
+		{
+			if (pt.x < rcClient.left + rcSizeBox.left) return HTBOTTOMLEFT;
+			if (pt.x > rcClient.right - rcSizeBox.right) return HTBOTTOMRIGHT;
+			return HTBOTTOM;
+		}
+
+		if (pt.x < rcClient.left + rcSizeBox.left) return HTLEFT;
+		if (pt.x > rcClient.right - rcSizeBox.right) return HTRIGHT;
+
+
+
+		RECT rcCaption = m_pm.GetCaptionRect();
+
+
+		if( pt.x >= rcClient.left + rcCaption.left && pt.x < rcClient.right - rcCaption.right \
+			&& pt.y >= rcCaption.top && pt.y < rcCaption.bottom ) 
+		{
+			CControlUI* pControl = static_cast<CControlUI*>(m_pm.FindControl(pt));
+
+			if( pControl && (_tcscmp(pControl->GetClass(), _T("ButtonUI")) != 0 &&
+				_tcscmp(pControl->GetClass(), _T("OptionUI")) != 0 &&
+				_tcscmp(pControl->GetClass(), _T("ControlUI")) !=  0 &&
+				_tcscmp(pControl->GetClass(), _T("ContainerUI")) !=  0 )
+				)
+			{
+				Log("OnNcHitTest() HTCAPTION ");
+				return HTCAPTION;  //如果鼠标在CAPTION区域中按钮容器控件上面，则不允许拖动
+			}
+
+
+		}
+		else
+		{
+			;
+		}
+
+
+
+
+
+		return HTCLIENT;
+	}
 
 
 

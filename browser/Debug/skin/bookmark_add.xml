@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Window caption="0,0,254,30" roundcorner="5,5" sizebox="4,4,4,4" mininfo="386,254" showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" shadowcorner="8,8,8,8" >
+<Window caption="0,0,0,40" roundcorner="5,5" sizebox="4,4,4,4" mininfo="386,254" showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" shadowcorner="8,8,8,8" >
   <Font id="0" name="PingFangSC-Medium" size="17" />
   <Font id="14" name="PingFangSC-Regular" default="true" size="14" />
   <Font id="12" name="PingFangSC-Regular" size="12" />

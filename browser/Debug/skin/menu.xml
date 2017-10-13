@@ -35,7 +35,7 @@
 		      	<Button  float="true" pos="21,37,49,57" height="20" text="打印"/>
 		      </VerticalLayout>
 	  </HorizontalLayout>
-	  <HorizontalLayout padding="0,28,0,0"  height="248" bkcolor="#FFEBEBEB">
+	  <HorizontalLayout padding="0,28,0,0"  height="248" >
 	  	<Button float="true" pos="32,18,80,35"  text="新建窗口"></Button>
 	  	<Option group="xjck" name="putong" float="true" pos="113,16,161,38" bordersize="1" selectedbkcolor="#FF1979CA" bordercolor="#FF1979CA" text="普通"></Option>
 	  	<Option group="xjck" name="xiaohao" float="true" pos="160,16,208,38" bordersize="1" selectedbkcolor="#FF1979CA" bordercolor="#FF1979CA" text="小号"></Option>

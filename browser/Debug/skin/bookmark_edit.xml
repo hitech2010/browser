@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Window caption="0,0,0,30" roundcorner="5,5,5,5" sizebox="4,4,4,4" mininfo="386,254" >
+<Window caption="0,0,0,40" roundcorner="5,5,5,5" sizebox="4,4,4,4" mininfo="386,254" >
   <Font id="0" name="PingFangSC-Medium" size="17" />
   <Font id="1" name="PingFangSC-Regular" size="14" />
   <Font id="2" name="微软雅黑" size="20" />
