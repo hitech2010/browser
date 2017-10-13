@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window caption="0,0,264,30" roundcorner="5,5" size="264,391" sizebox="4,4,4,4" mininfo="264,391" showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" shadowcorner="8,8,8,8" >
+  <Font id="17" name="PingFangSC-Medium" size="17"  bold="true"/>
+  <Font id="14" name="PingFangSC-Regular"  size="14" />
+  <Font id="12" name="PingFangSC-Regular" default="true" size="12" />
+
+  <Default name="VScrollBar" shared="true" value="width=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='skin/vscrollbar.png' source='0,60,8,100' corner='0,4,0,4'&quot; thumbhotimage=&quot;file='skin/vscrollbar.png' source='8,60,16,100' corner='0,4,0,4'&quot; thumbpushedimage=&quot;file='skin/vscrollbar.png' source='16,60,24,100' corner='0,4,0,4'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/vscrollbar.png' source='0,0,8,60' corner='0,4,0,4'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
+  <Default name="HScrollBar" shared="true" value="height=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='skin/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; thumbhotimage=&quot;file='skin/hscrollbar.png' source='0,8,32,16' corner='4,0,4,0'&quot; thumbpushedimage=&quot;file='skin/hscrollbar.png' source='0,16,32,24' corner='4,0,4,0'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
+ 
+  <Style name="combo_style" value="height=&quot;28&quot; textcolor=&quot;#FF000000&quot; itemvalign=&quot;vcenter&quot; textpadding=&quot;4,1,28,1&quot; normalimage=&quot;res='skin/combo.png' source='0,0,161,28' corner='2,2,28,2'&quot;" />
+	<Style name="combo_style1" value="height=&quot;28&quot; textcolor=&quot;#FF000000&quot; itemvalign=&quot;vcenter&quot; textpadding=&quot;4,1,28,1&quot; normalimage=&quot;res='skin/combo1.bmp' source='0,0,214,28'  corner='2,2,28,2'&quot; " />
+
+  <VerticalLayout bkcolor="#FFFFFFFF" width="264" height="391"  font="14">
+		
+    <Button float="true"  font="17" text="清理上网痕迹" pos="70,20,193,40"   textcolor="#FF5C5C5C" />
+    <Button name="ui_clearcache_close" float="true"  font="1" pos="241,13,251,23" textcolor="#FF5C5C5C" bkimage="file=&apos;skin\close_dlg.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" />
+    
+    
+    <Label  height="1" bkcolor="#FFE1E1E1" float="true" pos="32,48,233,49"   >
+    </Label>
+		
+		
+
+    <CheckBox name="ui_clearcache_linshiwenjian_checkbox" float="true"    pos="31,71,44,83"   bordercolor="#FFBBBBBB" bordersize="1,1,1,1"  bkimage="skin/unchecked.png" selectedimage="skin/checked.png" />
+    <Button float="true"  text="网页临时文件"  pos="53,68,254,85" align="left"    textcolor="#FF5C5C5C" />
+
+    <CheckBox name="ui_clearcache_cookies_checkbox" float="true"    pos="31,98,44,111"  bordercolor="#FFBBBBBB" bordersize="1,1,1,1"  bkimage="skin/unchecked.png" selectedimage="skin/checked.png" />
+    <Button float="true"  text="Cookies(会影响登陆等网站信息)"   pos="53,95,254,112" align="left" textcolor="#FF5C5C5C" />
+    
+    
+    
+    <CheckBox name="ui_clearcache_lishi_checkbox" float="true"   pos="31,125,43,137"   bordercolor="#FFBBBBBB" bordersize="1,1,1,1"  bkimage="skin/unchecked.png" selectedimage="skin/checked.png" />
+    <Button float="true"  text="历史记录"   pos="53,122,254,139" align="left"    textcolor="#FF5C5C5C" />
+    
+    
+    
+    <CheckBox name="ui_clearcache_download_checkbox" float="true"    pos="31,152,43,164"   bordercolor="#FFBBBBBB" bordersize="1,1,1,1"  bkimage="skin/unchecked.png" selectedimage="skin/checked.png" />
+    <Button float="true"  text="下载记录"   pos="53,149,254,166" align="left"    textcolor="#FF5C5C5C" />
+    
+    
+    
+    <CheckBox name="ui_clearcache_recentclose_checkbox" float="true"  pos="31,179,43,191"   bordercolor="#FFBBBBBB" bordersize="1,1,1,1"  bkimage="skin/unchecked.png" selectedimage="skin/checked.png" />
+    <Button float="true"  text="最近关闭列表"   pos="53,176,254,193" align="left"    textcolor="#FF5C5C5C" />
+    
+    
+    
+    <CheckBox name="ui_clearcache_changyongwangzhan_checkbox" float="true"   pos="31,206,43,218"   bordercolor="#FFBBBBBB" bordersize="1,1,1,1"  bkimage="skin/unchecked.png" selectedimage="skin/checked.png" />
+    <Button float="true"  text="常用网站"   pos="53,203,254,220" align="left"    textcolor="#FF5C5C5C" />
+    
+    
+    <CheckBox name="ui_clearcache_password_checkbox" float="true"   pos="31,233,43,245"   bordercolor="#FFBBBBBB" bordersize="1,1,1,1"  bkimage="skin/unchecked.png" selectedimage="skin/checked.png" />
+    <Button float="true"  text="密码"   pos="53,230,254,247" align="left"    textcolor="#FF5C5C5C" />
+    	
+    	
+    <CheckBox name="ui_clearcache_biaodanjilu_checkbox" float="true"   pos="31,260,43,272"   bordercolor="#FFBBBBBB" bordersize="1,1,1,1"  bkimage="skin/unchecked.png" selectedimage="skin/checked.png" />
+    <Button float="true"  text="表单记录"   pos="53,257,254,274" align="left"    textcolor="#FF5C5C5C" />
+    
+    <Label  height="1" bkcolor="#FFE1E1E1" float="true" pos="32,291,233,292"   >
+    </Label>
+    
+    
+    <CheckBox float="true"  name="ui_clearcache_autoclean_checkbox" pos="31,307,43,319"   bordercolor="#FFBBBBBB" bordersize="1,1,1,1"  bkimage="skin/unchecked.png" selectedimage="skin/checked.png" />
+    <Button float="true"  text="关闭浏览器时自动清理"   pos="53,304,254,321" align="left"    textcolor="#FF5C5C5C" />
+    
+    
+    <Button float="true"  name="ui_clearcache_doclean" text="立即清理"   pos="35,341,230,371"     textcolor="#FF458EE4" bkcolor="#33458DE4"/>
+   
+    
+
+    		<!--Container bkcolor="#FFFFFFFF" >
+			<Label text="账号：" float="true" pos="10, 20, 78, 42" />
+			<Combo name="accountcombo" float="true" pos="80, 20, 220, 42" tooltip="请点击这里选择您准备使用的账号" normalimage="file='Combo_nor.bmp' corner='2,2,24,2'" hotimage="file='Combo_over.bmp' corner='2,2,24,2'" pushedimage="file='Combo_over.bmp' corner='2,2,24,2'" textpadding="1,1,1,1" >
+				<ListLabelElement text="张三" selected="true" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+				<ListLabelElement text="李四" />
+			</Combo>
+			<Button text="{u}注册账号{/u}" showhtml="true" float="true" pos="230, 20, 300, 42" tooltip="如果你还没有账号，请点击注册一个账号" />
+			<Edit name="accountedit" float="true" pos="81, 21, 199, 41" tooltip="请在这里输入您的账号"/>
+			<Label text="密码：" float="true" pos="10, 55, 78, 75" />
+			<Edit name="pwdedit" float="true" pos="80, 55, 220, 75" password="true" tooltip="请在这里输入您的密码" bordercolor="#FF4EA0D1" bordersize="1"/>
+			<Button text="{u}{l}找回密码{/l}{/u}" showhtml="true" float="true" pos="230, 55, 300, 75" tooltip="如果你忘记了密码，请点击找回密码"/>
+			<Button name="SettingBtn" text="设置" float="true" pos="66, 90, 126, 110" tooltip="Use English Language" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" />
+			<Button name="loginBtn" text="登录" float="true" pos="186, 90, 246, 110" tooltip="点击这里登录游戏" normalimage="button_nor.bmp" hotimage="button_over.bmp" pushedimage="button_down.bmp" />
+		</Container-->
+
+
+  </VerticalLayout>
+
+</Window>

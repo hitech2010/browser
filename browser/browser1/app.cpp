@@ -10,16 +10,16 @@
 #pragma  comment(lib, "jsoncpp.lib")
 
 
-// #pragma  comment(lib, "gmssld.lib")
-// #pragma  comment(lib, "http_proxy_serverd.lib")
-// #pragma  comment(lib, "libeay32mtd.lib")
-// #pragma  comment(lib, "mdsmd.lib")
-// #pragma  comment(lib, "smd.lib")
-
-bool isGMSSL(string &strt, bool &b)
-{
-	return false;
-}
+ #pragma  comment(lib, "gmssld.lib")
+ #pragma  comment(lib, "http_proxy_serverd.lib")
+ #pragma  comment(lib, "libeay32mtd.lib")
+ #pragma  comment(lib, "mdsmd.lib")
+ #pragma  comment(lib, "smd.lib")
+//
+//bool isGMSSL(string &strt, bool &b)
+//{
+//	return false;
+//}
 
 
 string HttpWebShortcutEvent( std::map<std::string, string>& para)
@@ -729,7 +729,7 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 
 
 	//string tmp = theApp.Favor()->TestRoutine().c_str();
-	//startproxy();
+	startproxy();
 	
 	CPaintManagerUI::SetInstance(hInstance);// 加载XML的时候，需要使用该句柄去定位EXE的路径，才能加载XML的路径
 	CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath());

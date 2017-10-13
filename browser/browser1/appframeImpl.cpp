@@ -383,12 +383,25 @@ public:
 		}
 		else if (msg.pSender->GetName() == _T("menu_clearcache") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
+
+
+			MenuCmd pMenuCmd;
+			lstrcpy(pMenuCmd.szName, msg.pSender->GetName().GetData());
+			lstrcpy(pMenuCmd.szUserData, msg.pSender->GetUserData().GetData());
+			lstrcpy(pMenuCmd.szText, msg.pSender->GetText().GetData());
+			if (!::PostMessage(m_frame->GetHWND(), WM_MENUCLICK, (WPARAM)msg.pSender, (LPARAM)this))
+			{
+
+			}
+
+
+
 			//WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 255", 9);
-			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 8", 9);
-			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 2", 9);
-			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 16", 9);
-			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 32", 9);
-			MessageBox(m_frame->GetHWND(), L"清理缓存成功", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
+// 			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 8", 9);
+// 			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 2", 9);
+// 			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 16", 9);
+// 			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 32", 9);
+// 			MessageBox(m_frame->GetHWND(), L"清理缓存成功", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
 		}
 		else if (msg.pSender->GetName() == _T("menu_print") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
@@ -646,7 +659,7 @@ public:
 		m_pm.AttachDialog(pRoot);  
 		m_pm.AddNotifier(this);
 
-		LPCTSTR pTitle = m_fream->m_engine->GetContainer(m_fream->m_engine->m_crrentWebPage)->GetItemAt(0)->GetText().GetData();
+		LPCTSTR pTitle = m_frame->m_engine->GetContainer(m_frame->m_engine->m_crrentWebPage)->GetItemAt(0)->GetText().GetData();
 		m_title = static_cast<CEditUI*>(m_pm.FindControl(_T("ui_favor_add_title")));
 		m_Combo = static_cast<CComboUI*>(m_pm.FindControl(_T("ui_favor_folderlist")));
 		assert(m_title);
@@ -1073,6 +1086,209 @@ public:
 	}
 
 
+	//CCacheClearDlg
+
+	LPCTSTR CCacheClearDlg::GetWindowClassName() const { return _T("UICacheClearDlg"); };
+	LRESULT CCacheClearDlg::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)
+	{
+		if (uMsg == WM_KEYDOWN)
+		{
+			if (wParam == VK_ESCAPE)
+			{
+				Close();
+				return true;
+			}
+		}
+
+		return false;
+	}
+	void CCacheClearDlg::OnFinalMessage(HWND /*hWnd*/)
+	{
+		m_pm.RemovePreMessageFilter(this);
+		delete this;
+	}
+
+
+
+
+
+	void CCacheClearDlg::Notify(TNotifyUI& msg)
+	{
+		wxstring tmp;
+
+		tmp.format(L"CCacheClearDlg::Notify:psender(%s): msgtype(%s)", msg.pSender->GetName().GetData(), msg.sType);
+
+		Log(tmp);
+		if (msg.pSender->GetName() == _T("ui_clearcache_close") && msg.sType == DUI_MSGTYPE_CLICK)
+		{	
+			Close(IDCLOSE);
+		}
+
+		if (msg.pSender->GetName() == _T("ui_clearcache_doclean") && msg.sType == DUI_MSGTYPE_CLICK)
+		{	
+
+			//Temporary Internet Files  (删除Internet临时文件)  
+			//RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 8  
+			//Cookies (删除cookie)  
+			//RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 2  
+			//History (删除历史记录)  
+			//RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 1  
+			//Form Data (删除表单数据)  
+			//RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 16  
+			//Passwords (删除密码)  
+			//RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 32  
+			//Delete All  (全部删除)  
+			//RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 255  
+			//Delete All (全部删除，包括插件的设置和文件)  
+			//RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 4351  
+
+			if(m_linshiwenjian)
+			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 8", 9);
+			if(m_cookies)
+			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 2", 9);
+			if(m_biaodan)
+			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 16", 9);
+			if(m_password)
+			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 32", 9);
+			if(m_lish)
+			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 1", 9);
+
+			Close(IDCLOSE);
+		}
+
+
+
+		if (msg.pSender->GetName() == _T("ui_clearcache_linshiwenjian_checkbox") && msg.sType == DUI_MSGTYPE_SELECTCHANGED)
+		{
+			CCheckBoxUI* pCheck = static_cast<CCheckBoxUI*>(msg.pSender);
+			if(pCheck)
+			{
+				m_linshiwenjian =  pCheck->GetCheck();
+			}
+			//
+		}
+		if (msg.pSender->GetName() == _T("ui_clearcache_cookies_checkbox") && msg.sType == DUI_MSGTYPE_SELECTCHANGED)
+		{
+			CCheckBoxUI* pCheck = static_cast<CCheckBoxUI*>(msg.pSender);
+			if(pCheck)
+			{
+				m_cookies =  pCheck->GetCheck();
+			}
+		}
+		if (msg.pSender->GetName() == _T("ui_clearcache_lishi_checkbox") && msg.sType == DUI_MSGTYPE_SELECTCHANGED)
+		{
+			CCheckBoxUI* pCheck = static_cast<CCheckBoxUI*>(msg.pSender);
+			if(pCheck)
+			{
+				m_lish =  pCheck->GetCheck();
+			}
+		}
+		if (msg.pSender->GetName() == _T("ui_clearcache_donwload_checkbox") && msg.sType == DUI_MSGTYPE_SELECTCHANGED)
+		{
+			CCheckBoxUI* pCheck = static_cast<CCheckBoxUI*>(msg.pSender);
+			if(pCheck)
+			{
+				m_download =  pCheck->GetCheck();
+			}
+		}
+		if (msg.pSender->GetName() == _T("ui_clearcache_recentclose_checkbox") && msg.sType == DUI_MSGTYPE_SELECTCHANGED)
+		{
+			CCheckBoxUI* pCheck = static_cast<CCheckBoxUI*>(msg.pSender);
+			if(pCheck)
+			{
+				m_recentclose =  pCheck->GetCheck();
+			}
+		}
+		if (msg.pSender->GetName() == _T("ui_clearcache_changyongwangzhan_checkbox") && msg.sType == DUI_MSGTYPE_SELECTCHANGED)
+		{
+			CCheckBoxUI* pCheck = static_cast<CCheckBoxUI*>(msg.pSender);
+			if(pCheck)
+			{
+				m_changyong =  pCheck->GetCheck();
+			}
+		}
+		if (msg.pSender->GetName() == _T("ui_clearcache_password_checkbox") && msg.sType == DUI_MSGTYPE_SELECTCHANGED)
+		{
+			CCheckBoxUI* pCheck = static_cast<CCheckBoxUI*>(msg.pSender);
+			if(pCheck)
+			{
+				m_password =  pCheck->GetCheck();
+			}
+		}
+		if (msg.pSender->GetName() == _T("ui_clearcache_biaodanjilu_checkbox") && msg.sType == DUI_MSGTYPE_SELECTCHANGED)
+		{
+			CCheckBoxUI* pCheck = static_cast<CCheckBoxUI*>(msg.pSender);
+			if(pCheck)
+			{
+				m_biaodan =  pCheck->GetCheck();
+			}
+		}
+		if (msg.pSender->GetName() == _T("ui_clearcache_autoclean_checkbox") && msg.sType == DUI_MSGTYPE_SELECTCHANGED)
+		{
+			CCheckBoxUI* pCheck = static_cast<CCheckBoxUI*>(msg.pSender);
+			if(pCheck)
+			{
+				m_autoclean =  pCheck->GetCheck();
+			}
+		}
+
+
+	}
+
+	LRESULT CCacheClearDlg::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+	{
+		LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);
+		styleValue &= ~WS_CAPTION;
+		::SetWindowLong(*this, GWL_STYLE, styleValue | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
+		this->SetIcon(IDI_APP);
+
+		m_pm.Init(m_hWnd);
+		m_pm.AddPreMessageFilter(this);
+		CDialogBuilder builder;
+		CControlUI* pRoot = builder.Create(_T("skin/cacheclear.xml"), (UINT)0, NULL, &m_pm);
+		ASSERT(pRoot && "Failed to parse XML");
+		m_pm.AttachDialog(pRoot);
+		m_pm.AddNotifier(this);
+
+
+
+
+		//AddExistingFolder();
+
+		return 0;
+	}
+
+	LRESULT CCacheClearDlg::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		LRESULT lRes = 0;
+		BOOL bHandled = TRUE;
+
+		switch (uMsg)
+		{
+		case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;
+		case WM_KEYDOWN:
+			{
+				if (wParam == VK_RETURN)
+				{
+					//AddItem();
+				}
+				else if (wParam == VK_ESCAPE)
+				{
+					this->Close(IDCLOSE);
+					return true;
+				}
+			}
+			break;
+		default:
+			bHandled = FALSE;
+		}
+
+		if (bHandled) return lRes;
+		if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes)) return lRes;
+		return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+	}
+
+
 
 
 
@@ -1083,7 +1299,7 @@ CFrameWindowWnd::CFrameWindowWnd(){m_pMenu = NULL;};
 void CFrameWindowWnd::ShowAddFavorDlg()
 {
 	CFavorAddItemDlg* additemdlg = new CFavorAddItemDlg;
-	additemdlg->m_fream = this;
+	additemdlg->m_frame = this;
 	additemdlg->Create(GetHWND(), _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 386, 254, NULL);  
 	additemdlg->CenterWindow();
 	additemdlg->ShowModal();
@@ -1422,6 +1638,24 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			ShowHistoryForm();
 		}
 		break;
+
+	case WM_MENUCLICK:
+		{
+			CControlUI* pSender = (CControlUI*)wParam;
+			CDuiString name = pSender->GetName();
+
+			if(name == _T("menu_clearcache"))
+			{
+				CCacheClearDlg* additemdlg = new CCacheClearDlg;
+				additemdlg->m_frame = this;
+				additemdlg->Create(GetHWND(), _T(""), UI_WNDSTYLE_DIALOG, 0);
+				additemdlg->CenterWindow();
+				int nRet = additemdlg->ShowModal();
+			}
+
+
+			
+		}
 	default:
 		{
 			bHandled = FALSE;
@@ -1881,7 +2115,7 @@ void CFrameWindowWnd::BookmarkAdd(void)
 	theApp.Favor()->Add(item);
 
 	CFavorAddItemDlg* additemdlg = new CFavorAddItemDlg;
-	additemdlg->m_fream = this;
+	additemdlg->m_frame = this;
 	additemdlg->Create(GetHWND(), _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 386, 254, NULL);
 	additemdlg->CenterWindow();
 	int nRet = additemdlg->ShowModal();
