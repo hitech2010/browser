@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 
-<Window size="386,254">
+<Window size="386,254" showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" shadowcorner="8,8,8,8">
   
   <Font id="0" name="PingFangSC-Medium" size="14" />
   <Font id="1" name="PingFangSC-Regular" size="14" />
 
-  <VerticalLayout width="386" height="254" bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" bordersize="1,1,1,1">
+  <VerticalLayout width="386" height="254" bkcolor="#FFFFFFFF" >
     
     <HorizontalLayout height="32">
     <Label text="极密浏览器" padding="19,12,0,0" width="70" height="20"/>

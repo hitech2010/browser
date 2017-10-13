@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 
-<Window size="386,254">
+<Window size="386,254" showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" shadowcorner="8,8,8,8">
 
   <!--font-family: PingFangSC-Medium;
   font-size: 14px;
