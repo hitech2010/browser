@@ -4,10 +4,10 @@
   <VerticalLayout width="270" height="456" bkcolor="#FFFFFFFF">
   	<HorizontalLayout  height="70" padding="0,40,0,0" >
 
-		      <VerticalLayout  width="70" height="70" padding="14,0,0,0">
+		      <Container  width="70" height="70" padding="14,0,0,0">
 		      	<Button name="menu_bookmark" width="70" height="70" normalimage="file='skin\menu_bookmark.png'" hotimage="file='skin\menu_bookmark_hot.png'"/>
 		      	<Button  float="true" pos="21,37,49,57" height="20" text="书签"/>
-		      </VerticalLayout>
+		      </Container>
 		      
 		      <VerticalLayout hotcolor="#FFFFFFFF" width="70" height="70" padding="14,0,0,0">
 		      	<Button name="menu_history" width="70" height="70" normalimage="file='skin\menu_history.png'" hotimage="file='skin\menu_history_hot.png'"/>
@@ -55,13 +55,15 @@
 	  	<Button float="true" name="suofang_restore" pos="186,90,208,112" bordersize="1" bordercolor="#FF1979CA" bkimage="file='skin\suofang_clock.png' dest='5,3,15,16' "></Button>
 	  	<Button float="true" name="suofang_max" pos="207,90,229,112" bordersize="1" bordercolor="#FF1979CA" bkimage="file='skin\suofang_huanyuan.png' dest='4,4,16,16' " ></Button>
 	  	
-	  	<Button float="true" pos="32,129,56,144" bordersize="0" bordercolor="#FF1979CA"  text="工具"></Button>
-	  	<Button float="true" pos="247,131,254,141" bkimage="file='skin\gongju_arrow.png'" ></Button>
+	  	<Container name="submenu_toobar" width="270" height="36" padding="0,119,0,0" name="submenu_toobar" bkcolor="#FFFF0000" >
+	  		<Button float="true" pos="32,10,56,25" bordersize="0" bordercolor="#FF1979CA"  text="工具"></Button>
+	  		<Button float="true" pos="247,12,254,22" bkimage="file='skin\gongju_arrow.png'" ></Button>	
+	  	</Container>
+	  	
 	  	
 	  	
 	  	<Button float="true" pos="32,166,80,183" bordersize="0" bordercolor="#FF1979CA"  text="反馈建议"></Button>
-	  	<Button float="true" pos="32,203,56,220" bordersize="0" bordercolor="#FF1979CA"  text="帮助"></Button>
-	  	
+	  	<Button float="true" pos="32,203,56,220" bordersize="0" bordercolor="#FF1979CA"  text="帮助"></Button>	
 	  	
 	  </HorizontalLayout>
 

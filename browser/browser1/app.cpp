@@ -24,6 +24,8 @@
 
 string HttpWebShortcutEvent( std::map<std::string, string>& para)
 {
+	
+	Sleep(100);
 	string para_hwnd = "hwnd";
 	string para_file = "filename";
 	

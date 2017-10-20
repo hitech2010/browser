@@ -43,8 +43,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)TMP\</IntDir>
-    <IncludePath>$(SolutionDir)browser\Debug;$(SolutionDir);$(SolutionDir)browser\DuiLib;$(SolutionDir)thirdparty\sqlite;$(SolutionDir)thirdparty;$(SolutionDir)lib\windows;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)lib;$(SolutionDir)thirdparty;$(SolutionDir)$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)browser\DuiLib;$(SolutionDir)thirdparty\sqlite;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\pcre2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)lib;$(SolutionDir)thirdparty;$(SolutionDir)$(Configuration)\;$(SolutionDir)thirdparty\pcre2;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -110,6 +110,7 @@
     <ClInclude Include="utilities.h" />
     <ClInclude Include="webEventHandler.h" />
     <ClInclude Include="xxstring.h" />
+    <ClInclude Include="_re.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="browser1.rc" />

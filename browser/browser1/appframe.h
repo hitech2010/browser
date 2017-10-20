@@ -23,6 +23,7 @@ static CMdWebEngine* thisobj;
 // 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\settings.html");
 // 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\history.html");
 	int Add(LPCTSTR url );
+	int Add(int ipage);
 	int GetCount();
 	int Remove(CControlUI* btnCloseTab);
 	int Reload(LPCTSTR url = NULL);
@@ -52,6 +53,15 @@ protected:
 	wxstring m_settings_page;
 	wxstring m_index_page;
 	wxstring m_bookmark_page;
+
+	enum
+	{
+		page_bookmark,
+		page_history,
+		page_settings,
+		page_index
+		
+	};
 
 
 

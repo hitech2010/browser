@@ -121,7 +121,7 @@ public:
 		return *this;
 	}
 
-	_xstring& operator=(const char*& src)
+	_xstring& operator=(const char* src)
 	{
 		m_buffer.assign(src);
 		return *this;
@@ -194,6 +194,12 @@ public:
 	char operator[](int index)
 	{
 		return m_buffer[index];
+	}
+
+	_xstring& log()
+	{
+		OutputDebugStringA(m_buffer.c_str());
+		return *this;
 	}
 
 	_xstring& format(const char* fmt, ...)
@@ -331,7 +337,7 @@ public:
 		return *this;
 	}
 
-	_wxstring& operator=(const wchar_t*& src)
+	_wxstring& operator=(const wchar_t* src)
 	{
 		m_buffer.assign(src);
 		return *this;
@@ -408,6 +414,11 @@ public:
 	}
 
 
+	_wxstring& log()
+	{
+		OutputDebugStringW(m_buffer.c_str());
+		return *this;
+	}
 
 	_wxstring& format(const wchar_t* fmt, ...)
 	{

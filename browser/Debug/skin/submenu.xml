@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Window size="270,456"  showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" shadowcorner="8,8,8,8">
+  <Font id="0" name="微软雅黑" size="14" bold="false"/>
+  <List width="180" height="222" bkcolor="#FFFFFFFF">
+
+	  <Container height="36" bkcolor="#FFFAFAFA">
+	  	<Button text="测试按钮" height="25" width="60"/>
+    	
+    </Container>
+		
+		<Container height="36" bkcolor="#FFF2F2F2">
+    	<Button text="测试按钮" height="25" width="60"/>
+    </Container>
+		
+		<Container height="36" bkcolor="#FFFAFAFA">
+    	<Button text="测试按钮" height="25" width="60"/>
+    </Container>
+		
+		<Label width="180" height="1" padding="0,1,0,1" bkcolor="#FF101010">
+
+		</Label>
+		
+		<Container height="36" bkcolor="#FFFAFAFA">
+    	<Button text="测试按钮" height="25" width="60"/>
+    </Container>
+		
+		
+		<Container height="36" bkcolor="#FFDEDEDE">
+    	<Button text="测试按钮" height="25" width="60"/>
+    </Container>
+		
+		
+		<Container height="36" bkcolor="#FFD2D2D2">
+    	<Button text="测试按钮" height="25" width="60"/>
+    </Container>
+	</List>
+
+</Window>

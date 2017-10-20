@@ -1,4 +1,4 @@
-*.sdf
+﻿*.sdf
 *.exp
 *.obj
 
@@ -8,6 +8,7 @@
 !libeay32MTd.lib
 !MDSMD.lib
 !jsoncpp.lib
+!pcre2.lib
 
 *.bak
 *.dll
@@ -21,7 +22,9 @@
 **/Release/**
 **/Temp/
 **/Tmp/
-**/tempfiles/
+
+browser/Debug/tempfiles/
+
 **/ipch/
 browser - 副本/
 browser/Debug.rar

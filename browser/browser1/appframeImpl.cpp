@@ -31,6 +31,7 @@ urlmap g_um;
 
 
 
+
 class CAboutDlg : public CWindowWnd, public INotifyUI, public IMessageFilterUI  
 {  
 public:  
@@ -350,11 +351,60 @@ public:
 	}
 };
 
+class CSubMenu : public CMenuWnd, public INotifyUI
+{
+public:
+	CSubMenu(CFrameWindowWnd* cfw):m_frame(cfw){}
+	CFrameWindowWnd* m_frame;
+
+
+#define NOTIFY_ON
+#ifdef NOTIFY_ON
+#define LOGNOTIFY wxstring tmp;\
+	tmp.format(L"SubCMenu::NOTIFY-psender[%s], sType[%s]", msg.pSender->GetName().GetData(), msg.sType);\
+	Log(tmp);
+#else
+#define LOGNOTIFY __noop
+#endif
+
+	void Notify(TNotifyUI& msg)
+	{
+		LOGNOTIFY;
+
+
+
+	}
+	// 
+	// 	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+	// 	{
+	// 		LRESULT lRes = 0;
+	// 		BOOL bHandled = TRUE;
+	// 		switch (uMsg)
+	// 		{
+	// 
+	// 		case WM_KEYDOWN:
+	// 			if (wParam == VK_ESCAPE || wParam == VK_LEFT)
+	// 				Close();
+	// 			break;
+	// 
+	// 		default:
+	// 			
+	// 			break;
+	// 		}
+	// 
+	// 		return CMenu::HandleMessage(uMsg, wParam, lParam);
+	// 	}
+
+
+};
+
+
 class CMenu : public CMenuWnd, public INotifyUI
 {
 public:
-	CMenu(CFrameWindowWnd* cfw):m_frame(cfw){}
+	CMenu(CFrameWindowWnd* cfw):m_frame(cfw),m_submenu(NULL){}
 	CFrameWindowWnd* m_frame;
+	CSubMenu* m_submenu;
 
 #define NOTIFY_ON
 #ifdef NOTIFY_ON
@@ -510,6 +560,53 @@ public:
 			wb->ExecWB(OLECMDID_OPTICAL_ZOOM, OLECMDEXECOPT_DODEFAULT, &varZoom, NULL);
 
 			//MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
+		}
+
+
+		else if (msg.pSender->GetName() == _T("submenu_toobar") && msg.sType == DUI_MSGTYPE_MOUSEHOVER)
+		{
+			CDuiPoint point;
+			CControlUI* pCon = m_pm.FindControl(L"submenu_toobar");
+			RECT rc = pCon->GetPos();
+			point.x = rc.left;
+			point.y = rc.top;
+			ClientToScreen(GetHWND(), &point);
+
+			xstring tmp;
+			tmp.format("before[%d,%d], after [%d,%d]", rc.left,rc.top, point.x, point.y).log();
+
+			
+
+			if(!m_submenu)
+			{
+				m_submenu = new CSubMenu(m_frame);
+				m_submenu->Init(NULL, _T("skin\\submenu.xml"), point, &m_pm, NULL, eMenuAlignment_Right | eMenuAlignment_Top);
+
+			}
+			
+		}
+		else if (msg.pSender->GetName() == _T("submenu_toobar") && msg.sType == DUI_MSGTYPE_MOUSELEAVE)
+		{
+			if(m_submenu)
+			{
+				POINT pt = { 0 };
+				
+				::GetCursorPos(&pt);
+
+				RECT rc;
+				::GetWindowRect(m_submenu->GetHWND(), &rc);
+				xstring().format("pt(%d,%d), rect(%d,%d,%d,%d)", pt.x, pt.y,rc.left,rc.right, rc.top, rc.bottom).log();
+
+				if(!::PtInRect(&rc, pt))
+				{
+					m_submenu->Close();
+					m_submenu = NULL;
+				}
+
+				
+			}
+
+
 		}
 
 	}
@@ -905,7 +1002,7 @@ public:
 		edit->SetBorderSize(1);
 		edit->SetBorderColor(0xFFCBD7DE);
 		edit->SetFixedHeight(30);
-		edit->SetText(tmp);
+		edit->SetText(L"ui_add");
 		elmt->Add(edit);
 		
 
@@ -1858,6 +1955,8 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_MENUCLICK:
 		{
 			CControlUI* pSender = (CControlUI*)wParam;
+
+
 			CDuiString name = pSender->GetName();
 
 			if(name == _T("menu_clearcache"))
@@ -1904,12 +2003,42 @@ CMdWebEngine::CMdWebEngine()
 {
 	thisobj = NULL;
 	
-	m_bookmark_page.format(_T("file:\\\\\\%ssetting\\html\\%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("bookmark.html"));
-	m_index_page.format(_T("file:\\\\\\%ssetting\\%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("index.html"));
-	m_history_page.format(_T("file:\\\\\\%ssetting\\html\\%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("history.html"));
-	m_settings_page.format(_T("file:\\\\\\%ssetting\\html\\%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("settings.html"));
+	m_bookmark_page.format(_T("file:///%ssetting/html/%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("bookmark.html"));
+	m_index_page.format(_T("file:///%ssetting/%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("index.html"));
+	m_history_page.format(_T("file:///%ssetting/html/%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("history.html"));
+	m_settings_page.format(_T("file:///%ssetting/html/%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("settings.html"));
+
+	string a1 = _encoding(m_bookmark_page).utf8().get();
+	string a2 = _encoding(m_index_page).utf8().get();
+	string a3 = _encoding(m_history_page).utf8().get();
+	string a4 = _encoding(m_settings_page).utf8().get();
+
+
+	
+
+	try
+	{
+		_re re("\\\\") ;
+
+		a1 = re.replace(a1, "/").replaceresult();
+		a2 = re.replace(a2, "/").replaceresult();
+		a3 = re.replace(a3, "/").replaceresult();
+		a4 = re.replace(a4, "/").replaceresult();
+
+		m_bookmark_page = _encoding(a1).u8_utf16().getutf16();
+		m_index_page = _encoding(a2).u8_utf16().getutf16();
+		m_history_page = _encoding(a3).u8_utf16().getutf16();
+		m_settings_page = _encoding(a4).u8_utf16().getutf16();
+
+	}
+	catch (std::exception& e)
+	{
+		MessageBoxA(NULL, e.what(), "发生异常", MB_OK);
+	}
+	
 
 }
+
 
 CMdWebEngine::~CMdWebEngine()
 {
@@ -1981,6 +2110,7 @@ int CMdWebEngine::Add(LPCTSTR url)
 
 
 	CWebBrowserUI* ie = new CMdWebBrowserUI();
+	CMdWebBrowserUI* _ie = dynamic_cast<CMdWebBrowserUI*>(ie);
 
 	m_webcontainer->Add(ie);
 
@@ -1994,6 +2124,8 @@ int CMdWebEngine::Add(LPCTSTR url)
 	m_webcontainer->SelectItem(ie);
 	ie->SetFloat(false);
 	ie->SetUserData(url);
+	_ie->setNickUrl(url);
+	
 
 	//检测是否是国密连接，是则设置代理
 	string strUrl;
@@ -2028,6 +2160,10 @@ int CMdWebEngine::Add(LPCTSTR url)
 
 	return true;
 }
+
+
+
+
 
 int CMdWebEngine::GetCount()
 {
@@ -2280,11 +2416,14 @@ int CMdWebEngine::Switch( CControlUI* pOption )
 		{
 
 			CWebBrowserUI* ie = reinterpret_cast<CWebBrowserUI*>(m_bindings[(UINT_PTR)pContainer]);
+			CMdWebBrowserUI*_ie  = dynamic_cast<CMdWebBrowserUI*>(ie);
 
 			if (!ie)
 			{
 				return 0;
 			}
+
+			wstring nickname = _ie->getNickUrl();
 
 			Log(_T("SWITCHTO CWEBBROWSER[%s]"),ie->GetUserData());
 
@@ -2293,15 +2432,29 @@ int CMdWebEngine::Switch( CControlUI* pOption )
 
 			CEditUI* pEdit = dynamic_cast<CEditUI*>(m_pm->FindControl(_T("ui_address")));
 			//pEdit->SetText(ie->GetUserData());
-			string strt = Codec::wstring2string(ie->GetUserData().GetData());
+			string strt = _ie->getUrl();
 			if (g_um.find(strt) != g_um.end())
 			{
 				strt = g_um[strt];
-				pEdit->SetText(Codec::string2wstring(strt).c_str());
+				if(nickname.size())
+				{
+					pEdit->SetText(nickname.c_str());
+				}
+				else
+				{
+					pEdit->SetText(_encoding(strt).u8_utf16().getutf16().c_str());
+				}
 			}
 			else
 			{
-				pEdit->SetText(Codec::string2wstring(strt).c_str());
+				if(nickname.size())
+				{
+					pEdit->SetText(nickname.c_str());
+				}
+				else
+				{
+					pEdit->SetText(_encoding(strt).u8_utf16().getutf16().c_str());
+				}
 			}
 		}
 
@@ -2349,15 +2502,15 @@ void CFrameWindowWnd::BookmarkAdd(void)
 
 void CFrameWindowWnd::ShowMenu(void)
 {
-	CDuiPoint point;
-	CControlUI* pCon = m_pm.FindControl(L"toolbar");
-	RECT rc = pCon->GetClientPos();
-	point.x = rc.right;
-	point.y = rc.bottom;
-	ClientToScreen(m_hWnd, &point);
+		CDuiPoint point;
+		CControlUI* pCon = m_pm.FindControl(L"toolbar");
+		RECT rc = pCon->GetClientPos();
+		point.x = rc.right;
+		point.y = rc.bottom;
+		ClientToScreen(m_hWnd, &point);
 
-	m_pMenu = new CMenu(this);
-	m_pMenu->Init(NULL, _T("skin\\menu.xml"), point, &m_pm, NULL, eMenuAlignment_Right | eMenuAlignment_Top);
+		m_pMenu = new CMenu(this);
+		m_pMenu->Init(NULL, _T("skin\\menu.xml"), point, &m_pm, NULL, eMenuAlignment_Right | eMenuAlignment_Top);
 }
 
 void CFrameWindowWnd::ShowCloseTipDlg()

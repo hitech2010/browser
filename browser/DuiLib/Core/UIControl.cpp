@@ -824,6 +824,34 @@ namespace DuiLib {
 			Invalidate();
 			return;
 		}
+		if( event.Type == UIEVENT_MOUSEHOVER )
+		{
+			if(m_pManager)
+			{
+				m_pManager->SendNotify(this, DUI_MSGTYPE_MOUSEHOVER);
+			}
+			
+			return;
+		}
+// 		if( event.Type == UIEVENT_MOUSEENTER )
+// 		{
+// 			if(m_pManager)
+// 			{
+// 				m_pManager->SendNotify(this, DUI_MSGTYPE_MOUSEENTER);
+// 			}
+// 			
+// 			return;
+// 		}
+		if( event.Type == UIEVENT_MOUSELEAVE )
+		{
+			if(m_pManager)
+			{
+				m_pManager->SendNotify(this, DUI_MSGTYPE_MOUSELEAVE);
+			}
+
+			return;
+		}
+
 		if( event.Type == UIEVENT_KILLFOCUS ) 
 		{
 			m_bFocused = false;

@@ -283,6 +283,7 @@ namespace DuiLib
 			m_bFocused = false;
 			return;
 		}
+
 		if( m_pVerticalScrollBar != NULL && m_pVerticalScrollBar->IsVisible() && m_pVerticalScrollBar->IsEnabled() )
 		{
 			if( event.Type == UIEVENT_KEYDOWN ) 

@@ -121,14 +121,39 @@ void CWebEventHandler::NavigateComplete2( CWebBrowserUI* pWeb, IDispatch *pDisp,
 	
 	CEditUI* pEdit = dynamic_cast<CEditUI*>(m_webengine->m_pm->FindControl(_T("ui_address")));
 	string strt = wstring2string(wstring(bstr));
+
+	CMdWebBrowserUI* ui = dynamic_cast<CMdWebBrowserUI*>(pWeb);
+
+	ui->setNickUrl(bstr);
+	wstring nickname = ui->getNickUrl();
+
+	
+
 	if (g_um.find(strt) != g_um.end())
 	{
 		strt = g_um[strt];
-		pEdit->SetText(string2wstring(strt).c_str());
+		if(nickname.size())
+		{
+			pEdit->SetText(nickname.c_str());
+		}
+		else
+		{
+			pEdit->SetText(string2wstring(strt).c_str());
+		}
+		
+		
 	}
 	else
 	{
-		pEdit->SetText(string2wstring(strt).c_str());
+		if(nickname.size())
+		{
+			pEdit->SetText(nickname.c_str());
+		}
+		else
+		{
+			pEdit->SetText(string2wstring(strt).c_str());
+		}
+
 	}
 
 	BSTR bstrname;
@@ -955,6 +980,37 @@ void CMdWebBrowserUI::setUrl(const string& url)
 string CMdWebBrowserUI::getUrl()
 {
 	return m_url;
+}
+
+wstring CMdWebBrowserUI::getNickUrl()
+{
+	return m_nickurl;
+}
+
+void CMdWebBrowserUI::setNickUrl(const wstring& url)
+{
+	if(url.find(L"index.html") != wstring::npos)
+	{
+		m_nickurl = L"geemee://tag";
+	}
+	else if(url.find(L"settings.html") != wstring::npos)
+	{
+		m_nickurl = L"geemee://settings";
+	}
+	else if(url.find(L"history.html") != wstring::npos)
+	{
+		m_nickurl = L"geemee://history";
+	}
+	else if(url.find(L"bookmark.html") != wstring::npos)
+	{
+		m_nickurl = L"geemee://bookmark";
+	}
+	else
+	{
+		m_nickurl = L"";
+	}
+	
+	
 }
 
 std::wstring CMdWebBrowserUI::getTitle()

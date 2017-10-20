@@ -11,12 +11,15 @@ public:
 	void setTitle(const wstring& title);
 	void setUrl(const string& url);
 	string getUrl();
+	wstring getNickUrl();
+	void setNickUrl(const wstring& url);
 	wstring getTitle();
 	IWebBrowser2* GetIWebBrowser();
 
 private:
 	wstring m_title;
 	string  m_url;
+	wstring  m_nickurl;
 
 };
 

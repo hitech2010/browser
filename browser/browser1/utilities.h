@@ -27,6 +27,8 @@ using namespace std;
 //string 
 #include "xxstring.h"
 
+//_re
+#include "_re.h"
 
 //Log
 #include <varargs.h>

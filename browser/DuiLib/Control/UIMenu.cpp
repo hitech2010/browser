@@ -288,6 +288,10 @@ namespace DuiLib {
 		{
 			return new CMenuElementUI();
 		}
+		else if (_tcsicmp(pstrClassName, _T("CContainer")) == 0)
+		{
+			return new CMenuElementUI();
+		}
 		return NULL;
 	}
 
@@ -342,6 +346,10 @@ namespace DuiLib {
 			for( int i = 0; i < m_pOwner->GetCount(); i++ ) {
 				if(m_pOwner->GetItemAt(i)->GetInterface(_T("MenuElement")) != NULL ){
 					(static_cast<CMenuElementUI*>(m_pOwner->GetItemAt(i)))->SetOwner(m_pLayout);
+					m_pLayout->Add(static_cast<CControlUI*>(m_pOwner->GetItemAt(i)));
+				}
+				else
+				{
 					m_pLayout->Add(static_cast<CControlUI*>(m_pOwner->GetItemAt(i)));
 				}
 			}
