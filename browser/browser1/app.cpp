@@ -32,9 +32,17 @@ string HttpWebShortcutEvent( std::map<std::string, string>& para)
 	HWND wnd = (HWND)atoi(para[para_hwnd].c_str());
 	string file = para[para_file];
 	
-	HDC hDCSrc = GetDC(wnd);
+	
+	if(!IsWindowVisible(wnd))
+	{
+		return "continue";
+	}
+
 	RECT rc;
 	GetWindowRect(wnd, &rc);
+
+	HDC hDCSrc = GetDC(wnd);
+
 	if (hDCSrc)
 	{
 		//// 得到当前显示设备的水平像素
@@ -43,15 +51,13 @@ string HttpWebShortcutEvent( std::map<std::string, string>& para)
 		int nWidth = rc.right - rc.left;
 		int nHeight = rc.bottom - rc.top;
 
-
 		int nBitPerPixel = GetDeviceCaps(hDCSrc, BITSPIXEL);//获取到每个像素的bit数目
 		
 		
 		CImage cImage;//使用CImage能省好多截图的代码  
 
-		::CreateCompatibleBitmap(hDCSrc, nWidth, nHeight);
-		cImage.Create(nWidth, nHeight, nBitPerPixel);
 
+		cImage.Create(nWidth, nHeight, nBitPerPixel);
 		BitBlt(cImage.GetDC(), 0, 0, nWidth, nHeight, hDCSrc, 0, 0, SRCCOPY);
 
 

@@ -196,8 +196,13 @@ public:
 			CGeeMeeEvent event;
 			if (pThis->GetConnection(event))
 			{
-				event.Run();
+				string runret = event.Run();
 				pThis->DecreseWorkersByOne();
+
+				if(runret == "continue")
+				{
+					pThis->AddPool(event);
+				}
 			}
 
 			Sleep(10);
