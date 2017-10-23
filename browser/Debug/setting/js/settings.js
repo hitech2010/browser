@@ -123,7 +123,7 @@ function sync_settings(jconfig)
 
 	var jappconfig = jconfig.appconfig;
 	
-;	if($("#startup_page_policy_0").parent().is(".radio-selected"))
+	if($("#startup_page_policy_0").parent().is(".radio-selected"))
 	{
 		jappconfig.startup_page_policy = "0";
 	}
@@ -212,8 +212,8 @@ function sync_settings(jconfig)
 
 
 	if($("#png-format").parent().addClass("radio-selected"))
-		jappconfig.shortcut_ext = "png"；
-	else jappconfig.shortcut_ext = "jpg"；
+		jappconfig.shortcut_ext = "png";
+	else jappconfig.shortcut_ext = "jpg";
 	
 
 	var download_path2 = $("#downloadLocationPath2").attr("value");
