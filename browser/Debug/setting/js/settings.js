@@ -123,11 +123,11 @@ function sync_settings(jconfig)
 
 	var jappconfig = jconfig.appconfig;
 	
-	if($("#startup_page_policy_0").parent().is(".radio-selected"))
+	if(     $("#startup_page_policy_0").parent().is(".radio-selected"))
 	{
 		jappconfig.startup_page_policy = "0";
 	}
-	else if($("#startup_page_policy_0").parent().is(".radio-selected"))
+	else if($("#startup_page_policy_1").parent().is(".radio-selected"))
 	{	
 		jappconfig.startup_page_policy = "1";
 	}
