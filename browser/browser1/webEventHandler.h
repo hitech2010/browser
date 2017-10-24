@@ -15,6 +15,7 @@ public:
 	void setNickUrl(const wstring& url);
 	wstring getTitle();
 	IWebBrowser2* GetIWebBrowser();
+	bool IsGeemeeScheme(const wstring& lpszUrl);
 
 private:
 	wstring m_title;

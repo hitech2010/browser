@@ -222,7 +222,7 @@ private:
 
 		int nRet = MultiByteToWideChar(cp, NULL, (LPCSTR)m_int.c_str(), m_int.size(), (LPWSTR)tmp.c_str(), charactersNeeded);
 
-		m_out.assign((LPSTR)tmp.c_str(), tmp.size() * 2 + 2);
+		m_out.assign((LPSTR)tmp.c_str(), charactersNeeded * 2);
 
 	
 

@@ -28,6 +28,7 @@ static CMdWebEngine* thisobj;
 	int Remove(CControlUI* btnCloseTab);
 	int Reload(LPCTSTR url = NULL);
 	int Switch(CControlUI* pOption);
+
 	CWebBrowserUI* GetWebPage(UINT_PTR tab = NULL);
 
 	LPCTSTR getHistoryPage();

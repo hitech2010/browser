@@ -63,7 +63,8 @@ void CWebEventHandler::BeforeNavigate2( CWebBrowserUI* pWeb, IDispatch *pDisp,VA
 
 
 	CMdWebBrowserUI* pmdweb = dynamic_cast<CMdWebBrowserUI*>(pWeb);
-	if (pmdweb)
+
+	if (pWeb->GetWebBrowser2() == pDisp && pmdweb)
 	{
 		pmdweb->setUrl(strt);
 
@@ -126,6 +127,8 @@ void CWebEventHandler::NavigateComplete2( CWebBrowserUI* pWeb, IDispatch *pDisp,
 
 	ui->setNickUrl(bstr);
 	wstring nickname = ui->getNickUrl();
+
+
 
 	
 
@@ -308,6 +311,7 @@ void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,V
 
 void CWebEventHandler::ProgressChange( CWebBrowserUI* pWeb, LONG nProgress, LONG nProgressMax )
 {
+	CWebBrowserEventHandler::ProgressChange(pWeb, nProgress, nProgressMax);
 	Log("void CWebEventHandler::ProgressChange");
 }
 
@@ -378,7 +382,7 @@ HRESULT STDMETHODCALLTYPE CWebEventHandler::ShowContextMenu(CWebBrowserUI* pWeb,
 	/* [in] */ IUnknown __RPC_FAR *pcmdtReserved,
 	/* [in] */ IDispatch __RPC_FAR *pdispReserved)
 {
-	return E_NOTIMPL;
+	return CWebBrowserEventHandler::ShowContextMenu(pWeb, dwID, ppt, pcmdtReserved, pdispReserved);
 	//返回 E_NOTIMPL 正常弹出系统右键菜单
 	//return S_OK;
 	//返回S_OK 则可屏蔽系统右键菜单
@@ -387,7 +391,7 @@ HRESULT STDMETHODCALLTYPE CWebEventHandler::ShowContextMenu(CWebBrowserUI* pWeb,
 HRESULT STDMETHODCALLTYPE CWebEventHandler::GetHostInfo(CWebBrowserUI* pWeb,
 	/* [out][in] */ DOCHOSTUIINFO __RPC_FAR *pInfo)
 {
-	return E_NOTIMPL;
+	return CWebBrowserEventHandler::GetHostInfo(pWeb, pInfo);
 }
 
 HRESULT STDMETHODCALLTYPE CWebEventHandler::ShowUI(CWebBrowserUI* pWeb,
@@ -397,35 +401,35 @@ HRESULT STDMETHODCALLTYPE CWebEventHandler::ShowUI(CWebBrowserUI* pWeb,
 	/* [in] */ IOleInPlaceFrame __RPC_FAR *pFrame,
 	/* [in] */ IOleInPlaceUIWindow __RPC_FAR *pDoc)
 {
-	return S_FALSE;
+	return CWebBrowserEventHandler::ShowUI(pWeb, dwID,pActiveObject, pCommandTarget, pFrame, pDoc);
 }
 
 HRESULT STDMETHODCALLTYPE CWebEventHandler::HideUI(CWebBrowserUI* pWeb)
 {
-	return S_OK;
+	return CWebBrowserEventHandler::HideUI(pWeb);
 }
 
 HRESULT STDMETHODCALLTYPE CWebEventHandler::UpdateUI(CWebBrowserUI* pWeb)
 {
-	return S_OK;
+	return CWebBrowserEventHandler::UpdateUI(pWeb);
 }
 
 HRESULT STDMETHODCALLTYPE CWebEventHandler::EnableModeless(CWebBrowserUI* pWeb,
 	/* [in] */ BOOL fEnable)
 {
-	return S_OK;
+	return CWebBrowserEventHandler::EnableModeless(pWeb, fEnable);
 }
 
 HRESULT STDMETHODCALLTYPE CWebEventHandler::OnDocWindowActivate(CWebBrowserUI* pWeb,
 	/* [in] */ BOOL fActivate)
 {
-	return S_OK;
+	return CWebBrowserEventHandler::OnDocWindowActivate(pWeb, fActivate);
 }
 
 HRESULT STDMETHODCALLTYPE CWebEventHandler::OnFrameWindowActivate(CWebBrowserUI* pWeb,
 	/* [in] */ BOOL fActivate)
 {
-	return S_OK;
+	return CWebBrowserEventHandler::OnFrameWindowActivate(pWeb, fActivate);
 }
 
 HRESULT STDMETHODCALLTYPE CWebEventHandler::ResizeBorder(CWebBrowserUI* pWeb,
@@ -433,7 +437,7 @@ HRESULT STDMETHODCALLTYPE CWebEventHandler::ResizeBorder(CWebBrowserUI* pWeb,
 	/* [in] */ IOleInPlaceUIWindow __RPC_FAR *pUIWindow,
 	/* [in] */ BOOL fRameWindow)
 {
-	return S_OK;
+	return  CWebBrowserEventHandler::ResizeBorder(pWeb, prcBorder, pUIWindow, fRameWindow);
 }
 
 HRESULT STDMETHODCALLTYPE CWebEventHandler::TranslateAccelerator(CWebBrowserUI* pWeb,
@@ -441,7 +445,7 @@ HRESULT STDMETHODCALLTYPE CWebEventHandler::TranslateAccelerator(CWebBrowserUI* 
 	/* [in] */ const GUID __RPC_FAR *pguidCmdGroup,
 	/* [in] */ DWORD nCmdID)
 {
-	return S_FALSE;
+	return CWebBrowserEventHandler::TranslateAccelerator(pWeb, lpMsg, pguidCmdGroup, nCmdID);
 }
 
 STDMETHODIMP CWebEventHandler::QueryInterface(REFIID riid, LPVOID *ppvObject)
@@ -519,6 +523,8 @@ STDMETHODIMP CWebEventHandler::Invoke(
 		return E_FAIL;
 	}
 
+	xstring loginfo;
+	loginfo.format("CWebEventHandler::Invoke %d", dispidMember).log();
 	
 	
 	switch (dispidMember)
@@ -800,6 +806,9 @@ STDMETHODIMP CWebEventHandler::Invoke(
 				Json::StreamWriterBuilder b;
 				string content = Json::writeString(b, theApp.getJsonValue());
 
+				xstring loginfo;
+				loginfo.format("setting_query %s", content.c_str()).log();
+ 
 
 				pvarResult->vt = VT_BSTR;
 				pvarResult->bstrVal = ::SysAllocString(_encoding(content).u8_utf16().getutf16().c_str());
@@ -812,10 +821,23 @@ STDMETHODIMP CWebEventHandler::Invoke(
 				wxstring json = p1.bstrVal;
 
 				Json::Reader reader;
+
+
+				wxstring loginfo;
+				loginfo.format(L"setting_update before %s", json.c_str()).log();
+
 				reader.parse(_encoding(json).utf8().get(), theApp.getJsonValue(), false);
 
 
-				//sync_setting_proc(NULL);
+				Json::StreamWriterBuilder b;
+				string content = Json::writeString(b, theApp.getJsonValue());
+				xstring xctnt;
+				xctnt.format("setting_update after %s",content.c_str() ).log();
+
+				sync_setting_proc(NULL);
+
+
+				
 				
 				break;
 			}
@@ -899,19 +921,20 @@ HRESULT STDMETHODCALLTYPE CWebEventHandler::GetOptionKeyPath(CWebBrowserUI* pWeb
 	/* [out] */ LPOLESTR __RPC_FAR *pchKey,
 	/* [in] */ DWORD dw)
 {
-	return S_OK;
+	return CWebBrowserEventHandler::GetOptionKeyPath(pWeb,pchKey, dw);
 }
 
 HRESULT STDMETHODCALLTYPE CWebEventHandler::GetDropTarget(CWebBrowserUI* pWeb, 
 	/* [in] */ IDropTarget __RPC_FAR *pDropTarget,
 	/* [out] */ IDropTarget __RPC_FAR *__RPC_FAR *ppDropTarget)
 {
-	return E_NOTIMPL;
+	return CWebBrowserEventHandler::GetDropTarget(pWeb, pDropTarget, ppDropTarget);
 }
 
 HRESULT STDMETHODCALLTYPE CWebEventHandler::GetExternal(CWebBrowserUI* pWeb, 
 	/* [out] */ IDispatch __RPC_FAR *__RPC_FAR *ppDispatch)
 {
+
 	*ppDispatch = this;
 	return S_OK;
 }
@@ -921,14 +944,14 @@ HRESULT STDMETHODCALLTYPE CWebEventHandler::TranslateUrl(CWebBrowserUI* pWeb,
 	/* [in] */ OLECHAR __RPC_FAR *pchURLIn,
 	/* [out] */ OLECHAR __RPC_FAR *__RPC_FAR *ppchURLOut)
 {
-	return S_OK;
+	return CWebBrowserEventHandler::TranslateUrl(pWeb, dwTranslate, pchURLIn, ppchURLOut);
 }
 
 HRESULT STDMETHODCALLTYPE CWebEventHandler::FilterDataObject(CWebBrowserUI* pWeb, 
 	/* [in] */ IDataObject __RPC_FAR *pDO,
 	/* [out] */ IDataObject __RPC_FAR *__RPC_FAR *ppDORet)
 {
-	return S_OK;
+	return CWebBrowserEventHandler::FilterDataObject(pWeb, pDO, ppDORet);
 }
 
 // 	virtual HRESULT STDMETHODCALLTYPE GetOverrideKeyPath( 
@@ -950,7 +973,7 @@ HRESULT STDMETHODCALLTYPE CWebEventHandler::Download( CWebBrowserUI* pWeb,
 	/* [in] */ LPCOLESTR pszRedir,
 	/* [in] */ UINT uiCP)
 {
-	return S_OK;
+	return CWebBrowserEventHandler::Download(pWeb, pmk, pbc, dwBindVerb, grfBINDF, pBindInfo, pszHeaders, pszRedir, uiCP);
 }
 
 
@@ -1021,4 +1044,11 @@ std::wstring CMdWebBrowserUI::getTitle()
 IWebBrowser2* CMdWebBrowserUI::GetIWebBrowser()
 {
 	return m_pWebBrowser2;
+}
+
+bool CMdWebBrowserUI::IsGeemeeScheme(const wstring& url)
+{
+	return true;
+
+
 }

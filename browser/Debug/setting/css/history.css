@@ -204,6 +204,10 @@ a:hover{
 	float: left;
 	color: #333;
 	max-width: 240px;
+	  white-space: nowrap;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
 }
 .history-info span{
 	float: right;

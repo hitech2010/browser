@@ -422,14 +422,17 @@ public:
 		if (msg.pSender->GetName() == _T("menu_bookmark") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			m_frame->m_engine->Add(m_frame->m_engine->getBookmarkPage());
+			Close();
 		}
 		else if (msg.pSender->GetName() == _T("menu_history") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			m_frame->m_engine->Add(m_frame->m_engine->getHistoryPage());
+			Close();
 		}
 		else if (msg.pSender->GetName() == _T("menu_setting") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			m_frame->m_engine->Add(m_frame->m_engine->getSettingsPage());
+			Close();
 		}
 		else if (msg.pSender->GetName() == _T("menu_clearcache") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
@@ -610,26 +613,58 @@ public:
 		}
 
 	}
+
+	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+	{
+		CMenuWnd::OnCreate(uMsg, wParam, lParam, bHandled);
+
+		CButtonUI* btn = dynamic_cast<CButtonUI*>(m_pm.FindControl(_T("suofang_number")));
+
+
+		CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
+		IWebBrowser2* wb = ui->GetWebBrowser2();
+
+		CComVariant varZoom;
+		wb->ExecWB(OLECMDID_OPTICAL_ZOOM, OLECMDEXECOPT_DODEFAULT, NULL, &varZoom);
+
+		ASSERT(V_VT(&varZoom) == VT_I4);
+		ULONG ulZoom = V_I4(&varZoom);
+
+		wstring radio;
+		if (ulZoom == 400) radio = L"400%";
+		if (ulZoom == 200) radio = L"200%";
+		if (ulZoom == 150) radio = L"150%";
+		if (ulZoom == 100) radio = L"100%";
+		if (ulZoom == 75)  radio = L"75%";
+		if (ulZoom == 50)  radio = L"50%";
+
+		btn->SetText(radio.c_str());
+
+		bHandled = true;
+
+		return S_OK;
+	}
 // 
-// 	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
-// 	{
-// 		LRESULT lRes = 0;
-// 		BOOL bHandled = TRUE;
-// 		switch (uMsg)
-// 		{
-// 
-// 		case WM_KEYDOWN:
-// 			if (wParam == VK_ESCAPE || wParam == VK_LEFT)
-// 				Close();
-// 			break;
-// 
-// 		default:
-// 			
-// 			break;
-// 		}
-// 
-// 		return CMenu::HandleMessage(uMsg, wParam, lParam);
-// 	}
+	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		LRESULT lRes = 0;
+		BOOL bHandled = false;
+		switch (uMsg)
+		{
+		case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;
+		case WM_KEYDOWN:
+			if (wParam == VK_ESCAPE || wParam == VK_LEFT)
+				Close();
+			break;
+
+		default:
+			
+			break;
+		}
+		if(bHandled) return lRes;
+
+		else return CMenuWnd::HandleMessage(uMsg, wParam, lParam);
+	}
 
 
 };
@@ -858,6 +893,8 @@ public:
 		newlabel->SetFixedHeight(23);
 		newlabel->SetFixedWidth(214);
 		m_Combo->Add(newlabel);
+
+
 
 
 
@@ -1392,7 +1429,11 @@ public:
 			if(m_password)
 			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 32", 9);
 			if(m_lish)
-			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 1", 9);
+			{
+				WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 1", 9);
+				theApp.History()->Clear();
+			}
+			
 
 			Close(IDCLOSE);
 		}
@@ -2059,6 +2100,47 @@ int CMdWebEngine::Add(LPCTSTR url)
 {
 	Log("COptionUIMgr::Add");
 
+
+	int cntTabCon = m_webcontainer->GetCount();
+	for(int i = 0 ; i < cntTabCon; ++i)
+	{
+		CMdWebBrowserUI* _ie = dynamic_cast<CMdWebBrowserUI*>(m_webcontainer->GetItemAt(i));
+
+		wstring _wurl = url ;
+
+
+		
+		if( (_wurl.find(L"bookmark.html") != -1  && _ie->getNickUrl() == L"geemee://bookmark") ||
+			(_wurl.find(L"history.html") != -1   && _ie->getNickUrl() == L"geemee://history") ||
+			(_wurl.find(L"settings.html") != -1   && _ie->getNickUrl() == L"geemee://settings") )
+		{
+			;
+			CContainerUI* con = GetContainer(_ie);
+			if(con)
+			{
+				CControlUI* ptmp = con->GetItemAt(0);
+				COptionUI* optionUI = dynamic_cast<COptionUI*>(ptmp);
+				optionUI->Selected(true);
+
+				/*			Switch(contaner);*/
+				return 0;
+
+			}
+
+
+
+		}
+
+
+
+
+	}
+
+
+
+
+
+
 	CButtonUI* pBtn = new CButtonUI();
 	CButtonUI* pBtnClose = new CButtonUI();
 	COptionUI* pOpt  = new COptionUI();
@@ -2117,7 +2199,7 @@ int CMdWebEngine::Add(LPCTSTR url)
 	ie->CActiveXUI::SetAttribute(_T("clsid"), _T("{8856F961-340A-11D0-A96B-00C04FD705A2}"));
 	ie->SetDelayCreate(true);
 
-	static CWebEventHandler handler(this); 
+	static CWebEventHandler handler(this);; 
 	ie->SetWebBrowserEventHandler(&handler);
 	ie->DoCreateControl();
 
@@ -2476,7 +2558,7 @@ void CFrameWindowWnd::BookmarkAdd(void)
 
 	favor_recode_item item;
 	item.folder = _encoding(L"ÊéÇ©À¸").utf8().get();
-	item.url = _encoding(m_engine->GetAddressBar()->GetText()).astr().get();
+	item.url = _encoding(m_engine->GetAddressBar()->GetText()).utf8().get();
 	item.img = "";
 
 	_encoding ed(wxstring(m_engine->GetContainer(m_engine->m_crrentWebPage)->GetItemAt(0)->GetText().GetData()));
