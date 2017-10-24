@@ -91,8 +91,7 @@ $(function(){
 	$(".engine-list li").click(function(e){
 		var $Name = $(this)[0].className;
 		var $Name2 = $(".more").attr("gm-data");
-		
-		alert($Name);
+
 		if($Name == "sougou")
 		{
 			$("#sc").attr("action", "https://www.sogou.com/web");
