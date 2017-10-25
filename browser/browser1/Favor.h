@@ -147,6 +147,7 @@ public:
 	CHistoryMgr& Delete(const string& tuple);
 	CHistoryMgr& AddShotcut(string id, string filename);
 	CHistoryMgr& GetTop4ShortCut(map<int,string>& result);
+	CHistoryMgr& GetTop4MostRrequentShortCut(map<int,string>& result);
 };
 
 

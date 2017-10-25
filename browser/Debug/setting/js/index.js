@@ -11,27 +11,35 @@ $(function(){
 
 	function index_query()
 	{
+		
 		var config = Ipage.Query();
 	
 
+
+
 		var jconfig = eval('(' + config + ')');
 
-		$("#h_img1").attr("src", jconfig.p1);	
-		$("#h_img2").attr("src", jconfig.p2);
-		$("#h_img3").attr("src", jconfig.p3);
-		$("#h_img4").attr("src", jconfig.p4);
 
 
-		$("#h_link1").attr("href", jconfig.a1);	
-		$("#h_link2").attr("href", jconfig.a2);
-		$("#h_link3").attr("href", jconfig.a3);
-		$("#h_link4").attr("href", jconfig.a4);
+
+		for (var i = 1; i <= jconfig.hiscount; ++i)
+		{
+			$("#h_img" + i).attr("src", jconfig.hisarray[i*3-3]);
+			$("#h_link" + i).attr("href", jconfig.hisarray[i*3 - 2]);
+			$("#h_title" + i).text(jconfig.hisarray[i*3 - 1]);
+		}
 
 
-		$("#h_title1").text( jconfig.t1);	
-		$("#h_title2").text( jconfig.t2);
-		$("#h_title3").text( jconfig.t3);
-		$("#h_title4").text( jconfig.t4);
+		for (var i = 1; i <= jconfig.hotcount; ++i)
+		{
+			
+			$("#hot_img" + i).attr("src", jconfig.hotarray[i*3-3]);
+			$("#hot_link" + i).attr("href", jconfig.hotarray[i*3 - 2]);
+			$("#hot_title" + i).text(jconfig.hotarray[i*3 - 1]);
+		}
+
+
+
 
 
 
@@ -39,6 +47,8 @@ $(function(){
 	}
 
 	Ipage = new IndexPage();
+
+
 	index_query();
 
 

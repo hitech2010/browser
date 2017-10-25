@@ -624,12 +624,38 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 		}
 
 		tuple.append(")");
-		m_db->execDML(tuple.c_str());
+		//m_db->execDML(tuple.c_str());
 		
 
 		xstring sql;
 		sql.format("update history set SHORTCUT = \"%s\" where id = \"%s\"", _encoding(filename).en_base64().get().c_str(), id.c_str());
 		m_db->execDML(sql.c_str());
+		return *this;
+
+	}
+
+	
+
+	CHistoryMgr& CHistoryMgr::GetTop4MostRrequentShortCut(map<int, string>& result)
+	{
+
+		xstring sql0 = "select TITLE,URL,count(URL) as _occur, SHORTCUT  from history group by title order by _occur DESC LIMIT 4";
+		m_dbtable = m_db->getTable(sql0.c_str());
+
+
+		int rowCnt = m_dbtable.numRows();
+
+		for (int j = 0; j < rowCnt * 3; j += 3)
+		{
+
+			m_dbtable.setRow(j / 3);
+
+			result[j] = _encoding(m_dbtable.getStringField("SHORTCUT", "")).de_base64().a_utf16().utf8().get();
+			result[j + 1] = m_dbtable.getStringField("URL", "#");
+			result[j + 2] = m_dbtable.getStringField("TITLE", "#");
+
+		}
+
 		return *this;
 
 	}
@@ -641,20 +667,16 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 
 		xstring sql0 = "select * from history where shortcut is not NULL ORDER BY ID DESC liMIT 4";
 		m_dbtable = m_db->getTable(sql0.c_str());
-		int cnt = m_dbtable.numRows();
-
-
+		int rowCnt = m_dbtable.numRows();
 		
-		for (int j = 0; j < m_dbtable.numRows(); ++j)
+		for (int j = 0; j < rowCnt * 3; j += 3)
 		{
-			int nCnt = m_dbtable.numFields();
 
-			xstring tmp;
-			m_dbtable.setRow(j);
+			m_dbtable.setRow(j / 3);
 
 			result[j] = _encoding(m_dbtable.getStringField("SHORTCUT", "")).de_base64().a_utf16().utf8().get();
-			result[j + 4] = m_dbtable.getStringField("URL", "#");
-			result[j + 8] = m_dbtable.getStringField("TITLE", "#");
+			result[j + 1] = m_dbtable.getStringField("URL", "#");
+			result[j + 2] = m_dbtable.getStringField("TITLE", "#");
 		
 		}
 
