@@ -67,6 +67,7 @@ void CWebEventHandler::BeforeNavigate2( CWebBrowserUI* pWeb, IDispatch *pDisp,VA
 	if (pWeb->GetWebBrowser2() == pDisp && pmdweb)
 	{
 		pmdweb->setUrl(strt);
+		pmdweb->setNickUrl(L"");
 
 	}
 
@@ -125,51 +126,46 @@ void CWebEventHandler::NavigateComplete2( CWebBrowserUI* pWeb, IDispatch *pDisp,
 
 	CMdWebBrowserUI* ui = dynamic_cast<CMdWebBrowserUI*>(pWeb);
 
-	ui->setNickUrl(bstr);
-	wstring nickname = ui->getNickUrl();
+
+	if (pWeb->GetWebBrowser2() == pDisp && ui)
+	{
+		ui->setNickUrl(bstr);
+		wstring nickname = ui->getNickUrl();
 
 
+		if (g_um.find(strt) != g_um.end())
+		{
+			strt = g_um[strt];
+			if(nickname.size())
+			{
+				pEdit->SetText(nickname.c_str());
+			}
+			else
+			{
+				pEdit->SetText(string2wstring(strt).c_str());
+			}
 
+		}
+		else
+		{
+			if(nickname.size())
+			{
+				pEdit->SetText(nickname.c_str());
+			}
+			else
+			{
+				pEdit->SetText(string2wstring(strt).c_str());
+			}
+
+		}
+
+	}
 	
 
-	if (g_um.find(strt) != g_um.end())
-	{
-		strt = g_um[strt];
-		if(nickname.size())
-		{
-			pEdit->SetText(nickname.c_str());
-		}
-		else
-		{
-			pEdit->SetText(string2wstring(strt).c_str());
-		}
-		
-		
-	}
-	else
-	{
-		if(nickname.size())
-		{
-			pEdit->SetText(nickname.c_str());
-		}
-		else
-		{
-			pEdit->SetText(string2wstring(strt).c_str());
-		}
 
-	}
 
 	BSTR bstrname;
 	m_webengine->m_crrentWebPage->GetWebBrowser2()->get_LocationName(&bstrname);
-	
-	static history_recode_item fri;
-	fri.title = wstring2string(bstrname);
-	fri.url = strt;
-	fri.folder = "";
-	fri.img = "";
-
-	vector<history_recode_item> tmp = theApp.History()->Query(q_thismonth);
-
 	
 	
 
@@ -729,10 +725,10 @@ STDMETHODIMP CWebEventHandler::Invoke(
 					tmp.format(
 						"<div class = \"history-info\">"
 							"<div class = \"bookmark-name-div\">"
-								"<input class = \"bookmark-name\" type = \"text\" value = \"%s\" disabled = \"disabled\">"
+								"%s"
 							"</div>"
 							"<div class = \"bookmark-src-div\">"
-								"<input class = \"bookmark-src\" type = \"text\" value = \"%s\" disabled = \"disabled\" /></input>"
+								"%s"
 							"</div>"
 						"</div>", record.title.c_str(), record.url.c_str()
 						);
@@ -775,10 +771,10 @@ STDMETHODIMP CWebEventHandler::Invoke(
 						tmp.format(
 							"<div class = \"history-info\">"
 							"<div class = \"bookmark-name-div\">"
-							"<input class = \"bookmark-name\" type=\"text\" value = \"%s\" disabled = \"disabled\">"
+							"%s"
 							"</div>"
 							"<div class = \"bookmark-src-div\">"
-							"<input class = \"bookmark-src\" type = \"text\" value = \"%s\" disabled = \"disabled\">"
+							"%s"
 							"</div>"
 							"</div>",record.title.c_str(), record.url.c_str());
 
@@ -857,27 +853,35 @@ STDMETHODIMP CWebEventHandler::Invoke(
 				Json::Value  root;
 
 				map<int, string> mp;
+				map<int, string> mpHotSites;
 				theApp.History()->GetTop4ShortCut(mp);
-
+				theApp.History()->GetTop4MostRrequentShortCut(mpHotSites);
 				int sz = mp.size();
 
 				xstring filepath;
 				filepath.format("%s%s%d%s", theApp.getAppdir().c_str(), "tempfiles\\", 312, ".png");
-				
-				root["p4"] = sz >= 1 * 3 ? mp[0] : filepath.c_str();
-				root["p3"] = sz >= 2 * 3 ? mp[1] : filepath.c_str();
-				root["p2"] = sz >= 3 * 3 ? mp[2] : filepath.c_str();
-				root["p1"] = sz >= 4 * 3 ? mp[3] : filepath.c_str();
 
-				root["a4"] = sz >= 1 * 3 ? mp[4] : "#";
-				root["a3"] = sz >= 2 * 3 ? mp[5] : "#";
-				root["a2"] = sz >= 3 * 3 ? mp[6] : "#";
-				root["a1"] = sz >= 4 * 3 ? mp[7] : "#";
 
-				root["t4"] = sz >= 1 * 3 ? mp[8] : "";
-				root["t3"] = sz >= 2 * 3 ? mp[9] : "";
-				root["t2"] = sz >= 3 * 3 ? mp[10] : "";
-				root["t1"] = sz >= 4 * 3 ? mp[11] : "";
+
+				root["hotcount"] = mpHotSites.size() / 3 ;
+				for(int i = 0; i < mpHotSites.size(); i+=3)
+				{
+					root["hotarray"][i]		= mpHotSites[i];
+					root["hotarray"][i+1]	= mpHotSites[i+1];
+					root["hotarray"][i+2]	= mpHotSites[i+2];
+				}
+
+
+				root["hiscount"] = mp.size() / 3 ;
+				for(int i = 0; i < mp.size(); i+=3)
+				{
+					root["hisarray"][i]		= mp[i];
+					root["hisarray"][i+1]	= mp[i+1];
+					root["hisarray"][i+2]	= mp[i+2];
+				}
+
+
+
 
 				string content = Json::writeString(b, root);
 
