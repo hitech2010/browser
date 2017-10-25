@@ -39,12 +39,22 @@ $(function(){
     	}
     });
     function disabledFalse() {
-    	bookmarkThis.addClass("inputChange");
-		bookmarkThis.find("input").addClass("inputCh").attr("disabled", false);
+		var name= bookmarkThis.find(".bookmark-name-div").html().replace(/(^\s*)|(\s*$)/g, "");
+		var src = bookmarkThis.find(".bookmark-src-div").html().replace(/(^\s*)|(\s*$)/g, "");
+		bookmarkThis.find(".bookmark-name-div").html("<input class='bookmark-name inputCh' type='text' value='"+name+"'>");
+		bookmarkThis.find(".bookmark-src-div").html("<input class='bookmark-src inputCh' type='text' value='"+src+"'>");
+		
+    	//bookmarkThis.addClass("inputChange");
+		//bookmarkThis.find("input").addClass("inputCh").attr("disabled", false);
 	};
 	function disabledTrue() {
-		bookmarkThis.removeClass("inputChange");
-		bookmarkThis.find("input").removeClass("inputCh").attr("disabled", "disabled");
+		var name= bookmarkThis.find(".bookmark-name").val();
+		var src = bookmarkThis.find(".bookmark-src").val();
+		bookmarkThis.find(".bookmark-name-div").html(name);
+		bookmarkThis.find(".bookmark-src-div").html(src);
+		
+		//bookmarkThis.removeClass("inputChange");
+		//bookmarkThis.find("input").removeClass("inputCh").attr("disabled", "disabled");
 	};
     $(".repair").click(function(){
     	disabledFalse();
