@@ -187,7 +187,7 @@ public:
 		}
 		else if(msg.pSender->GetName() == _T("ui_close_tip_cancel") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			this->Close(IDCLOSE);
+			this->Close(IDCANCEL);
 		}
 		else if(msg.pSender->GetName() == _T("ui_close_tip_checkbox") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
@@ -1726,12 +1726,16 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 {
 
 	if( msg.pSender->GetName() == _T("ui_close") ) {
+
+		int cmd;
 		if(m_engine->m_bindings.size() > 1 && theApp.IfAskBeforeClose())
 		{
-			ShowCloseTipDlg();
+			cmd = ShowCloseTipDlg();
 		}
-		else
+		
+		if(cmd == IDCLOSE)
 		{
+			theApp.Pool().OnExit();
 			Close();
 		}
 	}
@@ -1744,7 +1748,8 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 		m_engine->Remove(msg.pSender);
 		if (m_engine->GetCount() < 2) /*UI_addtab btn left and quit */
 		{
-			Close();;
+			theApp.Pool().OnExit();
+			Close();
 		}
 		
 	}
@@ -2595,13 +2600,13 @@ void CFrameWindowWnd::ShowMenu(void)
 		m_pMenu->Init(NULL, _T("skin\\menu.xml"), point, &m_pm, NULL, eMenuAlignment_Right | eMenuAlignment_Top);
 }
 
-void CFrameWindowWnd::ShowCloseTipDlg()
+int CFrameWindowWnd::ShowCloseTipDlg()
 {
 	auto dlg = new CCloseTipDlg;
 	dlg->m_fream = this;
 	dlg->Create(m_hWnd, _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 386, 254, NULL);  
 	dlg->CenterWindow();
-	dlg->ShowModal();	
+	return dlg->ShowModal();	
 }
 
 void CFrameWindowWnd::SetNeedTip(bool need)

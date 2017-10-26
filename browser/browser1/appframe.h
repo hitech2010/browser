@@ -124,7 +124,7 @@ public:
 	void ShowHistoryForm();
 	void BookmarkAdd(void);
 	void ShowMenu(void);
-	void ShowCloseTipDlg();
+	int ShowCloseTipDlg();
 	void SetNeedTip(bool need);
 
 
