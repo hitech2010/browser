@@ -1727,7 +1727,7 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 
 	if( msg.pSender->GetName() == _T("ui_close") ) {
 
-		int cmd;
+		int cmd = IDCLOSE;
 		if(m_engine->m_bindings.size() > 1 && theApp.IfAskBeforeClose())
 		{
 			cmd = ShowCloseTipDlg();
