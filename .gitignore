@@ -31,5 +31,6 @@ browser - 副本/
 browser/Debug.rar
 browser/Debug/ie10.reg
 browser/Debug/ie11.reg
+browser/Debug/GMBrowser.db
 
 browser/Debug/tempfiles/**
