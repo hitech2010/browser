@@ -382,6 +382,15 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 
 	 }
 
+	 int CFavorManager::CountOf(const string& url)
+	 {
+		 CppSQLite3Buffer sql;
+ 		 sql.format( "select * from favor where URL LIKE %Q", url.c_str());
+
+		 CppSQLite3Table m_dbtable = m_db->getTable(sql);
+
+		 return m_dbtable.numRows();
+	 }
 
 	CHistoryMgr::CHistoryMgr(CppSQLite3DB*db) throw()
 	{
