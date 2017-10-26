@@ -253,6 +253,15 @@ void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,V
 			record.url = xurl;
 			record.title = _encoding(pmdweb->getTitle()).utf8().get();
 
+
+			xstring folderpath;
+			folderpath.format("%s%s", theApp.getAppdir().c_str(),"tempfiles\\");
+			if(!PathFileExistsA(folderpath.c_str()))
+			{
+				CreateDirectoryA(folderpath.c_str(), NULL);
+			}
+
+
 			if (xurl.find("history.html") == std::string::npos &&
 				xurl.find("bookmark.html") == std::string::npos &&
 				xurl.find("index.html") == std::string::npos)
@@ -263,8 +272,14 @@ void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,V
 				xstring tmp;
 				tmp.format("%u", hTar);
 				xstring filepath;
+
+
+
 				filepath.format("%s%s%d%s", theApp.getAppdir().c_str(),"tempfiles\\", rd.id,".png");
 				
+				
+
+
 				map<string, string> para;
 				para["hwnd"] = tmp.c_str();
 				xstring idstr;
