@@ -37,7 +37,7 @@ void CWebEventHandler::BeforeNavigate2( CWebBrowserUI* pWeb, IDispatch *pDisp,VA
 	
 	
 
-	string strt = wstring2string(wstring(url->bstrVal));
+	string strt = _encoding(wstring(url->bstrVal)).utf8().get();
 	if (TargetFrameName)
 	{
 		Log(L"void CWebEventHandler::BeforeNavigate2 %s TargetFrameName[%s]", url->bstrVal, TargetFrameName->bstrVal);
@@ -246,7 +246,7 @@ void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,V
 
 
 		
-		string xurl = _encoding(url->bstrVal).astr().get();
+		string xurl = _encoding(url->bstrVal).utf8().get();
 		 	CHistoryMgr::RECORD record;
 		 	record.folder = "";
 		 	record.img = "";
