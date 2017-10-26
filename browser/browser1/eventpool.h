@@ -5,6 +5,7 @@ extern int nExitFlag;
 
 class CGeeMeeEvent
 {
+public:
 	typedef string(*PThunk)( std::map<string, string>& par);
 	unsigned long ulID;
 	PThunk		  m_thunk;
@@ -14,6 +15,29 @@ public:
 	{
 		m_thunk = thunk;
 		m_para = para;
+	}
+
+	CGeeMeeEvent(const CGeeMeeEvent& tar)
+	{
+		m_thunk = tar.m_thunk;
+		m_para = tar.m_para;
+	}
+
+	CGeeMeeEvent& operator=(const CGeeMeeEvent& tar)
+	{
+
+		ulID = tar.ulID;
+		m_thunk = tar.m_thunk;
+
+		m_para = tar.m_para;
+
+		return *this;
+	}
+
+	~CGeeMeeEvent()
+	{
+		m_thunk = NULL;
+		m_para.clear();
 	}
 
 	string Run()
@@ -94,10 +118,12 @@ public:
 
 	bool AddPool(const CGeeMeeEvent& connection)
 	{
+		EnterCriticalSection(&m_cs);
 		m_WaittingQueue.push(connection);
 
 		long lPrevCnt;
 		ReleaseSemaphore(m_hSemaphore, 1, &lPrevCnt);
+		LeaveCriticalSection(&m_cs);
 		return true;
 
 	}
