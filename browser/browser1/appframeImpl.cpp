@@ -502,6 +502,20 @@ public:
 			CComVariant varZoom((int)nradio);
 			wb->ExecWB(OLECMDID_OPTICAL_ZOOM, OLECMDEXECOPT_DODEFAULT, &varZoom, NULL);
 		}
+
+		else if (msg.pSender->GetName() == _T("tupian") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
+			IWebBrowser2* wb = ui->GetWebBrowser2();
+			wb->ExecWB(OLECMDID_SAVEAS, OLECMDEXECOPT_DODEFAULT, NULL, NULL);
+		}
+		else if (msg.pSender->GetName() == _T("wenjian") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
+			IWebBrowser2* wb = ui->GetWebBrowser2();
+			wb->ExecWB(OLECMDID_SAVEAS, OLECMDEXECOPT_DODEFAULT, NULL, NULL);
+		}
+
 		else if (msg.pSender->GetName() == _T("suofang_plus") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			CButtonUI* btn = dynamic_cast<CButtonUI*>(m_pm.FindControl(_T("suofang_number")));
