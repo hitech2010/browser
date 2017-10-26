@@ -130,6 +130,9 @@ public:
 
 class BrowserApp :public AppConfig
 {
+
+	
+
 	CppSQLite3DB db;//关于browser的数据
 	string       m_appdir;
 	CFavorManager* m_favor;
@@ -137,9 +140,12 @@ class BrowserApp :public AppConfig
 	CHistoryMgr*   m_history;
 	CRegKey        m_regedit;
 	
-	CGeeMeeEventPool m_pool;
-	
 	Json::Value   m_jroot;
+	CGeeMeeEventPool m_pool;
+
+
+
+	
 public:
 
 	BrowserApp();
