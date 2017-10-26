@@ -1,6 +1,7 @@
 ﻿*.sdf
 *.exp
 *.obj
+*.suo
 
 
 *.lib
