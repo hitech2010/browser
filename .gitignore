@@ -23,10 +23,12 @@
 **/Temp/
 **/Tmp/
 
-browser/Debug/tempfiles/
+
 
 **/ipch/
 browser - 副本/
 browser/Debug.rar
 browser/Debug/ie10.reg
 browser/Debug/ie11.reg
+
+browser/Debug/tempfiles/**
