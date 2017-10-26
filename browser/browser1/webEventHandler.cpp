@@ -69,6 +69,10 @@ void CWebEventHandler::BeforeNavigate2( CWebBrowserUI* pWeb, IDispatch *pDisp,VA
 		pmdweb->setUrl(strt);
 		pmdweb->setNickUrl(L"");
 
+		
+
+
+
 	}
 
 
@@ -129,6 +133,7 @@ void CWebEventHandler::NavigateComplete2( CWebBrowserUI* pWeb, IDispatch *pDisp,
 
 	if (pWeb->GetWebBrowser2() == pDisp && ui)
 	{
+		ui->setUrl(_encoding(url->bstrVal).utf8().get());
 		ui->setNickUrl(bstr);
 		wstring nickname = ui->getNickUrl();
 

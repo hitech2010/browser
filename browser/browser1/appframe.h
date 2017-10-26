@@ -9,10 +9,19 @@ extern urlmap g_um;
 #include <stack>
 using namespace std;
 
+namespace THEAPP
+{
+#define favor_hot L"file='skin\\favor.png' source='24,0,48,24'"
+#define favor_nor L"file='skin\\favor.png' source='0,0,24,24'"
+}
+
+
+
 class CMdWebEngine
 {
 	
 public:
+
 static CMdWebEngine* thisobj;
 	CMdWebEngine();
 	void Init(CPaintManagerUI* pm , CWindowWnd* wnd);
@@ -117,6 +126,7 @@ public:
 	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	BOOL init();
 	void OnSelectChanged(TNotifyUI& msg);
+	void OnTimer(TNotifyUI& msg);
 	void OnWebBrowserNotify(TNotifyUI& msg);
 	
 	void ShowAboutDlg();

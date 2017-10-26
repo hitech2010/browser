@@ -1549,6 +1549,7 @@ public:
 
 
 
+
 		//AddExistingFolder();
 
 		return 0;
@@ -1696,6 +1697,11 @@ BOOL CFrameWindowWnd::init()
 
 
 
+	CButtonUI* btn_favor = static_cast<CButtonUI*>(m_pm.FindControl(L"ui_favor"));
+	m_pm.SetTimer(btn_favor, 1000, 100);
+
+
+
 	//SetIcon(IDR_MAINFRAME);
 
 	return TRUE;
@@ -1736,6 +1742,38 @@ void CFrameWindowWnd::OnSelectChanged(TNotifyUI& msg)
 	}
 
 }
+
+void CFrameWindowWnd::OnTimer(TNotifyUI& msg)
+{
+
+	if( msg.pSender->GetName() == _T("ui_favor") ) 
+	{
+		CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_engine->GetCurrentWebBrowserUI());
+		if(ui)
+		{
+			string url = ui->getUrl();
+
+			CButtonUI* btn_favor = static_cast<CButtonUI*>(m_engine->m_pm->FindControl(_T("ui_favor")));
+			if(theApp.Favor()->CountOf(url))
+			{
+				btn_favor->SetAttribute(L"bkimage", favor_hot);
+				wstring tmp = btn_favor->GetBkImage();
+
+			}
+			else
+			{
+				btn_favor->SetAttribute(L"bkimage", favor_nor);
+				wstring tmp = btn_favor->GetBkImage();
+
+			}
+
+
+		}
+	}
+
+
+}
+
 void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 {
 
@@ -1843,6 +1881,12 @@ void CFrameWindowWnd::Notify(TNotifyUI& msg)
 	{
 		OnClick(msg);
 	}
+
+	else if(msg.sType == DUI_MSGTYPE_TIMER)
+	{
+		OnTimer(msg);
+	}
+
 }
 
 void CFrameWindowWnd::OnAddressNotify(TNotifyUI&msg)
