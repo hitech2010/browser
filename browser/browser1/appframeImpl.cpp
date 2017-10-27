@@ -1802,7 +1802,7 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 		
 		if(cmd == IDCLOSE)
 		{
-			theApp.Pool().OnExit();
+			
 			Close();
 		}
 	}
@@ -1815,7 +1815,7 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 		m_engine->Remove(msg.pSender);
 		if (m_engine->GetCount() < 2) /*UI_addtab btn left and quit */
 		{
-			theApp.Pool().OnExit();
+
 			Close();
 		}
 		
@@ -2009,6 +2009,9 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 	case WM_DESTROY:
 		{
+			m_pm.KillTimer(m_pm.FindControl(L"ui_favor"));
+			theApp.Pool().OnExit();
+			
 			::PostQuitMessage(0);
 			break;
 		}
