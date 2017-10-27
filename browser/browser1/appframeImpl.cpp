@@ -176,7 +176,7 @@ public:
 
 	void Notify(TNotifyUI& msg)  
 	{
-		LOGNOTIFY;
+		//LOGNOTIFY;
 		if (msg.pSender->GetName() == _T("ui_closetipdlg_close") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			this->Close(IDCLOSE);
@@ -406,7 +406,7 @@ public:
 	CFrameWindowWnd* m_frame;
 	CSubMenu* m_submenu;
 
-#define NOTIFY_ON
+#define NOTIFY_OFF
 #ifdef NOTIFY_ON
 #define LOGNOTIFY wxstring tmp;\
 	tmp.format(L"CMenu::NOTIFY-psender[%s], sType[%s]", msg.pSender->GetName().GetData(), msg.sType);\
@@ -1665,6 +1665,15 @@ CMdWebEngine* CMdWebEngine::thisobj = new CMdWebEngine();
 
 CFrameWindowWnd::CFrameWindowWnd(){m_pMenu = NULL;};
 
+CFrameWindowWnd::~CFrameWindowWnd()
+{
+	if(m_engine)
+	{
+		delete m_engine;
+		m_engine = NULL;
+	}
+}
+
 void CFrameWindowWnd::ShowAddFavorDlg()
 {
 	CFavorAddItemDlg* additemdlg = new CFavorAddItemDlg;
@@ -1715,7 +1724,7 @@ void CFrameWindowWnd::OnWebBrowserNotify(TNotifyUI& msg)
 {
 	if(msg.sType == _T("setfocus"))
 	{
-		Log(L"control %s Messagetype  [%s] %08X",msg.pSender->GetClass(), msg.sType, msg.pSender);
+		//Log(L"control %s Messagetype  [%s] %08X",msg.pSender->GetClass(), msg.sType, msg.pSender);
 
 		msg.pSender->NeedUpdate();
 	}
@@ -2167,6 +2176,7 @@ CMdWebEngine::CMdWebEngine()
 CMdWebEngine::~CMdWebEngine()
 {
 	thisobj = NULL;
+
 }
 
 void CMdWebEngine::Init(CPaintManagerUI* pm, CWindowWnd* wnd)
@@ -2297,6 +2307,7 @@ int CMdWebEngine::Add(LPCTSTR url)
 	strUrl.assign((_bstr_t)url);
 	bool b = false;
 	string strback = strUrl;
+
 	if (isGMSSL(strUrl, b))
 	{
 		g_um[strUrl] = strback;

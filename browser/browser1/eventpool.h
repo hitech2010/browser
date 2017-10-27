@@ -108,7 +108,7 @@ public:
 	}
 
 
-	~CGeeMeeEventPool(){};
+	~CGeeMeeEventPool(){ Log("~CGeeMeeEventPool()");};
 
 
 	unsigned int			m_uCurrentLeader;//Leader ID	//
@@ -193,7 +193,6 @@ public:
 
 		while (1)
 		{
-			Log("worker %d", GetCurrentThreadId());
 			//*//
 
 			WaitForSingleObject(pThis->m_hSemaphore, INFINITE);
@@ -222,7 +221,10 @@ public:
 			CGeeMeeEvent event;
 			if (pThis->GetConnection(event))
 			{
+
+				Log("worker run start %d", GetCurrentThreadId());
 				string runret = event.Run();
+				Log("worker run end %d", GetCurrentThreadId());
 				pThis->DecreseWorkersByOne();
 
 				if(runret == "continue")
@@ -230,6 +232,8 @@ public:
 					pThis->AddPool(event);
 				}
 			}
+
+
 
 			Sleep(10);
 		}

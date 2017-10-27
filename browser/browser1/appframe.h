@@ -117,6 +117,8 @@ public:
 
 	CFrameWindowWnd();
 
+	~CFrameWindowWnd();
+
 
 	LPCTSTR GetWindowClassName() const;
 	UINT GetClassStyle();
@@ -141,7 +143,7 @@ public:
 
 
 
-#define NOTIFY_ON
+//#define NOTIFY_ON
 #ifdef NOTIFY_ON
 #define LOGNOTIFY wxstring tmp;\
 	tmp.format(L"CFrameWindowWnd::NOTIFY-psender[%s], sType[%s]", msg.pSender->GetName().GetData(), msg.sType);\

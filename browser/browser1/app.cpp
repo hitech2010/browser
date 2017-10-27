@@ -608,7 +608,16 @@ int nExitFlag;
 
 	BrowserApp::~BrowserApp()
 	{
+		if(m_favor) delete m_favor;m_favor = NULL;
+		if(m_history) delete m_history;m_history = NULL;
+		if(m_favorfolder) delete m_favorfolder;m_favorfolder = NULL;
+
 		db.close();
+
+
+
+
+		Log("~BrowserApp()");
 	}
 
 	CHistoryMgr* BrowserApp::History()
@@ -754,7 +763,7 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 	// 显示
 	CPaintManagerUI::MessageLoop(); // 消息循环
 
-	//delete pFrame; // 删除对象
+	delete pFrame; // 删除对象
 
 
 	return 0;
