@@ -179,11 +179,11 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 
 		try
 		{
-			m_db->execDML(sql);
+			int nRet = m_db->execDML(sql);
 		}
 		catch (CppSQLite3Exception& e)
 		{
-			MessageBoxA(NULL, "334", e.errorMessage(), MB_OK);
+			//...
 		}
 		
 

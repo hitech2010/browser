@@ -1748,12 +1748,27 @@ void CFrameWindowWnd::OnTimer(TNotifyUI& msg)
 
 	if( msg.pSender->GetName() == _T("ui_favor") ) 
 	{
+
+		CButtonUI* btn_favor = static_cast<CButtonUI*>(m_engine->m_pm->FindControl(_T("ui_favor")));
+
+		wstring addrtext = m_engine->GetAddressBar()->GetText();
+
+		if(addrtext.find(L"geemee:") != wstring::npos)
+		{
+			btn_favor->SetVisible(false);
+		}
+		else
+		{
+			btn_favor->SetVisible(TRUE);
+		}
+
+
 		CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_engine->GetCurrentWebBrowserUI());
 		if(ui)
 		{
 			string url = ui->getUrl();
 
-			CButtonUI* btn_favor = static_cast<CButtonUI*>(m_engine->m_pm->FindControl(_T("ui_favor")));
+			
 			if(theApp.Favor()->CountOf(url))
 			{
 				btn_favor->SetAttribute(L"bkimage", favor_hot);
@@ -2621,8 +2636,14 @@ void CFrameWindowWnd::BookmarkAdd(void)
 
 	favor_recode_item item;
 	item.folder = _encoding(L"ÊéÇ©À¸").utf8().get();
-	item.url = _encoding(m_engine->GetAddressBar()->GetText()).utf8().get();
+
+	CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_engine->m_crrentWebPage);
+	item.url = ui->getUrl();
 	item.img = "";
+
+
+
+
 
 	_encoding ed(wxstring(m_engine->GetContainer(m_engine->m_crrentWebPage)->GetItemAt(0)->GetText().GetData()));
 	item.title = ed.utf8().get();
