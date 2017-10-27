@@ -301,11 +301,22 @@ $(function(){
 		}
 	});
 	//启动页
-	$(".setting-web").click(function(){
+	$("#set-userpage").click(function(){
+		$("#settingWeb-title").text("设置启动页");
 		$(".settingWeb").css({zoom:"50%"});
 		$(".settingWeb").show();
 		$(".settingWeb").animate({zoom:"100%"},50);
 	});
+
+	$("#set-mainpage").click(function(){
+		$("#settingWeb-title").text("设置主页");
+
+		$(".settingWeb").css({zoom:"50%"});
+		$(".settingWeb").show();
+		$(".settingWeb").animate({zoom:"100%"},50);
+	});
+
+
 	//管理搜索引擎
 	$("#manage-default-search-engines").click(function(){
 		$(".manageEngines").css({zoom:"50%"});
@@ -349,6 +360,7 @@ $(function(){
 	$(".settingWeb-close2").click(function(){
 		close("manageEngines");
 	});
+
 	//添加默认引擎
 	$(".complete").click(function(){
 		var name=$(".addSearchName").val();

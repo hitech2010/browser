@@ -45,7 +45,7 @@
 									<span class="span-radio"><input type="radio" name="Startup" id="startup_page_policy_2" value="3"/></span>
 									<span class="title">打开特定网页或一组网页</span>
 								</label>
-								<span class="setting-web">设置网页</span>
+								<span class="setting-web" id="set-userpage">设置网页</span>
 							</div>
 						</div>
 					</div>
@@ -81,7 +81,7 @@
 									<span class="span-check"><input type="checkbox" name="mainSet" id="main-page" value="1"/></span>
 									<span class="title">显示“主页”按钮</span>
 								</label>
-								<span class="setting-web">设置网页</span>
+								<span class="setting-web" id="set-mainpage">设置网页</span>
 							</div>
 							<div class="check part-line">
 								<label for="show-bookmarks">
@@ -319,7 +319,7 @@
 		<!--启动页-->
 		<div class="settingWeb">
 			<div class="settingWeb-top">
-				<span>启动页</span>
+				<span id="settingWeb-title"></span>
 				<img class="settingWeb-close" src="../img/del.png"/>
 			</div>
 			<div class="settingWeb-container">
@@ -327,10 +327,10 @@
 				<input type="text" placeholder="输入网址..." />
 			</div>
 			<div class="settingWeb-footer">
-				<p class="btn settingWeb-close">使用当前网页</p>
+				<p class="btn settingWeb-close" id="settingWeb-Current" >使用当前网页</p>
 				<div class="web-footer-right">
-					<p class="btn">取消</p>
-					<p class="btn settingWeb-close">确定</p>
+					<p class="btn settingWeb-close" id="settingWeb-cancel">取消</p>
+					<p class="btn settingWeb-close" id="settingWeb-ok" >确定</p>
 				</div>
 			</div>
 		</div>
