@@ -100,6 +100,7 @@ $(function(){
 	//选择搜索
 	$(".engine-list li").click(function(e){
 		var $Name = $(this)[0].className;
+		var $web = $(this).attr("data-web");
 		var $Name2 = $(".more").attr("gm-data");
 
 		if($Name == "sougou")
@@ -119,6 +120,8 @@ $(function(){
 			$(".more").removeClass("gm-"+$Name2)
 			$(".more").addClass("gm-"+$Name);
 			$(".more").attr("gm-data",$Name);
+			$(".more").attr("data-web",$web);
+			$("#sc").attr("action",$web);
 		}
 
 

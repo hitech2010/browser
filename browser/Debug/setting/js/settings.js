@@ -302,15 +302,15 @@ $(function(){
 	});
 	//启动页
 	$(".setting-web").click(function(){
-		$(".settingWeb").css({zoom:"0.5"});
+		$(".settingWeb").css({zoom:"50%"});
 		$(".settingWeb").show();
-		$(".settingWeb").animate({zoom:"1"},50);
+		$(".settingWeb").animate({zoom:"100%"},50);
 	});
 	//管理搜索引擎
 	$("#manage-default-search-engines").click(function(){
-		$(".manageEngines").css({zoom:"0.5"});
+		$(".manageEngines").css({zoom:"50%"});
 		$(".manageEngines").show();
-		$(".manageEngines").animate({zoom:"1"},50);
+		$(".manageEngines").animate({zoom:"100%"},50);
 	});
 	$(".searchBox").on("mouseenter",".searchHover",function(){
 		$(this).css({background:"#ddd"});
@@ -341,7 +341,7 @@ $(function(){
 		}
 	})
 	function close(classname){
-		$("."+classname).animate({zoom:"0.5"},50,function(){$("."+classname).hide();$(".ripple").remove();})
+		$("."+classname).animate({zoom:"50%"},50,function(){$("."+classname).hide();$(".ripple").remove();})
 	}
 	$(".settingWeb-close").click(function(){
 		close("settingWeb");

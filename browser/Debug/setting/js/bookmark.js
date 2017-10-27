@@ -62,8 +62,8 @@ $(function(){
     	return false;
     });
     function fixed(e){
-    	var Width = $("body").width();
-    	var Height= $("body").height();
+    	var Width = $(window).width();
+    	var Height= $(window).height();
     	var mouseHeight = $(".mouseBox").height();
 		$(".mouseBox").show();	
 		if((e.clientX+220)>Width){
