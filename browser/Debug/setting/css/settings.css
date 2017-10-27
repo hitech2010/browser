@@ -199,9 +199,7 @@ body{
 	font-size: 12px;
 	color: #333333;
 	letter-spacing: 0px;
-	background: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
-	background: -ms-linear-gradient(top, #F5F5F8 0%,#ffffff 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F8', endColorstr='#ffffff',GradientType=0 );
+	background: #f8f8f8;
 	border: 1px solid #E8ECF2;
 	position: relative;
 	float: left;
@@ -357,6 +355,13 @@ body{
 	padding: 10px 20px;
 	box-sizing: border-box;
 }
+.searchBox2 input{
+	height:26px;
+	line-height:24px;
+	box-sizing:border-box;
+	border:1px solid #aaa;
+	padding-left:12px;
+}
 .completeDiv{
 	width: 468px;
 	height: 30px;
@@ -381,9 +386,7 @@ body{
 	height: 28px;
 	line-height: 28px;
 	padding-left: 12px;
-	background: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
-	background: -ms-linear-gradient(top, #F5F5F8 0%,#ffffff 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F8', endColorstr='#ffffff',GradientType=0 );
+	background: #fff;
 	border: 1px solid #E8ECF2;
 	float: left;
 	color: #333;
