@@ -2010,6 +2010,8 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		{
 			m_pm.KillTimer(m_pm.FindControl(L"ui_favor"));
+			m_engine->CloseAll();
+
 			theApp.Pool().OnExit();
 			
 			::PostQuitMessage(0);
@@ -2626,6 +2628,31 @@ int CMdWebEngine::Switch( CControlUI* pOption )
 
 
 	return 0;
+}
+
+void CMdWebEngine::CloseAll()
+{
+
+
+
+	map<UINT_PTR, UINT_PTR>::iterator iter;
+
+	iter = m_bindings.begin();
+
+	while(iter != m_bindings.end())
+	{
+		CMdWebBrowserUI* ie = static_cast<CMdWebBrowserUI*>((void*)(iter->second));
+
+		if(ie)
+		{
+			ie->GetWebBrowser2()->ExecWB(OLECMDID_CLOSE, OLECMDEXECOPT_DONTPROMPTUSER, NULL, NULL);
+
+		}
+
+
+		iter ++;         
+	}
+
 }
 
 void CFrameWindowWnd::BookmarkAdd(void)

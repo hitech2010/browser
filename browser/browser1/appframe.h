@@ -38,6 +38,8 @@ static CMdWebEngine* thisobj;
 	int Reload(LPCTSTR url = NULL);
 	int Switch(CControlUI* pOption);
 
+	void CloseAll();
+
 	CWebBrowserUI* GetWebPage(UINT_PTR tab = NULL);
 
 	LPCTSTR getHistoryPage();
