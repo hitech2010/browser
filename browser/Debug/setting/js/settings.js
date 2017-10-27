@@ -5,6 +5,8 @@
 function loading_settings(jappconfig)
 {
 
+
+
 	//page general(常规设置)
 	$(".general .radio-selected").removeClass("radio-selected");
 	if(jappconfig.startup_page_policy == "0")
@@ -230,21 +232,7 @@ $(function(){
 	//设置菜单
 	//
 	//
-	bs = new BrowserSetting();
-	var config = bs.Query();
-	var jconfig = eval('(' + config + ')');
 
-
-	try {
-	 loading_settings(jconfig.appconfig);
-	} catch (e) {
-	 alert(e.name + ": " + e.message);
-	} 
-	
-
-	
-
-	setTimeout(function(){sync_settings(jconfig);},300);
 
 	
 
@@ -288,16 +276,22 @@ $(function(){
 		return false;
 	});
 	//选择搜索
-$(".engine-list li").click(function(e){
-		var $Name = $(this)[0].className;
-		var $web = $(this).attr("data-web");
-		var $Name2 = $(".more").attr("gm-data");
+	$(".select-ul").on("click","li",function(e){
+		var $Name = $(this).attr("gm-data");
+		var $Name2 = $(".select-name").html();
 		if($Name2!=$Name){
-			$(".more").removeClass("gm-"+$Name2)
-			$(".more").addClass("gm-"+$Name);
-			$(".more").attr("gm-data",$Name);
-			$(".more").attr("data-web",$web);
-			$("#sc").attr("action",$web);
+			$(".select-name").html($Name);
+			$(".select-tit").removeClass("no-tit");
+			$(this).find(".select-tit").addClass("no-tit");
+			$(".searchHover").removeClass("defaultEngines");
+			for(var t in $(".searchHover")){
+				if($(".searchHover").eq(t).find(".searchName").html()==$Name){
+					$(".searchHover").eq(t).addClass("defaultEngines");
+				}
+			}
+		}else{
+			$(".select-ul").slideUp(300);
+			return false;
 		}
 	});
 	$(window).click(function(e){
@@ -306,5 +300,74 @@ $(".engine-list li").click(function(e){
 			$(".select-ul").slideUp(300);
 		}
 	});
-	//
+	//启动页
+	$(".setting-web").click(function(){
+		$(".settingWeb").css({zoom:"0.5"});
+		$(".settingWeb").show();
+		$(".settingWeb").animate({zoom:"1"},50);
+	});
+	//管理搜索引擎
+	$("#manage-default-search-engines").click(function(){
+		$(".manageEngines").css({zoom:"0.5"});
+		$(".manageEngines").show();
+		$(".manageEngines").animate({zoom:"1"},50);
+	});
+	$(".searchBox").on("mouseenter",".searchHover",function(){
+		$(this).css({background:"#ddd"});
+		if($(this).hasClass("defaultEngines")){
+			$(this).find("span").hide();
+		}else{
+			$(this).find("span").show();
+			$(this).find(".searchWeb").css({width:"160px"});
+			$(this).find(".setDefault").css({width:"48px"});
+		};
+	});
+	$(".searchBox").on("mouseleave",".searchHover",function(){
+		$(this).css({background:"#fff"});
+		$(this).find("span").hide();
+		$(this).find(".searchWeb").css({width:"208px"});
+	})
+	$(".searchBox").on("click",".setDefault",function(){
+		$(this).parent().find("span").hide();
+		$(this).parent().find(".searchWeb").css({width:"208px"});
+		$(".searchHover").removeClass("defaultEngines");
+		$(this).parent().addClass("defaultEngines");
+		var enginesName = $(".defaultEngines").find(".searchName").html();
+		$("#default-search-engine").html(enginesName);
+		for(var t in $(".select-ul li")){
+			if($(".select-ul li").eq(t).attr("gm-data")==enginesName){
+				$(this).find(".select-tit").addClass("no-tit");
+			}
+		}
+	})
+	function close(classname){
+		$("."+classname).animate({zoom:"0.5"},50,function(){$("."+classname).hide();$(".ripple").remove();})
+	}
+	$(".settingWeb-close").click(function(){
+		close("settingWeb");
+	});
+	$(".settingWeb-close2").click(function(){
+		close("manageEngines");
+	});
+	//添加默认引擎
+	$(".complete").click(function(){
+		var name=$(".addSearchName").val();
+		var key=$(".addSearchKey").val();
+		var web=$(".addsearchWeb").val();
+		$(".searchBox2 input").val("");
+		if($(".searchBox").length<5&&name!=""&&key!=""&&web!=""){
+			$(".searchBox").append('<li class="searchHover"><p class="searchName">'+name+'</p><p class="searchKey">'+key+'</p><p class="searchWeb">'+web+'</p><span class="setDefault">设为默认</span><span class="cutWeb"></span></li>')
+			$(".select-ul").append('<li gm-data='+name+'><span class="engine-name">'+name+'</span><span class="select-tit">设置为默认搜索引擎</span></li>')
+		}
+	});
+	//删除
+	$(".searchBox").on("click",".cutWeb",function(){
+		var name = $(this).parent().find(".searchName").html();
+		$(this).parent().remove();
+		for(var t in $(".select-ul li")){
+			if($(".select-ul li").eq(t).attr("gm-data")==name){
+				$(".select-ul li").eq(t).remove();
+			}
+		}
+	})
 })
