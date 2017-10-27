@@ -127,6 +127,7 @@ body{
     right: 5px;
     top: 5px;
     transform: scale(3);
+	-ms-transform: scale(3);
     transition: all 0.2s ease;
 }
 .span-check{
@@ -147,6 +148,7 @@ body{
     width: 0px;
     height: 0px;
     transform: rotate(-50deg);
+	-ms-transform:rotate(-50deg);
     position: absolute;
     top:4px;
     left:3px;
@@ -160,6 +162,7 @@ body{
     width: 4px;
     height: 2px;
     transform: rotate(-50deg) scale(2);
+	-ms-transform: rotate(-50deg) scale(2);
     position: absolute;
     top:4px;
     left:3px;
@@ -183,7 +186,9 @@ body{
 	font-size: 12px;
 	color: #333333;
 	letter-spacing: 0px;
-	background-image: linear-gradient(-180deg, #FFFFFF 0%, #F5F5F8 100%);
+	background: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: -ms-linear-gradient(top, #F5F5F8 0%,#ffffff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F8', endColorstr='#ffffff',GradientType=0 );
 	border: 1px solid #E8ECF2;
 	margin: 5px 0;
 	cursor: pointer;
@@ -194,7 +199,9 @@ body{
 	font-size: 12px;
 	color: #333333;
 	letter-spacing: 0px;
-	background-image: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: -ms-linear-gradient(top, #F5F5F8 0%,#ffffff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F8', endColorstr='#ffffff',GradientType=0 );
 	border: 1px solid #E8ECF2;
 	position: relative;
 	float: left;
@@ -240,7 +247,9 @@ body{
 	font-size: 12px;
 	color: #333333;
 	letter-spacing: 0px;
-	background-image: linear-gradient(-180deg, #FFFFFF 0%, #F5F5F8 100%);
+	background: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: -ms-linear-gradient(top, #F5F5F8 0%,#ffffff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F8', endColorstr='#ffffff',GradientType=0 );
 	border: 1px solid #E8ECF2;
 	margin: 5px 0 5px 11px;
 	cursor: pointer;
@@ -362,7 +371,9 @@ body{
 	margin-top: 6px;
 	text-align: center;
 	line-height: 24px;
-	background: #fff;
+	background: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: -ms-linear-gradient(top, #F5F5F8 0%,#ffffff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F8', endColorstr='#ffffff',GradientType=0 );
 }
 /*++++++++++++++++++++++下载设置+++++++++++++++++++++++++*/
 .downloadLocationPath{
@@ -370,7 +381,9 @@ body{
 	height: 28px;
 	line-height: 28px;
 	padding-left: 12px;
-	background-image: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: -ms-linear-gradient(top, #F5F5F8 0%,#ffffff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F8', endColorstr='#ffffff',GradientType=0 );
 	border: 1px solid #E8ECF2;
 	float: left;
 	color: #333;
@@ -380,7 +393,9 @@ body{
 	width: 60px;
 	height: 30px;
 	line-height: 30px;
-	background-image: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: -ms-linear-gradient(top, #F5F5F8 0%,#ffffff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F8', endColorstr='#ffffff',GradientType=0 );
 	border: 1px solid #E8ECF2;
 	margin-left: 6px;
 	float: left;
@@ -399,7 +414,9 @@ body{
 	width: 80px;
 	height: 30px;
 	line-height: 30px;
-	background-image: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: -ms-linear-gradient(top, #F5F5F8 0%,#ffffff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F8', endColorstr='#ffffff',GradientType=0 );
 	border: 1px solid #E8ECF2;
 	float: left;
 	cursor: pointer;
@@ -411,7 +428,9 @@ body{
 	width: 92px;
 	height: 30px;
 	line-height: 30px;
-	background-image: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: -ms-linear-gradient(top, #F5F5F8 0%,#ffffff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F8', endColorstr='#ffffff',GradientType=0 );
 	border: 1px solid #E8ECF2;
 	float: left;
 	color: #333;
@@ -483,8 +502,10 @@ body{
 	width: 92px;
 	height: 22px;
 	line-height: 22px;
-    background-image: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
-    border: 1px solid #E8ECF2;
+    background: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: -ms-linear-gradient(top, #F5F5F8 0%,#ffffff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F8', endColorstr='#ffffff',GradientType=0 );
+	border: 1px solid #E8ECF2;
 	margin-left: 16px;
     float: left;
     cursor: pointer;
@@ -502,8 +523,10 @@ body{
 	width: 46px;
 	height: 22px;
 	line-height: 22px;
-    background-image: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
-    border: 1px solid #E8ECF2;
+    background: linear-gradient(0deg, #F5F5F8 0%, #FFFFFF 100%);
+	background: -ms-linear-gradient(top, #F5F5F8 0%,#ffffff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F8', endColorstr='#ffffff',GradientType=0 );
+	border: 1px solid #E8ECF2;
     float: left;
     cursor: pointer;
     color: #333;
