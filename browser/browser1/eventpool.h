@@ -65,14 +65,24 @@ class CGeeMeeEventPool//balance load
 	HANDLE							m_hSemaphore;
 	CRITICAL_SECTION				m_cs;
 	HANDLE							m_hThread[POOL_CAPACITY];
+public:
+
+	int								m_nExitFlag;
 
 public:
+
+	bool IsExited()
+	{
+		return m_nExitFlag;
+	}
 
 	CGeeMeeEventPool(int nInitCount = 20, int nMaxCount = 50, int nTimeout = -1)
 	{
 		m_nCurrentPoolSize = 0;
 		m_nCurrentWokers = 0;
 		m_nMaxPoolSize = nMaxCount;
+
+		m_nExitFlag = 0;
 		m_hSemaphore = CreateSemaphore(NULL, nInitCount, nMaxCount, NULL);
 		InitializeCriticalSection(&m_cs);
 		Log("m_hSemaphore %08x", m_hSemaphore);
@@ -96,6 +106,9 @@ public:
 	void OnExit()
 	{
 		long prevcnt = 0;
+
+		m_nExitFlag = 1;
+		
 		int nRet = ReleaseSemaphore(m_hSemaphore, 1, &prevcnt);
 		Log("EndThread ReleaseSemaphore %d", prevcnt);
 		while (prevcnt < 50 && nRet)
@@ -136,6 +149,9 @@ public:
 	bool GrowPoolSize(DWORD dwSize)
 	{
 		EnterCriticalSection(&m_cs);
+
+		
+
 		for (int i = 0; i < dwSize; ++i)
 		{
 			HANDLE hThread = (HANDLE)_beginthreadex(NULL, 0, worker, (void*)this, 0, NULL);
@@ -198,7 +214,7 @@ public:
 			WaitForSingleObject(pThis->m_hSemaphore, INFINITE);
 
 
-			if (nExitFlag)
+			if (pThis->IsExited())
 			{
 				Log("EndThread(pool thread )[%d]", GetCurrentThreadId());
 				return -1;
@@ -229,6 +245,7 @@ public:
 
 				if(runret == "continue")
 				{
+					Log("worker run continue %d", GetCurrentThreadId());
 					pThis->AddPool(event);
 				}
 			}
