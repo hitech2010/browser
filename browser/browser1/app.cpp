@@ -446,7 +446,7 @@ int nExitFlag;
 
 	string AppConfig::get_dnload_info_whenover()
 	{
-		return config("dnload_ask_befroe_newtask");
+		return config("dnload_info_whenover");
 	}
 
 
@@ -697,7 +697,46 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 
 	pFrame->CenterWindow(); // ¥∞ø⁄æ”÷–
 	pFrame->ShowWindow(true);
-	pFrame->m_engine->Add(pFrame->m_engine->getIndexPage());
+
+
+
+	string startpolicy = theApp.get_startup_page_policy();
+	
+	if(startpolicy == "0")
+	{
+		pFrame->m_engine->Add(_encoding(theApp.get_home_page()).u8_utf16().getutf16().c_str());
+	}
+	else if(startpolicy == "1")
+	{
+		if(theApp.getJsonValue()["cache"].isNull())
+		{
+			pFrame->m_engine->Add(pFrame->m_engine->getIndexPage());
+		}
+		else
+		{
+			theApp.Lock();
+			for(int i = 0; i < theApp.getJsonValue()["cache"].size(); ++i)
+			{
+				string url = theApp.getJsonValue()["cache"][i].asString();
+				pFrame->m_engine->Add( _encoding(url).de_base64().u8_utf16().getutf16().c_str());
+			}
+			theApp.Unlock();
+
+		}
+
+
+
+		
+	}
+	else if(startpolicy == "2")
+	{
+		pFrame->m_engine->Add(_encoding(theApp.get_user_startpage()).u8_utf16().getutf16().c_str());
+	}
+
+	theApp.Lock();
+	theApp.getJsonValue()["cache"] = Json::Value();
+	sync_setting_proc(NULL);
+	theApp.Unlock();
 
 	
 	// œ‘ æ

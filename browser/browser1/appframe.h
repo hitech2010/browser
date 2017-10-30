@@ -40,6 +40,8 @@ static CMdWebEngine* thisobj;
 
 	void CloseAll();
 
+	stack<string> GetDeleted();
+
 	CWebBrowserUI* GetWebPage(UINT_PTR tab = NULL);
 
 	LPCTSTR getHistoryPage();

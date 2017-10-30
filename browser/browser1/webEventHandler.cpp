@@ -122,13 +122,17 @@ void CWebEventHandler::NavigateComplete2( CWebBrowserUI* pWeb, IDispatch *pDisp,
 	CHistory::AddItem(fri);*/
 	//setproxy(false);
 	BSTR bstr;
-	m_webengine->m_crrentWebPage->GetWebBrowser2()->get_LocationURL(&bstr);
+
+	CMdWebBrowserUI* ui = dynamic_cast<CMdWebBrowserUI*>(pWeb);
+	ui->GetWebBrowser2()->get_LocationURL(&bstr);
+
+
 
 	
 	CEditUI* pEdit = dynamic_cast<CEditUI*>(m_webengine->m_pm->FindControl(_T("ui_address")));
 	string strt = wstring2string(wstring(bstr));
 
-	CMdWebBrowserUI* ui = dynamic_cast<CMdWebBrowserUI*>(pWeb);
+	
 
 
 	if (pWeb->GetWebBrowser2() == pDisp && ui)
@@ -137,23 +141,31 @@ void CWebEventHandler::NavigateComplete2( CWebBrowserUI* pWeb, IDispatch *pDisp,
 		ui->setNickUrl(bstr);
 		wstring nickname = ui->getNickUrl();
 
+		bool bVisible = pWeb->IsVisible();
 
-		if (g_um.find(strt) != g_um.end())
+		if (bVisible && g_um.find(strt) != g_um.end())
 		{
 			strt = g_um[strt];
-			if(nickname.size())
+
+		
+
+
+			
+
+
+			if(nickname.size() )
 			{
 				pEdit->SetText(nickname.c_str());
 			}
-			else
+			else 
 			{
 				pEdit->SetText(string2wstring(strt).c_str());
 			}
 
 		}
-		else
+		else if(bVisible)
 		{
-			if(nickname.size())
+			if(nickname.size()  )
 			{
 				pEdit->SetText(nickname.c_str());
 			}

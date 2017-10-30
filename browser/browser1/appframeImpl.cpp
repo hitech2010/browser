@@ -1718,7 +1718,7 @@ BOOL CFrameWindowWnd::init()
 }
 LPCTSTR CFrameWindowWnd::GetWindowClassName() const { return _T("UIMainFrame"); };
 UINT CFrameWindowWnd::GetClassStyle() { return UI_CLASSSTYLE_FRAME | CS_DBLCLKS; };
-void CFrameWindowWnd::OnFinalMessage(HWND /*hWnd*/) { delete this; };
+void CFrameWindowWnd::OnFinalMessage(HWND /*hWnd*/) { ; };
 
 
 void CFrameWindowWnd::OnWebBrowserNotify(TNotifyUI& msg)
@@ -1832,15 +1832,24 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 	}
 	else if(msg.pSender->GetName() == _T("ui_addtab"))
 	{
+
 		m_engine->Add(m_engine->getIndexPage());
 	}
 	else if(msg.pSender->GetUserData().Find(_T("ui_closetab")) != -1)
 	{
-		m_engine->Remove(msg.pSender);
+		int cnt = m_engine->GetCount();
+
+		Log("ui_closetab cnt %d", cnt);
 		if (m_engine->GetCount() < 2) /*UI_addtab btn left and quit */
 		{
 
 			Close();
+		}
+		else
+		{
+			Log("ui_closetab remove ");
+			m_engine->Remove(msg.pSender);
+			Log("ui_closetab remove %d ", m_engine->GetCount());
 		}
 		
 	}
@@ -2038,7 +2047,32 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			m_pm.KillTimer(m_pm.FindControl(L"ui_favor"));
 			m_pm.KillTimer(m_pm.FindControl(L"ui_home"));
 			m_pm.KillTimer(m_pm.FindControl(L"ui_restorepage"));
+
+
 			m_engine->CloseAll();
+			
+			stack<string> deleted = m_engine->GetDeleted();
+			while (!deleted.empty())
+			{
+				string url = deleted.top();
+				theApp.Lock();
+				
+				if(url.size())
+				{	
+					theApp.getJsonValue()["cache"].append(_encoding(url).en_base64().get());
+					deleted.pop();
+				}
+				else
+				{
+					theApp.getJsonValue()["cache"].append(Json::Value());
+					break;
+				}
+				sync_setting_proc(NULL);
+
+				theApp.Unlock();
+
+
+			};
 
 			theApp.Pool().OnExit();
 			
@@ -2194,7 +2228,11 @@ CMdWebEngine::CMdWebEngine()
 
 CMdWebEngine::~CMdWebEngine()
 {
-	thisobj = NULL;
+	m_bindings.clear();
+		
+	
+	
+	
 
 }
 
@@ -2362,7 +2400,7 @@ int CMdWebEngine::Add(LPCTSTR url)
 
 int CMdWebEngine::GetCount()
 {
-	return m_tabcontainer->GetCount();
+	return m_webcontainer->GetCount();
 }
 
 int CMdWebEngine::Remove( CControlUI* btnCloseTab )
@@ -2394,11 +2432,6 @@ int CMdWebEngine::Remove( CControlUI* btnCloseTab )
 				pNewSelected = GetWebPage((UINT_PTR)pContainerPrev);
 
 			}
-
-			
-
-
-
 		}
 		else
 		{
@@ -2420,15 +2453,17 @@ int CMdWebEngine::Remove( CControlUI* btnCloseTab )
 	CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(GetWebPage((UINT_PTR)pContainer));
 	if (ui)
 	{
+		
 		string url = ui->getUrl();
 		Push(url);
 	}
 
 
-	UnBind(pContainer);
+	
+
 	m_webcontainer->Remove(GetWebPage((UINT_PTR)pContainer));
 	m_tabcontainer->Remove(pContainer);
-
+	UnBind(pContainer);
 
 
 	if(pNewSelected)
@@ -2667,6 +2702,9 @@ void CMdWebEngine::CloseAll()
 
 	map<UINT_PTR, UINT_PTR>::iterator iter;
 
+
+	while(!m_deleted.empty()) m_deleted.pop();
+
 	iter = m_bindings.begin();
 
 	while(iter != m_bindings.end())
@@ -2675,6 +2713,7 @@ void CMdWebEngine::CloseAll()
 
 		if(ie)
 		{
+			Push(ie->getUrl());
 			ie->GetWebBrowser2()->ExecWB(OLECMDID_CLOSE, OLECMDEXECOPT_DONTPROMPTUSER, NULL, NULL);
 
 		}
@@ -2683,6 +2722,11 @@ void CMdWebEngine::CloseAll()
 		iter ++;         
 	}
 
+}
+
+stack<string> CMdWebEngine::GetDeleted()
+{
+	return m_deleted;
 }
 
 void CFrameWindowWnd::BookmarkAdd(void)
