@@ -431,7 +431,7 @@ int nExitFlag;
 
 	string AppConfig::get_home_page()
 	{
-		return config("home_page");
+		return config("main_page");
 	}
 
 	string AppConfig::get_user_startpage()

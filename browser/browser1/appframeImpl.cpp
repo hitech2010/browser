@@ -1708,7 +1708,8 @@ BOOL CFrameWindowWnd::init()
 
 	CButtonUI* btn_favor = static_cast<CButtonUI*>(m_pm.FindControl(L"ui_favor"));
 	m_pm.SetTimer(btn_favor, 1000, 100);
-
+	m_pm.SetTimer(m_pm.FindControl(L"ui_home"), 1001, 300);
+	m_pm.SetTimer(m_pm.FindControl(L"ui_restorepage"), 1002, 300);
 
 
 	//SetIcon(IDR_MAINFRAME);
@@ -1750,10 +1751,24 @@ void CFrameWindowWnd::OnSelectChanged(TNotifyUI& msg)
 		m_engine->Switch(pOption);
 	}
 
+
+
 }
 
 void CFrameWindowWnd::OnTimer(TNotifyUI& msg)
 {
+
+	if( msg.pSender->GetName() == _T("ui_home") ) 
+	{
+		msg.pSender->SetVisible(theApp.get_ui_show_homepage() == "1");
+
+	}
+
+
+	if( msg.pSender->GetName() == _T("ui_restorepage") ) 
+	{
+		msg.pSender->SetVisible(theApp.get_ui_show_restore_recent() == "1");
+	}
 
 	if( msg.pSender->GetName() == _T("ui_favor") ) 
 	{
@@ -1855,7 +1870,9 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 
 	else if (msg.pSender->GetName() == _T("ui_home")) {
 
-		m_engine->Add(L"http://www.microdone.cn/");
+		
+
+		m_engine->Add(_encoding(theApp.get_home_page()).u8_utf16().getutf16().c_str());
 
 	}
 
@@ -2019,6 +2036,8 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		{
 			m_pm.KillTimer(m_pm.FindControl(L"ui_favor"));
+			m_pm.KillTimer(m_pm.FindControl(L"ui_home"));
+			m_pm.KillTimer(m_pm.FindControl(L"ui_restorepage"));
 			m_engine->CloseAll();
 
 			theApp.Pool().OnExit();
