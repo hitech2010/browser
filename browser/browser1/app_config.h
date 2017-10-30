@@ -10,6 +10,9 @@ string HttpDownloadEvent( std::map<string,string>& para);
 string HttpWebShortcutEvent( std::map<string, string>& para);
 unsigned int __stdcall  sync_setting_proc(void* para);
 
+#define str_a(a) #a
+
+
 
 class AppConfig
 {
@@ -18,7 +21,10 @@ public:
 	string defaultconfig;
 	string inifile;
 	string regkey;
-	string        inipath;
+	string inipath;
+
+	Json::Value   m_jroot;
+	CRITICAL_SECTION m_cs;
 
 	
 
@@ -54,10 +60,16 @@ private:
 //ΩÿÕº…Ë÷√
 	string m_shortcut_ext;						//ΩÿÕº∏Ò Ω
 	string m_location;							//ΩÿÕºŒª÷√
+public:
+	void Lock();
+	void Unlock();
+	void config(const string & key,const string& value);
+	string config(const string& key);
 
 
 public:	
 	AppConfig();
+	virtual ~AppConfig();
 
 	// ◊“≥]
 	string get_startup_page_policy();
@@ -66,11 +78,7 @@ public:
 	string get_ui_show_shortcut();
 	string get_ui_show_restore_recent();
 
-	void set_startup_page_policy(const string&  a);
-	void set_ui_show_homepage(const string&  a);
-	void set_ui_show_bookmark(const string&  a);
-	void set_ui_show_shortcut(const string&  a);
-	void set_ui_show_restore_recent(const string&  a);
+
 
 
 	AppConfig::SEARCHENGINE_CONFIG get_default_searchengine();
@@ -86,14 +94,10 @@ public:
 	string get_tabset_newtab_position();
 	string get_tabset_activepos_whenclosetab();
 
-	void  set_tabset_qiantaitiaozhuan(const string&  a);
-	void  set_tabset_close_dblclick(const string&  a);
-	void  set_tabset_close_rightclick(const string&  a);
-	void  set_tabset_quit_whencloselast(const string&  a);
-	void  set_tabset_newtab_whenclickbookmark(const string&  a);
-	void  set_tabset_newtab_navigateaddress(const string&  a);
-	void  set_tabset_newtab_position(const string&  a);
-	void  set_tabset_activepos_whenclosetab(const string&  a);
+	string get_home_page();
+	string get_user_startpage();
+
+
 
 
 	//œ¬‘ÿ…Ë÷√
@@ -102,9 +106,7 @@ public:
 	string get_dnload_ask_befroe_newtask();
 	string get_dnload_info_whenover();
 
-	void set_dnload_location(const string&  a);
-	void set_dnload_ask_befroe_newtask(const string&  a);
-	void set_dnload_info_whenover(const string&  a);
+
 
 
 	//ΩÿÕº…Ë÷√
@@ -112,20 +114,20 @@ public:
 	string get_shortcut_ext();
 	string get_location();
 
-	void set_shortcut_ext(const string&  a);
-	void set_location(const string&  a);
+
 	
 
 
 
 
 	void setRegKey(const string& keyname);
-	void setAskBeforeClose(const string& value);
+
 	bool IfAskBeforeClose();
 	string getAskBeforeClose();
 	string getConfigFile();
-	virtual ~AppConfig();
+
 };
+
 
 
 class BrowserApp :public AppConfig
@@ -140,7 +142,7 @@ class BrowserApp :public AppConfig
 	CHistoryMgr*   m_history;
 	CRegKey        m_regedit;
 	
-	Json::Value   m_jroot;
+
 	CGeeMeeEventPool m_pool;
 
 

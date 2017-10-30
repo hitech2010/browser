@@ -2733,11 +2733,15 @@ void CFrameWindowWnd::SetNeedTip(bool need)
 {
 	if (need)
 	{
-		theApp.setAskBeforeClose("yes");
+		theApp.config("ask_before_close","yes");
 	}
 	else
 	{
-		theApp.setAskBeforeClose("no");
+		theApp.config("ask_before_close","no");
 	}
+
+	theApp.Lock();
+	sync_setting_proc(NULL);
+	theApp.Unlock();
 }
 

@@ -850,7 +850,9 @@ STDMETHODIMP CWebEventHandler::Invoke(
 				xstring xctnt;
 				xctnt.format("setting_update after %s",content.c_str() ).log();
 
+				theApp.Lock();
 				sync_setting_proc(NULL);
+				theApp.Unlock();
 
 
 				

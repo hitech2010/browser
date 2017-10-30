@@ -229,6 +229,9 @@ int nExitFlag;
 
 	AppConfig::AppConfig()
 	{
+		InitializeCriticalSection(&m_cs);
+
+
 		inifile = "gmbrowser.ini";
 		regkey = "GMbrowser";
 		m_ask_before_close = "yes";
@@ -280,28 +283,51 @@ int nExitFlag;
 				\"dnload_ask_befroe_newtask\" : \"1\",\
 				\"dnload_info_whenover\" : \"1\",\
 				\"shortcut_ext\" : \"png\",\
-				\"location\" : \"D:\\shortcut\\\"\}}";
+				\"location\" : \"D:\\shortcut\\\"}}";
 	}
 	void AppConfig::setRegKey(const string& keyname)
 	{
 		regkey = keyname;
 	}
 
-	AppConfig::~AppConfig(){};
-
-
-	void AppConfig::setAskBeforeClose(const string& value)
+	AppConfig::~AppConfig()
 	{
-		m_ask_before_close = value;
+		DeleteCriticalSection(&m_cs);
+	};
+
+	void AppConfig::Lock()
+	{
+		EnterCriticalSection(&m_cs);
 	}
+	void AppConfig::Unlock()
+	{
+		LeaveCriticalSection(&m_cs);
+	}
+
+	void AppConfig::config(const string & key,const string& value)
+	{
+		
+		m_jroot["appconfig"][key.c_str()] = value;
+	}
+
+
+	string AppConfig::config(const string& key)
+	{
+		return m_jroot["appconfig"][key.c_str()].asString();
+	}
+
+
+
 
 	bool AppConfig::IfAskBeforeClose()
 	{
-		return m_ask_before_close == "yes";
+		bool bret =  config("ask_before_close") == "yes";
+
+		return bret;
 	}
 	string AppConfig::getAskBeforeClose()
 	{
-		return m_ask_before_close;
+		return config("ask_before_close");
 	}
 
 	string AppConfig::getConfigFile()
@@ -314,58 +340,34 @@ int nExitFlag;
 
 	string AppConfig::get_ui_show_homepage()
 	{
-		return m_ui_show_homepage;
+		return config("ui_show_homepage");
 	}
 
 	string AppConfig::get_startup_page_policy()
 	{
-		return m_startup_page_policy;
+		return config("startup_page_policy");
 
 	}
 
-
-
-
 	string AppConfig::get_ui_show_bookmark()
 	{
-		return m_ui_show_bookmark;
+		return config("ui_show_bookmark"); 
 	}
 
 	string AppConfig::get_ui_show_shortcut()
 	{
-		return m_ui_show_shortcut;
+		return config("ui_show_shortcut");
+;
 	}
 
 	string AppConfig::get_ui_show_restore_recent()
 	{
-		return m_ui_show_restore_recent;
-	}
+		return config("ui_show_restore_recent");
 
-	void AppConfig::set_ui_show_homepage(const string& a)
-	{
-		m_ui_show_homepage = a;
 	}
 
 
-	void AppConfig::set_startup_page_policy(const string& a)
-	{
-		m_startup_page_policy = a;
-	}
 
-	void AppConfig::set_ui_show_bookmark(const string& a)
-	{
-		m_ui_show_bookmark = a;
-	}
-
-	void AppConfig::set_ui_show_shortcut(const string& a)
-	{
-		m_ui_show_shortcut = a;
-	}
-
-	void AppConfig::set_ui_show_restore_recent(const string& a)
-	{
-		m_ui_show_restore_recent = a;
-	}
 
 	AppConfig::SEARCHENGINE_CONFIG AppConfig::get_default_searchengine()
 	{
@@ -379,132 +381,88 @@ int nExitFlag;
 
 	string AppConfig::get_tabset_qiantaitiaozhuan()
 	{
-		return m_tabset_qiantaitiaozhuan;
+		return config("tabset_qiantaitiaozhuan");
 	}
 
 	string AppConfig::get_tabset_close_dblclick()
 	{
-		return m_tabset_close_dblclick;
+		return config("tabset_close_dblclick");
+;
 	}
 
 	string AppConfig::get_tabset_close_rightclick()
 	{
-		return m_tabset_close_rightclick;
+		return config("tabset_close_rightclick");
+
 	}
 
 
 
 	string AppConfig::get_tabset_newtab_whenclickbookmark()
 	{
-		return m_tabset_newtab_whenclickbookmark;
+		return config("tabset_newtab_whenclickbookmark");
+
 	}
 
 	string AppConfig::get_tabset_newtab_navigateaddress()
 	{
-		return m_tabset_newtab_navigateaddress;
+		return config("tabset_newtab_navigateaddress");
+
 	}
 
 	string AppConfig::get_tabset_newtab_position()
 	{
-		return m_tabset_newtab_position;
+		return config("tabset_newtab_position");
+
 	}
 
 	string AppConfig::get_tabset_activepos_whenclosetab()
 	{
-		return m_tabset_activepos_whenclosetab;
+		return config("tabset_activepos_whenclosetab");
+
 	}
 
-	void AppConfig::set_tabset_qiantaitiaozhuan(const string& a)
-	{
-		m_tabset_qiantaitiaozhuan = a;
-	}
-
-	void AppConfig::set_tabset_close_dblclick(const string& a)
-	{
-		m_tabset_close_dblclick = a;
-	}
-
-	void AppConfig::set_tabset_close_rightclick(const string& a)
-	{
-		m_tabset_close_rightclick = a;
-	}
-
-	void AppConfig::set_tabset_quit_whencloselast(const string& a)
-	{
-		m_tabset_quit_whencloselast = a;
-	}
-
-	void AppConfig::set_tabset_newtab_whenclickbookmark(const string& a)
-	{
-		m_tabset_newtab_whenclickbookmark = a;;
-	}
-
-	void AppConfig::set_tabset_newtab_navigateaddress(const string& a)
-	{
-		m_tabset_newtab_navigateaddress = a;
-	}
-
-	void AppConfig::set_tabset_newtab_position(const string& a)
-	{
-		m_tabset_newtab_position = a;;
-	}
-
-	void AppConfig::set_tabset_activepos_whenclosetab(const string& a)
-	{
-		m_tabset_activepos_whenclosetab = a;;
-	}
 
 	string AppConfig::get_dnload_location()
 	{
-		return m_dnload_location;
+		return config("dnload_location");
+
+	}
+
+	string AppConfig::get_home_page()
+	{
+		return config("home_page");
+	}
+
+	string AppConfig::get_user_startpage()
+	{
+		return config("user_startpage");
 	}
 
 	string AppConfig::get_dnload_ask_befroe_newtask()
 	{
-		return m_dnload_ask_befroe_newtask;
+		return config("dnload_ask_befroe_newtask");
 	}
 
 	string AppConfig::get_dnload_info_whenover()
 	{
-		return m_dnload_info_whenover;
+		return config("dnload_ask_befroe_newtask");
 	}
 
-	void AppConfig::set_dnload_location(const string& a)
-	{
-		m_dnload_location = a;
-	}
 
-	void AppConfig::set_dnload_ask_befroe_newtask(const string& a)
-	{
-		m_dnload_ask_befroe_newtask = a;
-	}
-
-	void AppConfig::set_dnload_info_whenover(const string& a)
-	{
-		m_dnload_info_whenover = a;
-	}
 
 	string AppConfig::get_shortcut_ext()
 	{
-		return m_shortcut_ext;
+		return config("shortcut_ext");
 	}
 
 	string AppConfig::get_location()
 	{
-		return m_location;
+		return config("location");
 	}
 
 
 
-	void AppConfig::set_shortcut_ext(const string& a)
-	{
-		m_shortcut_ext = a;;
-	}
-
-	void AppConfig::set_location(const string& a)
-	{
-		m_location = a;
-	}
 
 
 	BrowserApp::BrowserApp():AppConfig()
@@ -566,26 +524,8 @@ int nExitFlag;
 		{
 
 			
+
 			
-			setAskBeforeClose(m_jroot["appconfig"]["ask_before_close"].asString());
-			set_startup_page_policy(m_jroot["appconfig"]["startup_page_policy"].asString());
-			set_ui_show_homepage(m_jroot["appconfig"]["ui_show_homepage"].asString());
-			set_ui_show_bookmark(m_jroot["appconfig"]["ui_show_bookmark"].asString());
-			set_ui_show_shortcut(m_jroot["appconfig"]["ui_show_shortcut"].asString());
-			set_ui_show_restore_recent(m_jroot["appconfig"]["ui_show_restore_recent"].asString());
-			set_tabset_qiantaitiaozhuan(m_jroot["appconfig"]["tabset_qiantaitiaozhuan"].asString());
-			set_tabset_close_dblclick(m_jroot["appconfig"]["tabset_close_dblclick"].asString());
-			set_tabset_close_rightclick(m_jroot["appconfig"]["tabset_close_rightclick"].asString());
-			set_tabset_quit_whencloselast(m_jroot["appconfig"]["tabset_quit_whencloselast"].asString());
-			set_tabset_newtab_whenclickbookmark(m_jroot["appconfig"]["tabset_newtab_whenclickbookmark"].asString());
-			set_tabset_newtab_navigateaddress(m_jroot["appconfig"]["tabset_newtab_navigateaddress"].asString());
-			set_tabset_newtab_position(m_jroot["appconfig"]["tabset_newtab_position"].asString());
-			set_tabset_activepos_whenclosetab(m_jroot["appconfig"]["tabset_activepos_whenclosetab"].asString());
-			set_dnload_location(m_jroot["appconfig"]["dnload_location"].asString());
-			set_dnload_ask_befroe_newtask(m_jroot["appconfig"]["dnload_ask_befroe_newtask"].asString());
-			set_dnload_info_whenover(m_jroot["appconfig"]["dnload_info_whenover"].asString());
-			set_shortcut_ext(m_jroot["appconfig"]["shortcut_ext"].asString());
-			set_location(m_jroot["appconfig"]["location"].asString());
 			
 			ifs.close();
 			
