@@ -117,6 +117,27 @@ function loading_settings(jappconfig)
 	
 }
 
+function IsURL (str_url) 
+{ 
+	var strRegex = '^((https|http|ftp|rtsp|mms)?://)'
+	+ '?(([0-9a-z_!~*\'().&=+$%-]+: )?[0-9a-z_!~*\'().&=+$%-]+@)?' //ftp的user@ 
+	+ '(([0-9]{1,3}.){3}[0-9]{1,3}' // IP形式的URL- 199.194.52.184 
+	+ '|' // 允许IP和DOMAIN（域名） 
+	+ '([0-9a-z_!~*\'()-]+.)*' // 域名- www. 
+	+ '([0-9a-z][0-9a-z-]{0,61})?[0-9a-z].' // 二级域名 
+	+ '[a-z]{2,6})' // first level domain- .com or .museum 
+	+ '(:[0-9]{1,4})?' // 端口- :80 
+	+ '((/?)|' // a slash isn't required if there is no file name 
+	+ '(/[0-9a-z_!~*\'().;?:@&=+$,%#-]+)+/?)$'; 
+	var re=new RegExp(strRegex); 
+	//re.test() 
+	if (re.test(str_url)) { 
+	return (true); 
+	} else { 
+	return (false); 
+	} 
+}
+
 function sync_settings(jconfig)
 {
 		//page general(常规设置)
@@ -233,6 +254,21 @@ $(function(){
 	//
 	//
 
+	bs = new BrowserSetting();
+    var config = bs.Query();
+    var jconfig = eval('(' + config + ')');
+
+
+    try {
+     loading_settings(jconfig.appconfig);
+    } catch (e) {
+     alert(e.name + ": " + e.message);
+    } 
+    
+
+    
+
+    setTimeout(function(){sync_settings(jconfig);},300);
 
 	
 
@@ -301,8 +337,16 @@ $(function(){
 		}
 	});
 	//启动页
-	$("#set-userpage").click(function(){
+	$("#set-userpage").click(function(){		
 		$("#settingWeb-title").text("设置启动页");
+		$("#settingWeb-title").data("page","0");
+
+
+		if(jconfig.appconfig.user_startpage.length)
+		{
+			$(".settingWeb-container input").val(jconfig.appconfig.user_startpage);	
+		}
+
 		$(".settingWeb").css({zoom:"50%"});
 		$(".settingWeb").show();
 		$(".settingWeb").animate({zoom:"100%"},50);
@@ -310,10 +354,55 @@ $(function(){
 
 	$("#set-mainpage").click(function(){
 		$("#settingWeb-title").text("设置主页");
+		$("#settingWeb-title").data("page","1");
+
+		if(jconfig.appconfig.main_page.length)
+		{
+			$(".settingWeb-container input").val( jconfig.appconfig.main_page);	
+		}
+
+
+		
 
 		$(".settingWeb").css({zoom:"50%"});
 		$(".settingWeb").show();
 		$(".settingWeb").animate({zoom:"100%"},50);
+	});
+
+
+	$("#settingWeb-ok").click(function(){
+		var valuetext = $(".settingWeb-container input").val();
+		var pagetype  = $("#settingWeb-title").data("page");
+
+
+
+		if(IsURL(valuetext) == false)
+		{
+			alert("请输入正确的url");
+			return ;
+		}
+
+		if(pagetype == "0")
+		{
+			jconfig.appconfig.user_startpage = valuetext;
+
+		}
+		else if(pagetype == "1")
+		{
+
+			jconfig.appconfig.main_page = valuetext;
+		}
+
+		close("settingWeb");
+
+	});
+
+
+	$(".settingWeb-close").click(function(){
+
+
+		close("settingWeb");
+
 	});
 
 
@@ -354,9 +443,7 @@ $(function(){
 	function close(classname){
 		$("."+classname).animate({zoom:"50%"},50,function(){$("."+classname).hide();$(".ripple").remove();})
 	}
-	$(".settingWeb-close").click(function(){
-		close("settingWeb");
-	});
+
 	$(".settingWeb-close2").click(function(){
 		close("manageEngines");
 	});
