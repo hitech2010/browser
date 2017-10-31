@@ -123,7 +123,7 @@ public:
 
 
 	LPCTSTR GetWindowClassName() const;
-	UINT GetClassStyle();
+	UINT GetClassStyle() const;
 	void OnFinalMessage(HWND /*hWnd*/);
 	void OnClick(TNotifyUI& msg);
 	void Notify(TNotifyUI& msg);

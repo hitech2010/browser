@@ -348,9 +348,10 @@ void CWebEventHandler::ProgressChange( CWebBrowserUI* pWeb, LONG nProgress, LONG
 void CWebEventHandler::NewWindow3( CWebBrowserUI* pWeb, IDispatch **pDisp, VARIANT_BOOL *&Cancel, DWORD dwFlags, BSTR bstrUrlContext, BSTR bstrUrl )
 {
 	Log("void CWebEventHandler::NewWindow3");
-	
+
 	m_webengine->Add(bstrUrl);
-	(*Cancel) = -1;
+		(*Cancel) = -1;	
+	
 }
 
 
@@ -365,7 +366,7 @@ void CWebEventHandler::CommandStateChange( CWebBrowserUI* pWeb, long Command,VAR
 CWebEventHandler::CWebEventHandler( CMdWebEngine* webcore /*= NULL*/ )
 {
 	
-m_webengine = webcore;
+	m_webengine = webcore;
 }
 
 

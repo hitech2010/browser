@@ -340,6 +340,31 @@ namespace DuiLib
 			CButtonUI::PaintText(hDC);
 	}
 
+	void COptionUI::DoEvent(TEventUI& event)
+	{
+		if( event.Type == UIEVENT_DBLCLICK )
+		{
+			if(m_pManager)
+			{
+				m_pManager->SendNotify(this, DUI_MSGTYPE_DBCLICK);
+			}
+			return;
+		}
+
+		if( event.Type == UIEVENT_RBUTTONDOWN )
+		{
+			if(m_pManager)
+			{
+				m_pManager->SendNotify(this, DUI_MSGTYPE_RBUTTONDOWN);
+			}
+			return;
+		}
+
+		CButtonUI::DoEvent(event);
+
+
+	}
+
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	IMPLEMENT_DUICONTROL(CCheckBoxUI)

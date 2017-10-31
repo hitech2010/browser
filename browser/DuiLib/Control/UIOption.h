@@ -55,6 +55,8 @@ namespace DuiLib
 		void PaintForeImage(HDC hDC);
 		void PaintText(HDC hDC);
 
+		void DoEvent(TEventUI& event);
+
 	protected:
 		bool			m_bSelected;
 		CDuiString		m_sGroupName;

@@ -692,7 +692,7 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 	CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath());
 	
 	CFrameWindowWnd* pFrame = new CFrameWindowWnd; // 生成对象
-	pFrame->Create(NULL, _T("极密浏览器"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
+	pFrame->Create(NULL, _T("极密浏览器"), UI_WNDSTYLE_FRAME , WS_EX_WINDOWEDGE);
 
 
 	pFrame->CenterWindow(); // 窗口居中

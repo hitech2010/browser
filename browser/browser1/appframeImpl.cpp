@@ -201,21 +201,21 @@ public:
 				m_fream->SetNeedTip(false);
 			}
 		}
-		else if(msg.pSender->GetName() == _T("ui_close_tip_checkboxtext") && msg.sType == DUI_MSGTYPE_CLICK)
+
+		else if(msg.pSender->GetName() == _T("ui_close_tip_checkbox") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
 			COptionUI* option = static_cast<COptionUI*>(m_pm.FindControl(_T("ui_close_tip_checkbox")));
 			if(option->IsSelected())
 			{
-				option->Selected(false);
 				m_fream->SetNeedTip(true);
 			}
 			else
 			{
-				option->Selected(true);
 				m_fream->SetNeedTip(false);
 			}
-
 		}
+
+
 	}  
 
 	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)  
@@ -1717,7 +1717,7 @@ BOOL CFrameWindowWnd::init()
 	return TRUE;
 }
 LPCTSTR CFrameWindowWnd::GetWindowClassName() const { return _T("UIMainFrame"); };
-UINT CFrameWindowWnd::GetClassStyle() { return UI_CLASSSTYLE_FRAME | CS_DBLCLKS; };
+UINT CFrameWindowWnd::GetClassStyle() const { return UI_CLASSSTYLE_FRAME | CS_DBLCLKS; };
 void CFrameWindowWnd::OnFinalMessage(HWND /*hWnd*/) { ; };
 
 
@@ -1937,6 +1937,34 @@ void CFrameWindowWnd::Notify(TNotifyUI& msg)
 		OnTimer(msg);
 	}
 
+	else if(msg.pSender->GetName() == _T("popt") && msg.sType == DUI_MSGTYPE_RBUTTONDOWN)
+	{
+		COptionUI* option = static_cast<COptionUI*>(msg.pSender);
+		CContainerUI* parent = static_cast<CContainerUI*>(option->GetParent());
+		CButtonUI* pclose = static_cast<COptionUI*>(parent->GetItemAt(1));
+		if(option && option->IsSelected() && theApp.get_tabset_close_rightclick() == "1")
+		{
+			CControlUI* paraent = option->GetParent();
+			m_pm.SendNotify(pclose, DUI_MSGTYPE_CLICK);
+
+		}
+
+	}
+
+	else if(msg.pSender->GetName() == _T("popt") && msg.sType == DUI_MSGTYPE_DBCLICK)
+	{
+		COptionUI* option = static_cast<COptionUI*>(msg.pSender);
+		CContainerUI* parent = static_cast<CContainerUI*>(option->GetParent());
+		CButtonUI* pclose = static_cast<COptionUI*>(parent->GetItemAt(1));
+		if(option && option->IsSelected() && theApp.get_tabset_close_dblclick() == "1")
+		{
+			CControlUI* paraent = option->GetParent();
+			m_pm.SendNotify(pclose, DUI_MSGTYPE_CLICK);
+
+		}
+
+	}
+
 }
 
 void CFrameWindowWnd::OnAddressNotify(TNotifyUI&msg)
@@ -2033,6 +2061,7 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			m_pm.Init(m_hWnd);
 			CDialogBuilder dlg;
 			m_pRoot = dlg.Create(L"frame.xml",(UINT)0,NULL,&m_pm);
+			
 
 			m_pm.AttachDialog(m_pRoot); 
 			m_pm.AddNotifier(this);
@@ -2086,6 +2115,7 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 				return (wParam == 0) ? TRUE : FALSE;
 			}
 		}
+
 	case WM_NCLBUTTONDBLCLK:
 		{
 			bHandled = FALSE;

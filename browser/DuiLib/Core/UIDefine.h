@@ -90,6 +90,8 @@ namespace DuiLib
 #define DUI_MSGTYPE_WINDOWINIT             (_T("windowinit"))
 #define DUI_MSGTYPE_WINDOWSIZE             (_T("windowsize"))
 #define DUI_MSGTYPE_BUTTONDOWN 		   	   (_T("buttondown"))
+#define DUI_MSGTYPE_RBUTTONDOWN			   (_T("rbuttondown"))
+#define DUI_MSGTYPE_RBUTTONUP			  (_T("rbuttonup"))
 #define DUI_MSGTYPE_MOUSEENTER			   (_T("mouseenter"))
 #define DUI_MSGTYPE_MOUSELEAVE			   (_T("mouseleave"))
 #define DUI_MSGTYPE_MOUSEHOVER			   (_T("mousehover"))
