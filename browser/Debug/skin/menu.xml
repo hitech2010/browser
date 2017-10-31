@@ -55,7 +55,7 @@
 	  	<Button float="true" name="suofang_restore" pos="186,90,208,112" bordersize="1" bordercolor="#FF1979CA" bkimage="file='skin\suofang_clock.png' dest='5,3,15,16' "></Button>
 	  	<Button float="true" name="suofang_max" pos="207,90,229,112" bordersize="1" bordercolor="#FF1979CA" bkimage="file='skin\suofang_huanyuan.png' dest='4,4,16,16' " ></Button>
 	  	
-	  	<Container name="submenu_toobar" width="270" height="36" padding="0,119,0,0" name="submenu_toobar" bkcolor="#FFFF0000" >
+	  	<Container name="submenu_toobar" width="270" height="36" padding="0,119,0,0" name="submenu_toobar"  >
 	  		<Button float="true" pos="32,10,56,25" bordersize="0" bordercolor="#FF1979CA"  text="工具"></Button>
 	  		<Button float="true" pos="247,12,254,22" bkimage="file='skin\gongju_arrow.png'" ></Button>	
 	  	</Container>
