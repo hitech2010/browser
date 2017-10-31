@@ -582,24 +582,24 @@ public:
 
 		else if (msg.pSender->GetName() == _T("submenu_toobar") && msg.sType == DUI_MSGTYPE_MOUSEHOVER)
 		{
-			CDuiPoint point;
-			CControlUI* pCon = m_pm.FindControl(L"submenu_toobar");
-			RECT rc = pCon->GetPos();
-			point.x = rc.left;
-			point.y = rc.top;
-			ClientToScreen(GetHWND(), &point);
-
-			xstring tmp;
-			tmp.format("before[%d,%d], after [%d,%d]", rc.left,rc.top, point.x, point.y).log();
-
-			
-
-			if(!m_submenu)
-			{
-				m_submenu = new CSubMenu(m_frame);
-				m_submenu->Init(NULL, _T("skin\\submenu.xml"), point, &m_pm, NULL, eMenuAlignment_Right | eMenuAlignment_Top);
-
-			}
+// 			CDuiPoint point;
+// 			CControlUI* pCon = m_pm.FindControl(L"submenu_toobar");
+// 			RECT rc = pCon->GetPos();
+// 			point.x = rc.left;
+// 			point.y = rc.top;
+// 			ClientToScreen(GetHWND(), &point);
+// 
+// 			xstring tmp;
+// 			tmp.format("before[%d,%d], after [%d,%d]", rc.left,rc.top, point.x, point.y).log();
+// 
+// 			
+// 
+// 			if(!m_submenu)
+// 			{
+// 				m_submenu = new CSubMenu(m_frame);
+// 				m_submenu->Init(NULL, _T("skin\\submenu.xml"), point, &m_pm, NULL, eMenuAlignment_Right | eMenuAlignment_Top);
+// 
+// 			}
 			
 		}
 		else if (msg.pSender->GetName() == _T("submenu_toobar") && msg.sType == DUI_MSGTYPE_MOUSELEAVE)
