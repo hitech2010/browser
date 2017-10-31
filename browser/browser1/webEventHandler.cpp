@@ -279,9 +279,9 @@ void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,V
 			}
 
 
-			if (xurl.find("history.html") == std::string::npos &&
-				xurl.find("bookmark.html") == std::string::npos &&
-				xurl.find("index.html") == std::string::npos)
+			if (xurl.find("geemee_history.html") == std::string::npos &&
+				xurl.find("geemee_bookmark.html") == std::string::npos &&
+				xurl.find("geemee_index.html") == std::string::npos)
 			{
 				CHistoryMgr::RECORD rd = theApp.History()->Add(record).Query(-1).at(0);
 
@@ -1050,19 +1050,19 @@ wstring CMdWebBrowserUI::getNickUrl()
 
 void CMdWebBrowserUI::setNickUrl(const wstring& url)
 {
-	if(url.find(L"index.html") != wstring::npos)
+	if(url.find(L"geemee_index.html") != wstring::npos)
 	{
 		m_nickurl = L"geemee://tag";
 	}
-	else if(url.find(L"settings.html") != wstring::npos)
+	else if(url.find(L"geemee_settings.html") != wstring::npos)
 	{
 		m_nickurl = L"geemee://settings";
 	}
-	else if(url.find(L"history.html") != wstring::npos)
+	else if(url.find(L"geemee_history.html") != wstring::npos)
 	{
 		m_nickurl = L"geemee://history";
 	}
-	else if(url.find(L"bookmark.html") != wstring::npos)
+	else if(url.find(L"geemee_bookmark.html") != wstring::npos)
 	{
 		m_nickurl = L"geemee://bookmark";
 	}

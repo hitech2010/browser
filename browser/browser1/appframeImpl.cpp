@@ -2189,10 +2189,10 @@ CMdWebEngine::CMdWebEngine()
 {
 	thisobj = NULL;
 	
-	m_bookmark_page.format(_T("file:///%ssetting/html/%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("bookmark.html"));
-	m_index_page.format(_T("file:///%ssetting/%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("index.html"));
-	m_history_page.format(_T("file:///%ssetting/html/%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("history.html"));
-	m_settings_page.format(_T("file:///%ssetting/html/%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("settings.html"));
+	m_bookmark_page.format(_T("file:///%ssetting/html/%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("geemee_bookmark.html"));
+	m_index_page.format(_T("file:///%ssetting/%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("geemee_index.html"));
+	m_history_page.format(_T("file:///%ssetting/html/%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("geemee_history.html"));
+	m_settings_page.format(_T("file:///%ssetting/html/%s"), _encoding(theApp.getAppdir()).a_utf16().getutf16().c_str(), _T("geemee_settings.html"));
 
 	string a1 = _encoding(m_bookmark_page).utf8().get();
 	string a2 = _encoding(m_index_page).utf8().get();
@@ -2260,9 +2260,9 @@ int CMdWebEngine::Add(LPCTSTR url)
 
 
 		
-		if( (_wurl.find(L"bookmark.html") != -1  && _ie->getNickUrl() == L"geemee://bookmark") ||
-			(_wurl.find(L"history.html") != -1   && _ie->getNickUrl() == L"geemee://history") ||
-			(_wurl.find(L"settings.html") != -1   && _ie->getNickUrl() == L"geemee://settings") )
+		if( (_wurl.find(L"geemee_bookmark.html") != -1  && _ie->getNickUrl() == L"geemee://bookmark") ||
+			(_wurl.find(L"geemee_history.html") != -1   && _ie->getNickUrl() == L"geemee://history") ||
+			(_wurl.find(L"geemee_settings.html") != -1   && _ie->getNickUrl() == L"geemee://settings") )
 		{
 			;
 			CContainerUI* con = GetContainer(_ie);
