@@ -167,3 +167,5 @@ public:
 	CControlUI* m_pResotreButton;
 	
 };
+
+extern CFrameWindowWnd* g_frame;

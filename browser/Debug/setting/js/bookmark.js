@@ -1,5 +1,5 @@
 $(function(){
-
+	var bookmarkThis;
 
 	var bq 			= new BookmarkQuery();
 
@@ -7,7 +7,61 @@ $(function(){
 
 
 
+
 	$(".bookmark-content .page").html(res);
+
+
+	$("#ImportBookmarks").click(function(){
+
+			bq.Import();
+
+	});
+	
+
+	$("#ExportBookmarks").click(function(){
+
+			bq.Export();
+
+	});
+
+	$(".history-info").click(function(){
+
+
+
+			var urlnode = $(this).children(".bookmark-src-div");
+
+			var hasinput = urlnode.children().size();
+
+			if(hasinput == false)
+			{
+				var url = urlnode.text();
+
+				bq.Open(url);
+			}
+
+
+
+	});
+
+	$("#menu_newtab").click(function(){
+
+
+			$(".mouseBox").hide();
+
+			var urlnode = bookmarkThis.children(".bookmark-src-div");
+			var hasinput = urlnode.children().size();
+
+
+
+			if(hasinput == false)
+			{
+				var url = urlnode.text();
+
+				bq.Open(url);
+			}
+
+	});
+
 
 
 	$(".part h4").click(function(){
@@ -27,7 +81,7 @@ $(function(){
 	$(document).on("contextmenu",function(e){
         return false;
     });
-    var bookmarkThis;
+    
     $(".history-info").mousedown(function(e){
     	var event = e;
     	if(event.which==3){

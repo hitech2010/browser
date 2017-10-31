@@ -667,6 +667,9 @@ unsigned int __stdcall  sync_setting_proc(void* para)
 
 }
 
+
+CFrameWindowWnd* g_frame;
+
 int __stdcall _tWinMain(HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
 	LPTSTR    lpCmdLine,
@@ -692,6 +695,7 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 	CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath());
 	
 	CFrameWindowWnd* pFrame = new CFrameWindowWnd; // 生成对象
+	g_frame = pFrame;
 	pFrame->Create(NULL, _T("极密浏览器"), UI_WNDSTYLE_FRAME , WS_EX_WINDOWEDGE);
 
 

@@ -399,10 +399,10 @@ public:
 };
 
 
-class CMenu : public CMenuWnd, public INotifyUI
+class COptionMenu : public CMenuWnd, public INotifyUI
 {
 public:
-	CMenu(CFrameWindowWnd* cfw):m_frame(cfw),m_submenu(NULL){}
+	COptionMenu(CFrameWindowWnd* cfw):m_frame(cfw),m_submenu(NULL){}
 	CFrameWindowWnd* m_frame;
 	CSubMenu* m_submenu;
 
@@ -1919,6 +1919,12 @@ void CFrameWindowWnd::Notify(TNotifyUI& msg)
 	{
 		BookmarkAdd();
 	}
+	else if (msg.pSender->GetName() == _T("ui_download") && msg.sType == DUI_MSGTYPE_CLICK)
+	{
+		;
+	}
+
+	
 	else if (CDuiString(msg.pSender->GetClass()) == _T("WebBrowser"))
 	{
 
@@ -2185,6 +2191,12 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 
 
+			
+		}
+	case 1236:
+		{
+			wstring url = (LPCTSTR)wParam;
+			m_engine->Add(url.c_str());
 			
 		}
 	default:
@@ -2809,7 +2821,7 @@ void CFrameWindowWnd::ShowMenu(void)
 		point.y = rc.bottom;
 		ClientToScreen(m_hWnd, &point);
 
-		m_pMenu = new CMenu(this);
+		m_pMenu = new COptionMenu(this);
 		m_pMenu->Init(NULL, _T("skin\\menu.xml"), point, &m_pm, NULL, eMenuAlignment_Right | eMenuAlignment_Top);
 }
 

@@ -15,6 +15,19 @@
 //atl
 #include <atlbase.h>
 
+//wtl
+#include <ShellAPI.h>
+#include <atlbase.h>          // 基本的ATL类  
+#include <atlapp.h>              // 基本的WTL类  
+#include <atlwin.h>               // ATL窗口类  
+#include <atlddx.h>               // WTL数据交换类  
+#include <atlframe.h>         //WTL主框架窗口类  
+#include <atlctrls.h>         //WTL控件类  
+#include <atlctrlx.h>           
+#include <atldlgs.h>          //WTL对话框类  
+#include <atlctrlw.h>           
+
+
 
 //stl
 #include<string>
@@ -81,3 +94,5 @@ public:
 //app
 #include "app_config.h"
 //
+
+

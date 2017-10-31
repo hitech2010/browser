@@ -43,7 +43,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)TMP\</IntDir>
-    <IncludePath>$(SolutionDir);$(SolutionDir)browser\DuiLib;$(SolutionDir)thirdparty\sqlite;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\pcre2;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)browser\DuiLib;$(SolutionDir)thirdparty\sqlite;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\pcre2;$(SolutionDir)thirdparty\wtl;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(SolutionDir)thirdparty;$(SolutionDir)$(Configuration)\;$(SolutionDir)thirdparty\pcre2;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

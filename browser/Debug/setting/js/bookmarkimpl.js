@@ -45,9 +45,25 @@ BookmarkQuery.prototype.Clear = function ()
 
 BookmarkQuery.prototype.Search = function (keyword) 
 								{
-									alert(keyword);
+
 									return  result = call("bookmark_search", keyword);
 								}
 
+
+BookmarkQuery.prototype.Export = function (keyword) 
+								{
+									return  result = call("bookmark_export", keyword);
+								}
+BookmarkQuery.prototype.Import = function (keyword) 
+								{
+
+									return  result = call("bookmark_import", keyword);
+								}
   	
 
+BookmarkQuery.prototype.Open = function (url) 
+								{
+
+									return  result = call("bookmark_open", url);
+								}
+  	

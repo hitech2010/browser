@@ -874,6 +874,61 @@ STDMETHODIMP CWebEventHandler::Invoke(
 			}
 
 
+			if(fun == L"bookmark_import")
+			{
+				COMDLG_FILTERSPEC filterSpecs[] = 
+				{
+					{_T("GeeMee Bookmark File(*.bkmk)"),_T("*.bkmk")},
+					{_T("All documents(*.*)"),_T("*.*")}
+				};
+
+
+				CShellFileOpenDialog fileOpenDlg(
+					NULL,
+					FOS_FORCEFILESYSTEM|FOS_FILEMUSTEXIST|FOS_PATHMUSTEXIST,
+					_T("bkmk"),
+					filterSpecs,
+					_countof(filterSpecs));
+				fileOpenDlg.DoModal(g_frame->GetHWND());
+				wstring filePath;
+				filePath.resize(256);
+				fileOpenDlg.GetFilePath((LPWSTR)filePath.c_str(), 256);
+				break;
+			}
+
+			if(fun == L"bookmark_export")
+			{
+				COMDLG_FILTERSPEC filterSpecs[] = 
+				{
+					{_T("GeeMee Bookmark File(*.bkmk)"),_T("*.bkmk")},
+					{_T("All documents(*.*)"),_T("*.*")}
+				};
+
+
+				CShellFileSaveDialog fileOpenDlg(
+					NULL,
+					FOS_FORCEFILESYSTEM|FOS_FILEMUSTEXIST|FOS_PATHMUSTEXIST,
+					_T("bkmk"),
+					filterSpecs,
+					_countof(filterSpecs));
+				fileOpenDlg.DoModal(g_frame->GetHWND());
+				wstring filePath;
+				filePath.resize(256);
+				fileOpenDlg.GetFilePath((LPWSTR)filePath.c_str(), 256);
+
+
+				break;
+			}
+
+			if(fun == L"bookmark_open")
+			{
+				wxstring url = p1.bstrVal;
+
+				::SendMessageA(g_frame->GetHWND(), 1236, (WPARAM)url.c_str(), NULL);
+
+				break;
+			}
+
 			if (fun == L"index_delete_history")
 			{
 				
