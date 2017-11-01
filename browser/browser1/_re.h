@@ -61,7 +61,7 @@ public:
 
 		return 0;
 	}
-	int match(const string& subject, bool bRecursive = true)
+	_re& match(const string& subject, bool bRecursive = true)
 	{
 
 		unsigned int offset = 0;
@@ -72,7 +72,7 @@ public:
 		{
 
 			pcre2_match_data*  match_data = pcre2_match_data_create_from_pattern(m_re, NULL);;
-			rc = pcre2_match(m_re,   (unsigned char*)subject.c_str(), len, offset, (PCRE2_BSR_ANYCRLF | PCRE2_NOTEMPTY), match_data, NULL);
+			rc = pcre2_match(m_re,   (unsigned char*)subject.c_str(), len, offset, (PCRE2_BSR_ANYCRLF | PCRE2_NOTEMPTY  |  PCRE2_ANCHORED ), match_data, NULL);
 
 			if( rc > 0 ) 
 			{
@@ -112,7 +112,7 @@ public:
 		}
 
 
-		return 0;
+		return *this;
 	}
 	_re& replace(const string& subject, const string& tar, bool bRecursive = true)
 	{
@@ -161,6 +161,10 @@ public:
 	const string& replaceresult()
 	{
 		return m_replaceresult;;
+	}
+	operator bool()
+	{
+		return m_result.size();
 	}
 	_re()
 	{
