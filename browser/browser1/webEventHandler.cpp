@@ -889,10 +889,19 @@ STDMETHODIMP CWebEventHandler::Invoke(
 					_T("bkmk"),
 					filterSpecs,
 					_countof(filterSpecs));
-				fileOpenDlg.DoModal(g_frame->GetHWND());
+
+
+				if( IDCANCEL == fileOpenDlg.DoModal(g_frame->GetHWND()) ) break;;
+
 				wstring filePath;
 				filePath.resize(256);
 				fileOpenDlg.GetFilePath((LPWSTR)filePath.c_str(), 256);
+				
+				theApp.Favor()->AddFromFile(filePath.c_str());
+
+				m_webengine->Reload();
+
+
 				break;
 			}
 
@@ -911,10 +920,14 @@ STDMETHODIMP CWebEventHandler::Invoke(
 					_T("bkmk"),
 					filterSpecs,
 					_countof(filterSpecs));
-				fileOpenDlg.DoModal(g_frame->GetHWND());
+				
+				if( IDCANCEL == fileOpenDlg.DoModal(g_frame->GetHWND()) ) break;;
+
 				wstring filePath;
 				filePath.resize(256);
 				fileOpenDlg.GetFilePath((LPWSTR)filePath.c_str(), 256);
+
+				theApp.Favor()->SaveFile(filePath.c_str());
 
 
 				break;

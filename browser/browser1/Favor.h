@@ -86,6 +86,9 @@ public:
 	xstring TestRoutine();//·µ»Ø²âÊÔ½á¹û
 	vector<string> QueryFolders();
 
+	CFavorManager& SaveFile(LPCTSTR pathfile);
+	CFavorManager& AddFromFile(LPCTSTR pathfile);
+
 
 };
 

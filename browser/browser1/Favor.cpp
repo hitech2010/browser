@@ -1,6 +1,6 @@
 #include "utilities.h"
 #include "../../sqlite/sqlite3.h"
-
+#include <fstream>
 
 using std::string;
 
@@ -390,6 +390,91 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 		 CppSQLite3Table m_dbtable = m_db->getTable(sql);
 
 		 return m_dbtable.numRows();
+	 }
+
+	 CFavorManager& CFavorManager::SaveFile(LPCTSTR pathfile)
+	 {
+
+
+		 ofstream outfile;
+		 outfile.open(pathfile, ios_base::trunc);
+
+		 if(outfile.is_open())
+		 {
+			 outfile.write("title|image|folder|url|time\n", strlen("title|image|folder|url|time\n"));
+			 outfile.write("---|---|---|---|---\n",strlen("---|---|---|---|---\n"));
+			
+
+			 CFavorManager::VRECORD vr =  theApp.Favor()->Query(q_all);
+
+			 for(int i = 0; i < vr.size(); ++i)
+			 {
+				 xstring tmp;
+				 tmp.format("%s|%s|%s|%s|%s\n",vr[i].title.c_str(),
+					 vr[i].img.c_str(),vr[i].folder.c_str(),vr[i].url.c_str(),vr[i].time.c_str());
+
+				 outfile.write(tmp.c_str(), tmp.size());
+
+
+			 }
+
+
+			 outfile.close();
+
+
+		 }
+		  return *this;
+
+	 }
+
+	 CFavorManager& CFavorManager::AddFromFile(LPCTSTR pathfile)
+	 {
+		 ifstream infile;
+		 infile.open(pathfile);
+		 string oneline;
+
+		 if(infile.is_open())
+		 {
+			 int  linenum = 0;
+			 while(getline(infile,oneline ))
+			 {
+				 _re reg("([^\\s\\n|]*)\\s*\\|\\s*([^\\s\\n|]*)\\s*\\|\\s*([^\\s\\n|]*)\\s*\\|\\s*([^\\s\\n|]*)\\s*\\|\\s*([^\\s\\n|]*)\\s*");
+				 if(reg.match(oneline))
+				 {
+					 linenum++;
+
+					 if(linenum == 1 || linenum == 2)
+					 {
+						 continue;
+					 }
+					 else
+					 {
+						 CFavorManager::RECORD rc;
+						 
+						 rc.title = reg.GetSubCapture(1);
+						 rc.img = reg.GetSubCapture(2);
+						 rc.folder = reg.GetSubCapture(3);
+						 rc.url = reg.GetSubCapture(4);
+						 rc.time = reg.GetSubCapture(5);
+
+						 theApp.Favor()->Add(rc);
+
+
+					 }
+
+
+					 
+					 
+				 }
+				 
+				 
+
+			 }
+
+			 infile.close();
+
+		 }
+		 return *this;
 	 }
 
 	CHistoryMgr::CHistoryMgr(CppSQLite3DB*db) throw()
