@@ -18,7 +18,7 @@
 					<button id="ImportBookmarks" class="btn">导入书签…</button>
 					<button id="ExportBookmarks" class="btn">导出书签…</button>
 					<div class="bookmark-search-div">
-						<form action method="get" id="bookmark-sec">
+						<form action method="get" onSubmit="OnSubmit();return false;" id="bookmark-sec">
 							<input type="text" placeholder="搜索书签" id="bookmark-search-name" />
 							<p id="toSearch"></p>
 						</form>

@@ -1,7 +1,27 @@
+function OnSubmit()
+{
+
+		var keyword = $("#bookmark-search-name").val();
+
+		if(keyword == "")
+		{
+			return ;
+		}
+
+		$(".page").hide();
+		$(".page2").show();
+
+		var ret = bq.Search(keyword);
+
+		$(".part-box").html(ret);
+}
+
+
+
 $(function(){
 	var bookmarkThis;
 
-	var bq 			= new BookmarkQuery();
+	bq 			= new BookmarkQuery();
 
 	var res 		= bq.Query();
 
@@ -42,6 +62,20 @@ $(function(){
 
 
 	});
+	function backtobookmark(){
+		if($("#bookmark-search-name").val()==""){
+
+			var res 		= bq.Query();
+
+
+
+
+			$(".bookmark-content .page").html(res);
+
+			$(".page").show();
+			$(".page2").hide();
+		}
+	}
 
 	$("#menu_newtab").click(function(){
 
@@ -151,12 +185,9 @@ $(function(){
     	e.preventDefault();
     });
     //搜索框
-	$("#bookmark-search-name").on('input propertychange', function() {
-	    
-	});
+	
 	$("#bookmark-search-name").focus(function(){
-		$(".page").hide();
-		$(".page2").show();
+
 	});
 	$("#bookmark-search-name").blur(function(){
 		if($(this).val()==""){
@@ -174,9 +205,30 @@ $(function(){
 			return ;
 		}
 
+		$(".page").hide();
+		$(".page2").show();
+
 		var ret = bq.Search(keyword);
 
 		$(".part-box").html(ret);
 
 	});
+
+
+
+
+	if(!window.ScriptEngineMinorVersion() && window.addEventListener){//IE9
+		$("#bookmark-search-name").on("keyup",function(e){
+			if(e.keyCode === 8){
+				backtobookmark();
+			}
+			if(e.ctrlKey && e.keyCode === 88){
+				backtobookmark();
+			}
+		})
+	}else{
+		$("#bookmark-search-name").on('input propertychange', function() {
+			backtobookmark();
+		});
+	}
 })
