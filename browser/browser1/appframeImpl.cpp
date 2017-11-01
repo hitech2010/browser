@@ -2628,12 +2628,22 @@ void CMdWebEngine::RestorePage()
 
 int CMdWebEngine::Reload(LPCTSTR url /*= NULL*/)
 {
-	CWebBrowserUI* pWebBrowserUI  = dynamic_cast<CWebBrowserUI*>(
+	CMdWebBrowserUI* pWebBrowserUI  = dynamic_cast<CMdWebBrowserUI*>(
 		m_webcontainer->GetItemAt(m_webcontainer->GetCurSel()) );
 
 	//检测是否是国密连接，是则设置代理
 	string strUrl;
-	strUrl.assign((_bstr_t)url);
+
+	if(url == NULL)
+	{
+		strUrl = pWebBrowserUI->getUrl();
+	}
+	else
+	{
+		strUrl.assign((_bstr_t)url);
+	}
+
+	
 	bool b = false;
 	string strback = strUrl;
 	if (isGMSSL(strUrl, b))
