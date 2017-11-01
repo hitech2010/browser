@@ -478,9 +478,12 @@ int nExitFlag;
 			return ; 
 		} 
 
-		
+		if(m_appfile.size())
+		{
+			nResult= reg.SetValue( 9000, _encoding(m_appfile).a_utf16().getutf16().c_str()  ); 
+		}
 
-		nResult= reg.SetValue( 9000, _encoding(m_appfile).a_utf16().getutf16().c_str()  ); 
+		
 		if ( nResult != ERROR_SUCCESS ) 
 		{ 
 			// TODO: Add error processing code. 
