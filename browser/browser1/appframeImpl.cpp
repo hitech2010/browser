@@ -628,6 +628,8 @@ public:
 
 	}
 
+	
+
 	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	{
 		CMenuWnd::OnCreate(uMsg, wParam, lParam, bHandled);
@@ -1710,6 +1712,8 @@ BOOL CFrameWindowWnd::init()
 	m_pm.SetTimer(btn_favor, 1000, 100);
 	m_pm.SetTimer(m_pm.FindControl(L"ui_home"), 1001, 300);
 	m_pm.SetTimer(m_pm.FindControl(L"ui_restorepage"), 1002, 300);
+
+	m_pm.GetDPIObj()->SetDPIAwareness(PROCESS_DPI_UNAWARE);
 
 
 	//SetIcon(IDR_MAINFRAME);

@@ -463,7 +463,33 @@ int nExitFlag;
 
 
 
+	void BrowserApp::FixIEEmulation()
+	{
+		CRegKey rk;
+		CRegKey reg; 
+		DWORD dwVal, dwLen; 
+		LONG nResult; 
+		TCHAR szPath[_MAX_PATH]; 
+		nResult= reg.Open( HKEY_CURRENT_USER, 
+			_T("SOFTWARE\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION"), KEY_READ | KEY_SET_VALUE | KEY_CREATE_SUB_KEY ); 
+		if ( nResult != ERROR_SUCCESS ) 
+		{ 
+			// TODO: Add error processing code. 
+			return ; 
+		} 
 
+		
+
+		nResult= reg.SetValue( 9000, _encoding(m_appfile).a_utf16().getutf16().c_str()  ); 
+		if ( nResult != ERROR_SUCCESS ) 
+		{ 
+			// TODO: Add error processing code. 
+			return ; 
+		} 
+
+
+
+	}
 
 	BrowserApp::BrowserApp():AppConfig()
 	{
@@ -472,9 +498,18 @@ int nExitFlag;
 		char szPath[MAX_PATH];
 		ULONG nSize = _countof(szPath);
 		::GetModuleFileNameA(NULL, szPath, _countof(szPath));
+		string pathfile = szPath;
+
 		::PathAppendA(szPath, "..\\");
 		m_appdir.assign(szPath);
 		::PathAppendA(szPath, "gmbrowser.db");
+
+		_re reg("\\w*\\.\\w*");
+		if(reg.match(pathfile))
+		{
+			m_appfile = reg.GetSubCapture(0);
+		}
+		
 
 		Log("BrowserApp::2 %s", szPath);
 		xstring tmp = szPath;
@@ -565,6 +600,13 @@ int nExitFlag;
 		return m_history;
 	}
 
+	BrowserApp& BrowserApp::SetDefaultBrowser()
+	{
+
+		return *this;
+
+	}
+
 	
 
 	CFavorManager* BrowserApp::Favor()
@@ -583,6 +625,11 @@ int nExitFlag;
 	string BrowserApp::getAppdir()
 	{
 		return m_appdir;
+	}
+
+	string BrowserApp::getAppFile()
+	{
+		return m_appfile;
 	}
 
 	Json::Value& BrowserApp::getJsonValue()
@@ -679,6 +726,9 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 
 	CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
+
+	theApp.FixIEEmulation();
+
 	//_beginthreadex(NULL, 0, sync_setting_proc, NULL, 0, NULL);
 	map<string, string> para;
 
@@ -725,12 +775,7 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 				pFrame->m_engine->Add( _encoding(url).de_base64().u8_utf16().getutf16().c_str());
 			}
 			theApp.Unlock();
-
 		}
-
-
-
-		
 	}
 	else if(startpolicy == "2")
 	{

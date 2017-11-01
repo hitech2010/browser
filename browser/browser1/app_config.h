@@ -137,6 +137,7 @@ class BrowserApp :public AppConfig
 
 	CppSQLite3DB db;//关于browser的数据
 	string       m_appdir;
+	string       m_appfile;
 	CFavorManager* m_favor;
 	CFavorFolder*  m_favorfolder;
 	CHistoryMgr*   m_history;
@@ -152,11 +153,16 @@ public:
 
 	BrowserApp();
 	~BrowserApp();
+
+	void FixIEEmulation();
 	CHistoryMgr* History();
+	BrowserApp& SetDefaultBrowser();
 	CFavorManager* Favor();
 	CFavorFolder*  FavorFolder();
 	string         getAppdir();
+	string         getAppFile();
 	Json::Value&   getJsonValue();
+
 
 
 	void			RunSelf();
@@ -164,6 +170,8 @@ public:
 	CGeeMeeEventPool& Pool();
 
 };
+
+
 
 
 
