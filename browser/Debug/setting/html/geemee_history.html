@@ -17,7 +17,7 @@
 					<span id="del-select">删除选中项</span>
 					<span id="del-all">清空历史记录</span>
 					<div class="history-search-div">
-						<form action method="get" id="his-sec">
+						<form action method="get" onSubmit="OnSubmit();return false;" id="his-sec">
 							<input type="text" placeholder="搜索历史记录" id="history-search-name" />
 							<p id="toSearch"></p>
 						</form>

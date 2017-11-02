@@ -1,6 +1,28 @@
+
+    function OnSubmit()
+	{
+	    var keyword = $("#history-search-name").val();
+
+		if(keyword == "")
+		{
+			return ;
+		}
+
+
+		$(".page").hide();
+		$(".search-box").show();
+		page = 1;
+
+		var ret = hq.Search(keyword);
+
+		$(".search-box").html(ret);
+
+	}
+
+
 $(function(){
 
-	var hq = new HistoryQuery();
+	 hq = new HistoryQuery();
 	var today = hq.Query("today");
 	var yesterday = hq.Query("yesterday");
 	var thisweek = hq.Query("thisweek");
@@ -46,6 +68,37 @@ $(function(){
 	},function(){
 		$(this).find("span").hide();
 	});*/
+
+    function backtohistory(){
+        if($("#history-search-name").val()==""){
+
+			$(".page").show();
+			$(".search-box").hide();
+			page = 0;
+
+
+			var today = hq.Query("today");
+			var yesterday = hq.Query("yesterday");
+			var thisweek = hq.Query("thisweek");
+			var thismonth = hq.Query("thismonth");
+
+	//alert(res);
+	//$("sy-today part-box").innerHTML = res;
+			$(".part-right .sy-today ").html(today);
+			$(".part-right .sy-yesterday ").html(yesterday);
+			$(".part-right .sy-thisweek ").html(thisweek);
+			$(".part-right .sy-thismonth ").html(thismonth);
+
+        }
+    }
+
+
+
+
+
+
+
+
 
 
 	$(".history-content").on('mouseenter mouseleave','.history-info',function(){
@@ -168,9 +221,7 @@ $(function(){
 	    
 	});
 	$("#history-search-name").focus(function(){
-		$(".page").hide();
-		$(".search-box").show();
-		page = 1;
+
 
 	});
 	$("#history-search-name").blur(function(){
@@ -190,9 +241,33 @@ $(function(){
 			return ;
 		}
 
+
+		$(".page").hide();
+		$(".search-box").show();
+		page = 1;
+
 		var ret = hq.Search(keyword);
 
 		$(".search-box").html(ret);
 
 	});
+
+
+
+	if(!window.ScriptEngineMinorVersion() && window.addEventListener){//IE9
+        $("#history-search-name").on("keyup",function(e){
+            if(e.keyCode === 8){
+                backtohistory();
+            }
+            if(e.ctrlKey && e.keyCode === 88){
+                backtohistory();
+            }
+        })
+    }else{
+        $("#history-search-name").on('input propertychange', function() {
+            backtohistory();
+        });
+    }
+
+
 })
