@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Window caption="0,0,0,40" roundcorner="5,5" size="264,391" sizebox="4,4,4,4" mininfo="264,391" showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" roundcorner="8,8" shadowcorner="8,8,8,8" >
-  <Font id="17" name="PingFangSC-Medium" size="17"  bold="true"/>
-  <Font id="14" name="PingFangSC-Regular"  size="14" />
-  <Font id="12" name="PingFangSC-Regular" default="true" size="12" />
+  <Font id="17" name="微软雅黑" size="17"  bold="true"/>
+  <Font id="14" name="微软雅黑" bold="true" size="14" />
+  <Font id="12" name="微软雅黑" default="true" size="12" />
+  	
+  
 
   <Default name="VScrollBar" shared="true" value="width=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='skin/vscrollbar.png' source='0,60,8,100' corner='0,4,0,4'&quot; thumbhotimage=&quot;file='skin/vscrollbar.png' source='8,60,16,100' corner='0,4,0,4'&quot; thumbpushedimage=&quot;file='skin/vscrollbar.png' source='16,60,24,100' corner='0,4,0,4'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/vscrollbar.png' source='0,0,8,60' corner='0,4,0,4'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
   <Default name="HScrollBar" shared="true" value="height=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='skin/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; thumbhotimage=&quot;file='skin/hscrollbar.png' source='0,8,32,16' corner='4,0,4,0'&quot; thumbpushedimage=&quot;file='skin/hscrollbar.png' source='0,16,32,24' corner='4,0,4,0'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
@@ -12,7 +14,7 @@
 
   <VerticalLayout bkcolor="#FFFFFFFF" width="264" height="391"  font="14">
 		
-    <Button float="true"  font="17" text="清理上网痕迹" pos="70,20,193,40"   textcolor="#FF5C5C5C" />
+    <Button float="true"  font="14"  text="清理上网痕迹" pos="70,20,193,40"   textcolor="#FF5C5C5C" />
     <Button name="ui_clearcache_close" float="true"  font="1" pos="241,13,251,23" textcolor="#FF5C5C5C" bkimage="file=&apos;skin\close_dlg.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" />
     
     
@@ -63,7 +65,7 @@
     <Button float="true"  text="关闭浏览器时自动清理"   pos="53,304,254,321" align="left"    textcolor="#FF5C5C5C" />
     
     
-    <Button float="true"  name="ui_clearcache_doclean" text="立即清理"   pos="35,341,230,371"     textcolor="#FF458EE4" bkcolor="#33458DE4"/>
+    <Button float="true"  name="ui_clearcache_doclean" text="立即清理"  bordersize="1" bordercolor="#FF458EE4" pos="35,341,230,371"     textcolor="#FF458EE4" bkcolor="#33458DE4"/>
    
     
 

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Window bktrans="true" size="120,82" showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" shadowcorner="8,8,8,8">
- <Font id="0" name="宋体" size="13" bold="false"/>
- <Font id="1" name="宋体" size="12"/>
+<Window bktrans="true" size="120,82" showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" shadowcorner="4,4,4,4">
+ <Font id="0" name="微软雅黑" size="12" default="true" bold="false"/>
+ <Font id="1" name="微软雅黑" size="12"/>
 <VerticalLayout width="120" height="82" bkimage="file='skin/menu_bk.png' corner='40,8,8,8'" hole="false">
 	<List header="hidden" inset="8,8,8,8" itemhotimage="file='skin/menu_hot_bk.png' corner='2,2,2,2'" itemdisabledbkcolor="#FF0000FF">
 		<ListContainerElement name="menu_rename" height="22" inset="40,0,0,0">
-			<Label text="重命名" mouse="false"/>
+			<Label textcolor="#FF5C5C5C" text="重命名" mouse="false"/>
 		</ListContainerElement>
 		<ListContainerElement name="menu_delete" height="22" inset="40,0,0,0">
-			<Label text="删除" mouse="false"/>
+			<Label textcolor="#FF5C5C5C" text="删除" mouse="false"/>
 		</ListContainerElement>
 		<ListContainerElement name="menu_newfolder" height="22" inset="40,0,0,0">
-			<Label text="新建" mouse="false"/>
+			<Label textcolor="#FF5C5C5C"  text="新建" mouse="false"/>
 		</ListContainerElement>
 	</List>
 </VerticalLayout>

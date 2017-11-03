@@ -1,69 +1,82 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <Window size="270,456"  showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" shadowcorner="8,8,8,8">
   <Font id="0" name="微软雅黑" size="14" bold="false"/>
+  <Font id="1" name="微软雅黑" size="14" bold="true"></Font>
+  <Font id="2" name="微软雅黑" size="12" bold="true"></Font>
+  <Font id="3" name="微软雅黑" size="12" bold="false"></Font>
+  
+  
+  <Style name="textstyle1" value="font=&quot;1&quot; textcolor=&quot;#FF5C5C5C&quot;"></Style>
+  <Style name="textstyle2" value="font=&quot;2&quot; textcolor=&quot;#FF5C5C5C&quot;"></Style>
+  <Style name="textstyle3" value="font=&quot;3&quot; textcolor=&quot;#FF5C5C5C&quot;"></Style>
+  <Style name="textstyle4" value="font=&quot;3&quot; textcolor=&quot;#FFC8CACF&quot;"></Style>
+  
+  <Style name="textstyle5" value="font=&quot;2&quot; textcolor=&quot;#FFC8CACF&quot;"></Style>
+  
   <VerticalLayout width="270" height="456" bkcolor="#FFFFFFFF">
-  	<HorizontalLayout  height="70" padding="0,40,0,0" >
+  	<HorizontalLayout  height="64" padding="0,28,0,0" >
 
-		      <Container  width="70" height="70" padding="14,0,0,0">
-		      	<Button name="menu_bookmark" width="70" height="70" normalimage="file='skin\menu_bookmark.png'" hotimage="file='skin\menu_bookmark_hot.png'"/>
-		      	<Button  float="true" pos="21,37,49,57" height="20" text="书签"/>
+		      <Container  width="64" height="64" padding="24,0,0,0">
+		      	<Button name="menu_bookmark" width="64" height="64" normalimage="file='skin\menu_bookmark.png'" hotimage="file='skin\menu_bookmark_hot.png'"/>
+		      	<Button style="textstyle1"  float="true" pos="18,37,46,57" height="20" text="书签"/>
 		      </Container>
 		      
-		      <VerticalLayout hotcolor="#FFFFFFFF" width="70" height="70" padding="14,0,0,0">
-		      	<Button name="menu_history" width="70" height="70" normalimage="file='skin\menu_history.png'" hotimage="file='skin\menu_history_hot.png'"/>
-		      	<Button  float="true" pos="21,37,49,57" height="20" text="历史"/>
+		      <VerticalLayout hotcolor="#FFFFFFFF" width="64" height="64" padding="11,0,0,0">
+		      	<Button name="menu_history" width="64" height="64" normalimage="file='skin\menu_history.png'" hotimage="file='skin\menu_history_hot.png'"/>
+		      	<Button style="textstyle1" float="true" pos="18,37,46,57" height="20" text="历史"/>
 		      </VerticalLayout>
 		      
-		      <VerticalLayout bkcolor="#FFFFFFFF" width="70" height="70" padding="14,0,0,0">
-		      	<Button name="menu_clearcache" width="70" height="70" normalimage="file='skin\menu_clearcache.png'" hotimage="file='skin\menu_clearcache_hot.png'"/>
-		      	<Button  float="true" pos="7,37,63,57" height="20" text="清理痕迹"/>
+		      <VerticalLayout bkcolor="#FFFFFFFF" width="64" height="64" padding="11,0,0,0">
+		      	<Button name="menu_clearcache" width="64" height="64" normalimage="file='skin\menu_clearcache.png'" hotimage="file='skin\menu_clearcache_hot.png'"/>
+		      	<Button style="textstyle1" float="true" pos="4,37,60,57" height="20" text="清理痕迹"/>
 		      </VerticalLayout>
     </HorizontalLayout>
-    <HorizontalLayout  padding="0,20,0,0" height="70">
-		      <VerticalLayout bkcolor="#FFFFFFFF" width="70" height="70" padding="14,0,0,0">
-		      	<Button name="menu_setting" width="70" height="70" normalimage="file='skin\menu_setting.png'" hotimage="file='skin\menu_setting_hot.png'"/>
-		      	<Button  float="true" pos="21,37,49,57" height="20" text="设置"/>
+    <HorizontalLayout  padding="0,16,0,0" height="64">
+		      <VerticalLayout bkcolor="#FFFFFFFF" width="64" height="64" padding="24,0,0,0">
+		      	<Button name="menu_setting" width="64" height="64" normalimage="file='skin\menu_setting.png'" hotimage="file='skin\menu_setting_hot.png'"/>
+		      	<Button style="textstyle1" float="true" pos="18,37,46,57" height="20" text="设置"/>
 		      </VerticalLayout>
 		      
-		      <VerticalLayout bkcolor="#FFFFFFFF" width="70" height="70" padding="14,0,0,0">
-		      	<Button name="menu_download" width="70" height="70" normalimage="file='skin\menu_download.png'" hotimage="file='skin\menu_download_hot.png'"/>
-		      	<Button  float="true" pos="21,37,49,57" height="20" text="下载"/>
+		      <VerticalLayout bkcolor="#FFFFFFFF" width="64" height="64" padding="11,0,0,0">
+		      	<Button name="menu_download" width="64" height="64" normalimage="file='skin\menu_download.png'" hotimage="file='skin\menu_download_hot.png'"/>
+		      	<Button style="textstyle1" float="true" pos="18,37,46,57" height="20" text="下载"/>
 		      </VerticalLayout>
 		      
-		      <VerticalLayout bkcolor="#FFFFFFFF" width="70" height="70" padding="14,0,0,0">
-		      	<Button name="menu_print" width="70" height="70" normalimage="file='skin\menu_print.png'" hotimage="file='skin\menu_print_hot.png'"/>
-		      	<Button  float="true" pos="21,37,49,57" height="20" text="打印"/>
+		      <VerticalLayout bkcolor="#FFFFFFFF" width="64" height="64" padding="11,0,0,0">
+		      	<Button name="menu_print" width="64" height="64" normalimage="file='skin\menu_print.png'" hotimage="file='skin\menu_print_hot.png'"/>
+		      	<Button style="textstyle1" float="true" pos="18,37,46,57" height="20" text="打印"/>
 		      </VerticalLayout>
 	  </HorizontalLayout>
-	  <HorizontalLayout padding="0,28,0,0"  height="248" >
-	  	<Button float="true" pos="32,18,80,35"  text="新建窗口"></Button>
-	  	<Option group="xjck" name="putong" float="true" pos="113,16,161,38" bordersize="1" selectedbkcolor="#FF1979CA" bordercolor="#FF1979CA" text="普通"></Option>
-	  	<Option group="xjck" name="xiaohao" float="true" pos="160,16,208,38" bordersize="1" selectedbkcolor="#FF1979CA" bordercolor="#FF1979CA" text="小号"></Option>
-	  	<Option group="xjck" name="wuhen" float="true" pos="207,16,255,38" bordersize="1"  selectedbkcolor="#FF1979CA" bordercolor="#FF1979CA"  text="无痕"></Option>
+	  <HorizontalLayout padding="0,36,0,0"  height="248" bkcolor="#FFF4F6F9" >
+	  	<Button style="textstyle2" float="true" pos="32,18,80,35"  text="新建窗口"></Button>
+	  	<Option group="xjck" style="textstyle3" name="putong" float="true" pos="113,16,161,38" bordersize="1"  bordercolor="#FFDADDF0" text="普通"></Option>
+	  	<Option group="xjck" style="textstyle4" name="xiaohao" float="true" pos="160,16,208,38" bordersize="1"  bordercolor="#FFDADDF0" text="小号"></Option>
+	  	<Option group="xjck" style="textstyle4" name="wuhen" float="true" pos="207,16,255,38" bordersize="1"   bordercolor="#FFDADDF0"  text="无痕"></Option>
 
-	  	<Button float="true" pos="32,55,92,72" text="目标另存为"></Button>
-	  	<Option group="mblcw" name="tupian" float="true" pos="113,53,161,75" bordersize="1" selectedbkcolor="#FF1979CA"  bordercolor="#FF1979CA" text="图片"></Option>
-	  	<Option group="mblcw" name="wenjian" float="true" pos="160,53,208,75" bordersize="1" selectedbkcolor="#FF1979CA" bordercolor="#FF1979CA"  text="文件"></Option>
+	  	<Button style="textstyle2" float="true" pos="32,55,92,72" text="目标另存为"></Button>
+	  	<Option group="mblcw" style="textstyle4" name="tupian" float="true" pos="113,53,161,75" bordersize="1"   bordercolor="#FFDADDF0" text="图片"></Option>
+	  	<Option group="mblcw" style="textstyle3" name="wenjian" float="true" pos="160,53,208,75" bordersize="1"  bordercolor="#FFDADDF0"  text="文件"></Option>
 	  	
-	  	<Button float="true" pos="32,92,56,109" text="缩放"></Button>
-	  	<HorizontalLayout float="true" pos="113,90,187,112" bordersize="1" bordercolor="#FF1979CA">
-	  		<Button name="suofang_minus" width="20" height="20" padding="1,1,0,0" bkimage="file='skin\minus.png' dest='7,9,13,10' "></Button>
-	  		<Button name="suofang_number" width="30" text="100%"></Button>
-	  		<Button name="suofang_plus" width="20" height="20" padding="0,1,1,0" bkimage="file='skin\plus.png'  dest='6,7,13,14' "></Button>
+	  	<Button style="textstyle2" float="true" pos="32,92,56,109" text="缩放"></Button>
+	  	<HorizontalLayout float="true" pos="113,90,187,112" bordersize="1" bordercolor="#FFDADDF0" >
+	  		<Button name="suofang_minus" width="20" height="20"  bkimage="file='skin\minus.png' dest='8,10,14,11' "></Button>
+	  		<Button style="textstyle3"  name="suofang_number" width="30" text="100%"></Button>
+	  		<Button name="suofang_plus" width="20" height="20"  bkimage="file='skin\plus.png'  dest='7,8,14,15' "></Button>
 	  	</HorizontalLayout>
 	  	
-	  	<Button float="true" name="suofang_restore" pos="186,90,208,112" bordersize="1" bordercolor="#FF1979CA" bkimage="file='skin\suofang_clock.png' dest='5,3,15,16' "></Button>
-	  	<Button float="true" name="suofang_max" pos="207,90,229,112" bordersize="1" bordercolor="#FF1979CA" bkimage="file='skin\suofang_huanyuan.png' dest='4,4,16,16' " ></Button>
 	  	
-	  	<Container name="submenu_toobar" width="270" height="36" padding="0,119,0,0" name="submenu_toobar"  >
-	  		<Button float="true" pos="32,10,56,25" bordersize="0" bordercolor="#FF1979CA"  text="工具"></Button>
+	  	<Button float="true" name="suofang_restore" pos="186,90,208,112" bordersize="1" bordercolor="#FFDADDF0" bkimage="file='skin\suofang_clock.png' dest='6,4,16,17' "></Button>
+	  	<Button float="true" name="suofang_max" pos="207,90,229,112" bordersize="1" bordercolor="#FFDADDF0" bkimage="file='skin\suofang_huanyuan.png' dest='5,5,17,17' " ></Button>
+	  	
+	  	<!--Container name="submenu_toobar" width="270" height="36" padding="0,119,0,0" name="submenu_toobar"  >
+	  		<Button style="textstyle2" float="true" pos="32,10,56,25" bordersize="0" bordercolor="#FF1979CA"  text="Internet选项"></Button>
 	  		<Button float="true" pos="247,12,254,22" bkimage="file='skin\gongju_arrow.png'" ></Button>	
-	  	</Container>
+	  	</Container-->
 	  	
 	  	
-	  	
-	  	<Button float="true" pos="32,166,80,183" bordersize="0" bordercolor="#FF1979CA"  text="反馈建议"></Button>
-	  	<Button float="true" pos="32,203,56,220" bordersize="0" bordercolor="#FF1979CA"  text="帮助"></Button>	
+	  	<Button style="textstyle2" align="left" textpadding="32,0,0,0" float="true" pos="0,119,270,153" name="ui_internet_option"    text="Internet选项"></Button>
+	  	<Button style="textstyle5" align="left" textpadding="32,0,0,0" float="true" pos="0,154,270,190"   text="反馈建议"></Button>
+	  	<Button style="textstyle2" align="left" textpadding="32,0,0,0" float="true" pos="0,191,270,227" name="ui_about_geemee"   text="关于geemee"></Button>	
 	  	
 	  </HorizontalLayout>
 

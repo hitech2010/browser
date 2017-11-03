@@ -579,6 +579,20 @@ public:
 			//MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
 		}
 
+		else if (msg.pSender->GetName() == _T("ui_internet_option") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			ShellExecuteA(NULL, "open", "cmd.exe", "/c inetcpl.cpl", NULL, SW_HIDE);
+
+			//MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
+		}
+
+		else if (msg.pSender->GetName() == _T("ui_about_geemee") && msg.sType == DUI_MSGTYPE_CLICK)
+		{
+			m_frame->ShowAboutDlg();
+
+			//MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
+		}
+
 
 		else if (msg.pSender->GetName() == _T("submenu_toobar") && msg.sType == DUI_MSGTYPE_MOUSEHOVER)
 		{
@@ -896,6 +910,7 @@ public:
 
 			newlabel->SetText(folder);
 			newlabel->SetFixedHeight(23);
+			newlabel->SetBkColor(0xFFF40000);
 			newlabel->SetFixedWidth(214);
 
 			m_Combo->Add(newlabel);
@@ -908,6 +923,7 @@ public:
 		newlabel->SetText(L"其它文件夹");
 		newlabel->SetFixedHeight(23);
 		newlabel->SetFixedWidth(214);
+		newlabel->SetBkColor(0xFFF40000);
 		m_Combo->Add(newlabel);
 
 
@@ -1028,10 +1044,10 @@ public:
 
 
 		btn->SetManager(&m_pm, NULL, false);
-		btn->SetAttribute(_T("padding"), _T("5,7,0,0"));
+		btn->SetAttribute(_T("padding"), _T("5,8,0,0"));
 		btn->SetName(_T("ui_folder_btn"));
-		btn->SetBkImage(_T("skin/folder_close.png"));
-		btn->SetFixedHeight(16);
+		btn->SetBkImage(_T("skin/folder_.png"));
+		btn->SetFixedHeight(14);
 		btn->SetFixedWidth(16);
 		elmt->Add(btn);
 
@@ -1055,6 +1071,8 @@ public:
 		edit->SetBorderSize(1);
 		edit->SetBorderColor(0xFFCBD7DE);
 		edit->SetFixedHeight(30);
+		label->SetFont(12);
+		label->SetTextColor(0xFF5C5C5C);
 		edit->SetText(L"ui_add");
 		elmt->Add(edit);
 		
@@ -1088,11 +1106,12 @@ public:
 		btn->SetManager(&m_pm, NULL, false);
 // 		RECT rcbtn = { 5, 7, 0, 0 };
 // 		btn->SetPadding(rcbtn);
-		btn->SetAttribute(_T("padding"), _T("5,7,0,0"));
+		btn->SetAttribute(_T("padding"), _T("5,8,0,0"));
 		btn->SetName(_T("ui_folder_btn"));
-		btn->SetBkImage(_T("skin/folder_close.png"));
-		btn->SetFixedHeight(16);
+		btn->SetBkImage(_T("skin/folder_.png"));
+		btn->SetFixedHeight(14);
 		btn->SetFixedWidth(16);
+		
 		elmt->Add(btn);
 
 
@@ -1100,6 +1119,8 @@ public:
 // 		RECT rclable = { 5, 0, 0, 0 };
 // 		label->SetPadding(rcbtn);
 		label->SetAttribute(_T("padding"), _T("5,0,0,0"));
+		label->SetFont(12);
+		label->SetTextColor(0xFF5C5C5C);
 		wxstring id;
 		id.format(L"%d", record.id);
 		label->SetName(id);
@@ -2346,9 +2367,10 @@ int CMdWebEngine::Add(LPCTSTR url)
 	m_tabcontainer->AddAt(pContainer, m_tabcontainer->GetCount() - 1);
 	pContainer->SetName(_T("123421341234"));
 	pContainer->SetFixedWidth(130);
+	pContainer->SetFixedHeight(30);
 	RECT rc0 = {1,1,1,1};
 	pContainer->SetBorderSize(rc0);
-	pContainer->SetBorderColor(0xFF1979CA);
+	pContainer->SetBorderColor(0xFFE8ECF2);
 	m_pWnd->SendMessageW(WM_PAINT);
 	
 	
@@ -2361,8 +2383,8 @@ int CMdWebEngine::Add(LPCTSTR url)
 
 	pBtn->SetName(L"pbtn");
 	pBtn->SetFloat(true);
-	pBtn->SetAttribute(L"pos", L"13,8,29,24");
-	pBtn->SetBkColor(0xFF1979CA);
+	pBtn->SetAttribute(L"pos", L"13,6,29,22");
+	pBtn->SetBkImage(L"skin\\webicon.png");
 
 
 
@@ -2370,6 +2392,8 @@ int CMdWebEngine::Add(LPCTSTR url)
 	pOpt->SetName(L"popt");
 	pOpt->SetBkImage(_T("skin\\tab_bkgd.png"));
 	pOpt->SetSelectedImage(_T("skin\\tab_focus.png"));
+	pOpt->SetFont(4);
+
 // 	pOpt->SetBkColor(0xFFFF0000);
 // 	pOpt->SetSelectedBkColor(0xFF00FFFF);
 	pOpt->SetGroup(_T("webpage"));
@@ -2381,9 +2405,9 @@ int CMdWebEngine::Add(LPCTSTR url)
 	pBtnClose->SetName(L"pbtnclose");
 	pBtnClose->SetUserData(_T("ui_closetab"));
 	pBtnClose->SetFloat(true);
-	pBtnClose->SetAttribute(L"pos", L"114,13,121,21");
+	pBtnClose->SetAttribute(L"pos", L"114,11,122,19");
 	pBtnClose->SetUserData(_T("ui_closetab"));
-	pBtnClose->SetBkImage(L"skin\\page_close.png");
+	pBtnClose->SetBkImage(L"skin\\tab_close_new.png");
 
 
 

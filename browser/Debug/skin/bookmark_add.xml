@@ -1,41 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Window caption="0,0,0,40" roundcorner="5,5" sizebox="4,4,4,4" mininfo="386,254" showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" shadowcorner="8,8,8,8" >
-  <Font id="0" name="PingFangSC-Medium" size="17" />
-  <Font id="14" name="PingFangSC-Regular" default="true" size="14" />
-  <Font id="12" name="PingFangSC-Regular" size="12" />
+  
+  <Font id="0" name="微软雅黑" size="14" bold="false"/>
+  <Font id="1" name="微软雅黑" size="14" bold="true"></Font>
+  <Font id="2" name="微软雅黑" size="12" bold="true"></Font>
+  <Font id="3" name="微软雅黑" size="12" bold="false"></Font>
+  
+  
+  <Style name="textstyle1" value="font=&quot;0&quot; textcolor=&quot;#FF5C5C5C&quot;"></Style>
+  <Style name="textstyle2" value="font=&quot;2&quot; textcolor=&quot;#FF5C5C5C&quot;"></Style>
+  <Style name="textstyle3" value="font=&quot;3&quot; textcolor=&quot;#FF5C5C5C&quot;"></Style>
+  <Style name="textstyle4" value="font=&quot;2&quot; textcolor=&quot;#FFFFFFFF&quot;"></Style>
+  <Style name="textstyle5" value="font=&quot;2&quot; textcolor=&quot;#FFC8CACF&quot;"></Style>
 
   <Default name="VScrollBar" shared="true" value="width=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='skin/vscrollbar.png' source='0,60,8,100' corner='0,4,0,4'&quot; thumbhotimage=&quot;file='skin/vscrollbar.png' source='8,60,16,100' corner='0,4,0,4'&quot; thumbpushedimage=&quot;file='skin/vscrollbar.png' source='16,60,24,100' corner='0,4,0,4'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/vscrollbar.png' source='0,0,8,60' corner='0,4,0,4'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
-  <Default name="HScrollBar" shared="true" value="height=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='skin/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; thumbhotimage=&quot;file='skin/hscrollbar.png' source='0,8,32,16' corner='4,0,4,0'&quot; thumbpushedimage=&quot;file='skin/hscrollbar.png' source='0,16,32,24' corner='4,0,4,0'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
+  <Default name="HScrollBar" shared="true" value="height=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; itembkcolor=&quot;#FFF10000&quot; itemselectedbkcolor=&quot;#FFF1F2F6&quot; thumbnormalimage=&quot;file='skin/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; thumbhotimage=&quot;file='skin/hscrollbar.png' source='0,8,32,16' corner='4,0,4,0'&quot; thumbpushedimage=&quot;file='skin/hscrollbar.png' source='0,16,32,24' corner='4,0,4,0'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
  
-  <Style name="combo_style" value="height=&quot;28&quot; textcolor=&quot;#FF000000&quot; itemvalign=&quot;vcenter&quot; textpadding=&quot;4,1,28,1&quot; normalimage=&quot;res='skin/combo.png' source='0,0,161,28' corner='2,2,28,2'&quot;" />
-	<Style name="combo_style1" value="height=&quot;28&quot; textcolor=&quot;#FF000000&quot; itemvalign=&quot;vcenter&quot; textpadding=&quot;4,1,28,1&quot; normalimage=&quot;res='skin/combo1.bmp' source='0,0,214,28'  corner='2,2,28,2'&quot; " />
+  <Style name="combo_style" value="height=&quot;28&quot; font=&quot;0&quot; textcolor=&quot;#FF5C5C5C&quot; itemtextcolor=&quot;#FF5C5C5C&quot; itemvalign=&quot;vcenter&quot; textpadding=&quot;4,1,28,1&quot; normalimage=&quot;res='skin/combo.png' source='0,0,161,28' corner='2,2,28,2'&quot;" />
+	<Style name="combo_style1" value="height=&quot;28&quot; font=&quot;0&quot; itemselectedbkcolor=&quot;#FFF1F2F6&quot; itemhotbkcolor=&quot;#FFF1F2F6&quot; itembkcolor=&quot;#FFF4F5F8&quot; itemselectedtextcolor=&quot;#FF5C5C5C&quot; itemhottextcolor=&quot;#FF5C5C5C&quot; textcolor=&quot;#FF5C5C5C&quot; itemtextcolor=&quot;#FF5C5C5C&quot; itemvalign=&quot;vcenter&quot; textpadding=&quot;4,1,28,1&quot; normalimage=&quot;res='skin/combo1.bmp' source='0,0,214,28'  corner='2,2,28,2'&quot; " />
 
   <VerticalLayout bkcolor="#FFFFFFFF" width="386" height="254"  font="14">
 
     <HorizontalLayout height="39" width="384" bkcolor="#FFF1F2F6" >
-      <Button name="ui_favor_add" text="添加到书签" font="1" width="70" height="20" textcolor="#FF5C5C5C" padding="13,9,0,0" />
+      <Button name="ui_favor_add" text="添加到书签" style="textstyle1" width="70" height="20" padding="13,9,0,0" />
       <Button name="ui_favor_add_close" padding="275,8,0,0" width="16" height="16" bkimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;16,0,32,16&apos;" />
     </HorizontalLayout>
     
 
     <HorizontalLayout height="80">
       <Label width="28" height="28" padding="137,30,0,0" bkimage="skin\bookmark_add_complete.png" />
-			<Label width="100" height="20" padding="36,34,0,0" text="书签已添加!" />
+			<Label width="100" style="textstyle1" height="20" padding="36,34,0,0" text="书签已添加!" />
     </HorizontalLayout>
 
     <HorizontalLayout height="34">
-      <Label width="56" padding="41,0,0,0" height="20" text="名称:"   textcolor="#FF5C5C5C" />
-      <Edit  name ="ui_favor_add_title"  padding="8,0,0,0" width="214" height="28" bordersize="1" bordercolor="0xFFCBD7DE" />
+      <Label width="50"  style="textstyle1"  align="right"  padding="41,7,0,0" height="20" text="名称:"  />
+      <Edit  name ="ui_favor_add_title" 	style="textstyle1"  textpadding="9,0,9,0" padding="14,3,0,0" width="214" height="28" bordersize="1" bordercolor="0xFFCBD7DE" />
     </HorizontalLayout>
     
     <Container >
-      <Label   float="true" pos="41,0,97,34" text="文件夹:"   textcolor="#FF5C5C5C" />
-      <Combo  name="ui_favor_folderlist" style="combo_style1" scrollselect="false" float="true" dropbox="hscrollbar=&quot;false&quot;" pos="105,0,319,28"  bordersize="1" bordercolor="0xFFCBD7DE" >
-                <ListLabelElement text="书签栏" selected="true" height="23" width="214"/> 
+      <Label  style="textstyle1" float="true"  align="right"  pos="41,7,91,27" text="文件夹:"   textcolor="#FF5C5C5C" />
+      <Combo    name="ui_favor_folderlist" style="combo_style1" scrollselect="false" float="true" textpadding="9,0,9,0" dropbox="hscrollbar=&quot;false&quot;" pos="105,3,319,31"  bordersize="1" bordercolor="0xFFCBD7DE" >
+           <ListLabelElement    text="书签栏" selected="true" height="23" width="214"/> 
       </Combo>
-    	<Button  float="true" pos="36,56,96,80" name="ui_favor_add_delete"  text="删除" font="1" textcolor="#FFFFFFFF" bkcolor="#FF6389E0"  bordersize="1" bordercolor="0xFFCBD7DE"/>
-      <Button  float="true" pos="215,56,275,80" name="ui_favor_add_edit"    text="修改" font="1" textcolor="#FFFFFFFF" bkcolor="#FF6389E0"  bordersize="1" bordercolor="0xFFCBD7DE"/>
-      <Button  float="true" pos="290,56,350,80" name="ui_favor_add_ok"      text="完成" font="1" textcolor="#FF000000" bkcolor="#FFFFFFFF"  bordersize="1" bordercolor="0xFFCBD7DE"/>
+    	<Button style="textstyle3"  float="true" pos="36,56,96,80"  name="ui_favor_add_delete"   text="删除"   bkcolor="#FFFFFFFF"  bordersize="1" bordercolor="0xFF979797"/>
+      <Button style="textstyle3" float="true" pos="215,56,275,80" name="ui_favor_add_edit"    text="修改"  bkcolor="#FFFFFFFF"  bordersize="1" bordercolor="0xFF979797"/>
+      <Button style="textstyle4" float="true" pos="290,56,350,80" name="ui_favor_add_ok"      text="完成"  bkcolor="#FF458EE4" />
       	
     </Container>
     

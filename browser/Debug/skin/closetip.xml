@@ -2,29 +2,29 @@
 
 <Window size="386,254" showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" shadowcorner="8,8,8,8">
   
-  <Font id="0" name="PingFangSC-Medium" size="14" />
-  <Font id="1" name="PingFangSC-Regular" size="14" />
+  <Font id="14" name="微软雅黑" size="14" default="true"/>
+  <Font id="141" name="微软雅黑" bold="true" size="14" />
+  <Font id="12" name="微软雅黑" size="12" />
 
   <VerticalLayout width="386" height="254" bkcolor="#FFFFFFFF" >
     
-    <HorizontalLayout height="32">
-    <Label text="极密浏览器" padding="19,12,0,0" width="70" height="20"/>
-    <Button name="ui_closetipdlg_close" padding="271,10,10,0" width="16" height="16" align="right" bkimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\upwindow_close.png&apos; source=&apos;16,0,32,16&apos;" />
-    </HorizontalLayout>
+    
+   	<Label text="极密浏览器" font="141" textcolor="#FF5C5C5C" float="true" pos="19,12,89,32" width="70" height="20"/>
+   	<Button name="ui_closetipdlg_close" padding="360,10,0,0" width="16" height="16"  bkimage="file=&apos;skin\dlg_close.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\dlg_close.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\dlg_close.png&apos; source=&apos;16,0,32,16&apos;" />
+   
 
     <HorizontalLayout height="94">
       <Label name="ui_closetipdlg_logo" width="48" height="48" bkimage="file=&apos;skin\closetip.png&apos; " padding="168,32,170,14"/>
     </HorizontalLayout>
 
 
-    <Label width="266" height="20" text="当前已打开多个窗口，确定要全部关闭么？" bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" padding="60,0,60,0" />
+    <Label width="266" height="20" textcolor="#FF5C5C5C" text="当前已打开多个窗口，确定要全部关闭么？" bkcolor="#FFFFFFFF" bordercolor="#FFBBBBBB" padding="60,0,60,0" />
 
-    <HorizontalLayout height="76">
-      <Option name="ui_close_tip_checkbox" height="16" width="16" align="left" padding="21,44,0,0" normalimage="skin/unchecked.png" selectedimage="skin/checked.png"/>
-      <Button name="ui_close_tip_checkboxtext" text="不再提示" padding="0,44,0,0" width="70" height="20"/>
-      <Button name="ui_close_tip_ok" text="确定" font="1" width="60" height="24" textcolor="#FFFFFFFF" padding="123,34,0,0"  bkcolor="#FF6389E0"  bordersize="1" bordercolor="0xFFCBD7DE"/>
-      <Button name="ui_close_tip_cancel" text="取消" font="1" width="60" height="24" textcolor="#FF000000" padding="18,34,0,0"  bkcolor="#FFFFFFFF"  bordersize="1" bordercolor="0xFFCBD7DE"/>
-    </HorizontalLayout>
+   
+      <Option name="ui_close_tip_checkbox" float="true" pos="21,190,35,204" normalimage="skin/unchecked14.png" selectedimage="skin/checked14.png"/>
+      <Button name="ui_close_tip_checkboxtext" textcolor="#FF5C5C5C" text="不再提示"  float="true" pos="41,187,97,207"/>
+      <Button name="ui_close_tip_ok"  text="确定" font="12" textcolor="#FFFFFFFF" float="true" pos="220,180,280,204" bkcolor="#FF6389E0"  bordersize="1" bordercolor="0xFFCBD7DE"/>
+      <Button name="ui_close_tip_cancel" text="取消" font="12"  textcolor="#FF5C5C5C" float="true" pos="298,180,358,204"  bkcolor="#FFFFFFFF"  bordersize="1" bordercolor="0xFF979797"/>
 
   </VerticalLayout>
 
