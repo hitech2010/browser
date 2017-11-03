@@ -179,7 +179,7 @@ public:
 		//LOGNOTIFY;
 		if (msg.pSender->GetName() == _T("ui_closetipdlg_close") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			this->Close(IDCLOSE);
+			this->Close(IDCANCEL);
 		}
 		else if(msg.pSender->GetName() == _T("ui_close_tip_ok") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
