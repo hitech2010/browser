@@ -143,6 +143,8 @@ public:
 	int ShowCloseTipDlg();
 	void SetNeedTip(bool need);
 
+	
+
 
 
 //#define NOTIFY_ON
@@ -160,7 +162,7 @@ public:
 	CControlUI* m_pRoot;
 	CHorizontalLayoutUI*  m_webtags;
 
-	CMenuWnd* m_pMenu;
+	CWindowWnd* m_pMenu;
 
 	//最大化最小化
 	CControlUI* m_pMaxButton;

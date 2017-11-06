@@ -399,12 +399,16 @@ public:
 };
 
 
-class COptionMenu : public CMenuWnd, public INotifyUI
+class COptionMenu : public CWindowWnd, public INotifyUI ,public IMessageFilterUI
 {
 public:
 	COptionMenu(CFrameWindowWnd* cfw):m_frame(cfw),m_submenu(NULL){}
 	CFrameWindowWnd* m_frame;
 	CSubMenu* m_submenu;
+	CPaintManagerUI m_pm;
+	CDuiPoint m_pt;
+
+
 
 #define NOTIFY_OFF
 #ifdef NOTIFY_ON
@@ -414,6 +418,22 @@ public:
 #else
 #define LOGNOTIFY __noop
 #endif
+
+
+	LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)
+	{
+		;
+		return S_OK;
+	}
+
+	LPCTSTR GetWindowClassName() const { return _T("UIOptionMenu"); };
+	UINT GetClassStyle() const { return UI_CLASSSTYLE_DIALOG; };  
+
+	void OnFinalMessage(HWND /*hWnd*/)  
+	{  
+		m_pm.RemovePreMessageFilter(this);
+		delete this;  
+	};  
 
 	void Notify(TNotifyUI& msg)
 	{
@@ -588,7 +608,7 @@ public:
 
 		else if (msg.pSender->GetName() == _T("ui_about_geemee") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			m_frame->ShowAboutDlg();
+			::PostMessage(m_frame->GetHWND(),1237,NULL,NULL);
 
 			//MessageBox(NULL, L"ÔÝ²»Ö§³Ö", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
 		}
@@ -642,11 +662,42 @@ public:
 
 	}
 
-	
+	void setCursorPos(CDuiPoint pt)
+	{
+		m_pt = pt;
+	}
 
 	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	{
-		CMenuWnd::OnCreate(uMsg, wParam, lParam, bHandled);
+
+		LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);
+		styleValue &= ~WS_CAPTION;
+		::SetWindowLong(*this, GWL_STYLE, styleValue | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
+
+		m_pm.Init(m_hWnd);
+		m_pm.AddPreMessageFilter(this);
+		CDialogBuilder builder;
+		CControlUI* pRoot = builder.Create(_T("skin//menu.xml"), (UINT)0, NULL, &m_pm);
+		ASSERT(pRoot && "Failed to parse XML");
+		m_pm.AttachDialog(pRoot);
+		m_pm.AddNotifier(this);
+
+
+
+		SIZE sz;
+		sz.cx = pRoot->GetFixedWidth();
+		sz.cy = pRoot->GetFixedHeight();
+
+		POINT newPt;
+		newPt.x = m_pt.x - sz.cx;
+		newPt.y = m_pt.y;
+
+		//MoveWindow(m_hWnd, newPt.x, newPt.y, sz.cx, sz.cy, TRUE);
+
+		SetForegroundWindow(m_hWnd);
+		MoveWindow(m_hWnd, newPt.x, newPt.y, sz.cx, sz.cy ,FALSE);
+
+
 
 		CButtonUI* btn = dynamic_cast<CButtonUI*>(m_pm.FindControl(_T("suofang_number")));
 
@@ -677,23 +728,31 @@ public:
 // 
 	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
-		LRESULT lRes = 0;
-		BOOL bHandled = false;
-		switch (uMsg)
-		{
-		case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;
+		LRESULT lRes = 0;  
+		BOOL bHandled = TRUE;  
+
+		
+		switch (uMsg) {  
+		case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;  
+
 		case WM_KEYDOWN:
-			if (wParam == VK_ESCAPE || wParam == VK_LEFT)
+			{
+				if(wParam == VK_ESCAPE || wParam == VK_LEFT)
+				{
+					Close();
+				}
+			}
+		case WM_KILLFOCUS:
+			{
 				Close();
-			break;
+			}
 
-		default:
-			
-			break;
-		}
-		if(bHandled) return lRes;
-
-		else return CMenuWnd::HandleMessage(uMsg, wParam, lParam);
+		default:  
+			bHandled = FALSE;  
+		}  
+		if (bHandled) return lRes;  
+		if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes)) return lRes;  
+		return CWindowWnd::HandleMessage(uMsg, wParam, lParam);  
 	}
 
 
@@ -1389,6 +1448,7 @@ public:
 		case 1235:
 			DeleteSelect();
 			break;
+
 		case WM_NCHITTEST:     lRes = OnNcHitTest(uMsg, wParam, lParam, bHandled); Log("OnNcHitTest %d", lRes); break;
 		
 		default:
@@ -2086,6 +2146,9 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	LRESULT lRes = 0;
 	switch (uMsg)
 	{
+	case 1237:
+		ShowAboutDlg();
+		break;;
 
 	case WM_CREATE:
 		{
@@ -2214,7 +2277,7 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 				additemdlg->CenterWindow();
 				int nRet = additemdlg->ShowModal();
 			}
-
+			break;
 
 			
 		}
@@ -2860,7 +2923,12 @@ void CFrameWindowWnd::ShowMenu(void)
 		ClientToScreen(m_hWnd, &point);
 
 		m_pMenu = new COptionMenu(this);
-		m_pMenu->Init(NULL, _T("skin\\menu.xml"), point, &m_pm, NULL, eMenuAlignment_Right | eMenuAlignment_Top);
+		static_cast<COptionMenu*>(m_pMenu)->setCursorPos(point);
+
+		m_pMenu->Create(m_hWnd, _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 270, 456, NULL); 
+		m_pMenu->ShowWindow(true);
+
+		//m_pMenu->Create(m_hWnd, _T("skin\\menu.xml"), point, &m_pm, NULL, eMenuAlignment_Right | eMenuAlignment_Top);
 }
 
 int CFrameWindowWnd::ShowCloseTipDlg()
