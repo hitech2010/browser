@@ -462,7 +462,7 @@ public:
 			lstrcpy(pMenuCmd.szName, msg.pSender->GetName().GetData());
 			lstrcpy(pMenuCmd.szUserData, msg.pSender->GetUserData().GetData());
 			lstrcpy(pMenuCmd.szText, msg.pSender->GetText().GetData());
-			if (!::PostMessage(m_frame->GetHWND(), WM_MENUCLICK, (WPARAM)msg.pSender, (LPARAM)this))
+			if (!::PostMessage(m_frame->GetHWND(), WM_MENUCLICK, (WPARAM)WM_USER_OPTIONMENU_CLEARCHCHE, (LPARAM)this))
 			{
 
 			}
@@ -478,14 +478,21 @@ public:
 		}
 		else if (msg.pSender->GetName() == _T("menu_print") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
-			IWebBrowser2* wb = ui->GetWebBrowser2();
-			CComVariant var((int)0);
-			wb->ExecWB(OLECMDID_PRINT, OLECMDEXECOPT_DODEFAULT, NULL, NULL);
+			
+
+			if (!::PostMessage(m_frame->GetHWND(), WM_MENUCLICK, (WPARAM)WM_USER_OPTIONMENU_PRINT, (LPARAM)this))
+			{
+
+			}
+			
+
 		}
 		else if (msg.pSender->GetName() == _T("menu_download") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
+			if (!::PostMessage(m_frame->GetHWND(), WM_MENUCLICK, (WPARAM)WM_USER_OPTIONMENU_DOWNLOAD, (LPARAM)this))
+			{
+
+			}
 		}
 		else if (msg.pSender->GetName() == _T("putong") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
@@ -493,11 +500,13 @@ public:
 		}
 		else if (msg.pSender->GetName() == _T("xiaohao") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			theApp.RunSelf();
+// 			theApp.RunSelf();
+// 			Close();
 		}
 		else if (msg.pSender->GetName() == _T("wuhen") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			theApp.RunSelf();
+// 			theApp.RunSelf();
+// 			Close();
 		}
 		else if (msg.pSender->GetName() == _T("suofang_minus") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
@@ -525,15 +534,20 @@ public:
 
 		else if (msg.pSender->GetName() == _T("tupian") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
-			IWebBrowser2* wb = ui->GetWebBrowser2();
-			wb->ExecWB(OLECMDID_SAVEAS, OLECMDEXECOPT_DODEFAULT, NULL, NULL);
+// 			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
+// 			IWebBrowser2* wb = ui->GetWebBrowser2();
+// 			wb->ExecWB(OLECMDID_SAVEAS, OLECMDEXECOPT_DODEFAULT, NULL, NULL);
+// 			Close();
 		}
 		else if (msg.pSender->GetName() == _T("wenjian") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
-			IWebBrowser2* wb = ui->GetWebBrowser2();
-			wb->ExecWB(OLECMDID_SAVEAS, OLECMDEXECOPT_DODEFAULT, NULL, NULL);
+
+
+			if (!::PostMessage(m_frame->GetHWND(), WM_MENUCLICK, (WPARAM)WM_USER_OPTIONMENU_SAVEASFILE, (LPARAM)this))
+			{
+
+			}
+
 		}
 
 		else if (msg.pSender->GetName() == _T("suofang_plus") && msg.sType == DUI_MSGTYPE_CLICK)
@@ -608,7 +622,10 @@ public:
 
 		else if (msg.pSender->GetName() == _T("ui_about_geemee") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			::PostMessage(m_frame->GetHWND(),1237,NULL,NULL);
+			if (!::PostMessage(m_frame->GetHWND(), WM_MENUCLICK, (WPARAM)WM_USER_OPTIONMENU_ABOUT, (LPARAM)this))
+			{
+
+			}
 
 			//MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
 		}
@@ -739,13 +756,19 @@ public:
 			{
 				if(wParam == VK_ESCAPE || wParam == VK_LEFT)
 				{
-					Close();
+					Close();break;
 				}
 			}
 		case WM_KILLFOCUS:
 			{
-				Close();
+				Close();break;
 			}
+
+		case WM_DESTROY:
+			{
+				break;
+			}
+
 
 		default:  
 			bHandled = FALSE;  
@@ -2146,9 +2169,7 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	LRESULT lRes = 0;
 	switch (uMsg)
 	{
-	case 1237:
-		ShowAboutDlg();
-		break;;
+
 
 	case WM_CREATE:
 		{
@@ -2264,12 +2285,7 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	case WM_MENUCLICK:
 		{
-			CControlUI* pSender = (CControlUI*)wParam;
-
-
-			CDuiString name = pSender->GetName();
-
-			if(name == _T("menu_clearcache"))
+			if(wParam == WM_USER_OPTIONMENU_CLEARCHCHE)
 			{
 				CCacheClearDlg* additemdlg = new CCacheClearDlg;
 				additemdlg->m_frame = this;
@@ -2277,6 +2293,32 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 				additemdlg->CenterWindow();
 				int nRet = additemdlg->ShowModal();
 			}
+			if(wParam == WM_USER_OPTIONMENU_SAVEASFILE)
+			{
+				CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_engine->m_crrentWebPage);
+				IWebBrowser2* wb = ui->GetWebBrowser2();
+				wb->ExecWB(OLECMDID_SAVEAS, OLECMDEXECOPT_DODEFAULT, NULL, NULL);
+			}
+
+			if(wParam == WM_USER_OPTIONMENU_DOWNLOAD)
+			{
+				MessageBox(NULL, L"暂不支持", tip, MB_OK | MB_APPLMODAL | MB_TOPMOST);
+			}
+
+			if(wParam == WM_USER_OPTIONMENU_ABOUT)
+			{
+				ShowAboutDlg();
+			}
+
+			if(wParam == WM_USER_OPTIONMENU_PRINT)
+			{
+				CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_engine->m_crrentWebPage);
+				IWebBrowser2* wb = ui->GetWebBrowser2();
+				CComVariant var((int)0);
+				wb->ExecWB(OLECMDID_PRINT, OLECMDEXECOPT_DODEFAULT, NULL, NULL);
+			}
+
+
 			break;
 
 			
