@@ -1653,7 +1653,15 @@ public:
 		m_pm.AddNotifier(this);
 
 
-
+		m_lish = false;
+		m_linshiwenjian = false;
+		m_autoclean = false;
+		m_biaodan = false;
+		m_changyong = false;
+		m_download = false;
+		m_password =false;
+		m_recentclose =false;
+		m_cookies = false;
 
 
 		//AddExistingFolder();
@@ -1896,7 +1904,7 @@ void CFrameWindowWnd::OnTimer(TNotifyUI& msg)
 
 
 		CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_engine->GetCurrentWebBrowserUI());
-		if(ui)
+		if(ui )
 		{
 			string url = ui->getUrl();
 
@@ -2087,7 +2095,18 @@ void CFrameWindowWnd::OnAddressNotify(TNotifyUI&msg)
 	{
 		CEditUI* pEdit = dynamic_cast<CEditUI*>(msg.pSender);
 		assert(pEdit);
-		m_engine->Reload((LPCTSTR)(pEdit->GetText()));
+
+		CWebBrowserUI* ui = m_engine->GetCurrentWebBrowserUI();
+		if(ui && theApp.get_tabset_newtab_navigateaddress() == "0")
+		{
+			m_engine->Reload((LPCTSTR)(pEdit->GetText()));
+		}
+		else
+		{
+			m_engine->Add(pEdit->GetText().GetData());
+		}
+
+		
 
 
 	}
@@ -2326,7 +2345,16 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case 1236:
 		{
 			wstring url = (LPCTSTR)wParam;
-			m_engine->Add(url.c_str());
+			CWebBrowserUI* ui = m_engine->GetCurrentWebBrowserUI();
+			if(ui && theApp.get_tabset_newtab_whenclickbookmark() == "0")
+			{
+				ui->Navigate2(url.c_str());
+			}
+			else
+			{
+				m_engine->Add(url.c_str());
+			}
+			
 			
 		}
 	default:
@@ -2372,7 +2400,7 @@ CMdWebEngine::CMdWebEngine()
 	string a4 = _encoding(m_settings_page).utf8().get();
 
 
-	
+	m_crrentWebPage = NULL;
 
 	try
 	{
@@ -2418,7 +2446,7 @@ void CMdWebEngine::Init(CPaintManagerUI* pm, CWindowWnd* wnd)
 	assert(m_tabcontainer);
 }
 
-int CMdWebEngine::Add(LPCTSTR url)
+int CMdWebEngine::Add(LPCTSTR url, bool background)
 {
 	Log("COptionUIMgr::Add");
 
@@ -2504,7 +2532,12 @@ int CMdWebEngine::Add(LPCTSTR url)
 	pOpt->SetGroup(_T("webpage"));
 	pOpt->SetUserData(_T("ui_option"));
 	pOpt->SetTag((UINT_PTR)pOpt);
-	pOpt->Selected(true);
+
+	if(!background)
+	{
+		pOpt->Selected(true);
+	}
+	
 	
 
 	pBtnClose->SetName(L"pbtnclose");
@@ -2528,7 +2561,15 @@ int CMdWebEngine::Add(LPCTSTR url)
 	ie->SetWebBrowserEventHandler(&handler);
 	ie->DoCreateControl();
 
-	m_webcontainer->SelectItem(ie);
+	if(!background)
+	{
+		m_webcontainer->SelectItem(ie);
+	}
+	else
+	{
+		ie->SetVisible(FALSE);
+	}
+	
 	ie->SetFloat(false);
 	ie->SetUserData(url);
 	_ie->setNickUrl(url);
@@ -2556,7 +2597,10 @@ int CMdWebEngine::Add(LPCTSTR url)
 	ie->Navigate2(url);
 
 	//设置当前页面
-	m_crrentWebPage = ie;
+	if(!background)
+	{
+		m_crrentWebPage = ie;
+	}
 
 	//ie->GetWebBrowser2()->put_RegisterAsBrowser(VARIANT_TRUE);
 	//ie->GetWebBrowser2()->get_Application(ppDisp); //这一句是关键，关联我们新建的窗口的browser控件到点击的目标链接
@@ -2806,7 +2850,7 @@ int CMdWebEngine::Reload(LPCTSTR url /*= NULL*/)
 	else if(url == NULL)
 	{
 		//reloading current page
-		pWebBrowserUI->Refresh2(REFRESH_COMPLETELY );
+		pWebBrowserUI->Refresh2(REFRESH_IFEXPIRED );
 	}
 	else
 	{

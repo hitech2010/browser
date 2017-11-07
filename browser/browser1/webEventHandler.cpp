@@ -349,8 +349,18 @@ void CWebEventHandler::NewWindow3( CWebBrowserUI* pWeb, IDispatch **pDisp, VARIA
 {
 	Log("void CWebEventHandler::NewWindow3");
 
-	m_webengine->Add(bstrUrl);
-		(*Cancel) = -1;	
+	if(theApp.get_tabset_qiantaitiaozhuan() == "0")
+	{
+		m_webengine->Add(bstrUrl, true);
+		m_webengine->Reload();
+	}
+	else
+	{
+		m_webengine->Add(bstrUrl);
+	}
+
+	
+		(*Cancel) = TRUE;	
 	
 }
 
@@ -1089,8 +1099,11 @@ HRESULT STDMETHODCALLTYPE CWebEventHandler::Download( CWebBrowserUI* pWeb,
 
 
 
-CMdWebBrowserUI::CMdWebBrowserUI()
+CMdWebBrowserUI::CMdWebBrowserUI():CWebBrowserUI()
 {
+	m_title = L"";
+	m_nickurl = L"";
+	m_url = "";
 }
 
 CMdWebBrowserUI::~CMdWebBrowserUI()

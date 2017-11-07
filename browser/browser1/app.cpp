@@ -606,6 +606,15 @@ int nExitFlag;
 	BrowserApp& BrowserApp::SetDefaultBrowser()
 	{
 
+		HKEY hkey = HKEY_CLASSES_ROOT;
+		char path[] = "http\\shell\\open\\command";
+		char key[] = "";
+		char value[] = "D:\\svn\\GMBrowser\\trunk\\browser\\Debug\\browser1.exe"; //此处为IE你设成自己的
+		RegOpenKeyExA(HKEY_CLASSES_ROOT, path, 0, KEY_WRITE, &hkey);
+		RegSetValueExA(hkey, key, 0, REG_SZ, (BYTE*)value, strlen(value) + 1);
+		RegCloseKey(hkey);
+
+
 		return *this;
 
 	}

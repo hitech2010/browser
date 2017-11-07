@@ -37,7 +37,7 @@ static CMdWebEngine* thisobj;
 // 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\index.html");
 // 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\settings.html");
 // 	int Add(LPCTSTR url = L"file:\\\\\\d:\\svn\\GMBrowser\\trunk\\browser\\Debug\\setting\\history.html");
-	int Add(LPCTSTR url );
+	int Add(LPCTSTR url , bool background = false);
 	int Add(int ipage);
 	int GetCount();
 	int Remove(CControlUI* btnCloseTab);
