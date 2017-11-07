@@ -44,6 +44,8 @@ static CMdWebEngine* thisobj;
 	int Reload(LPCTSTR url = NULL);
 	int Switch(CControlUI* pOption);
 
+	void ClearTemps();
+
 	void CloseAll();
 
 	stack<string> GetDeleted();

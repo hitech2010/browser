@@ -237,7 +237,7 @@ int nExitFlag;
 		m_ask_before_close = "yes";
 		m_startup_page_policy="1"; // {"0":"上次页面"，"1","主页"， "2","一组页面"}
 		//m_search_engines;
-		m_default_search_engine["百度"] = "http://baidu.com";
+		
 		m_ui_show_homepage="0";//{"0","隐藏"，"1","显示"}
 		m_ui_show_bookmark="1";//{"0","隐藏"，"1","显示"}
 		m_ui_show_shortcut="0"; //{"0", "隐藏"，"1", "显示"}
@@ -283,6 +283,21 @@ int nExitFlag;
 				\"dnload_ask_befroe_newtask\" : \"1\",\
 				\"dnload_info_whenover\" : \"1\",\
 				\"shortcut_ext\" : \"png\",\
+				\"search_engines\" : \
+				[\
+					[\
+						\"百度\",\
+						\"baidu.com\",\
+						\"https://www.baidu.com/s?wd=\",\
+						0\
+					],\
+					[\
+						\"搜狗\",\
+						\"sougou.com\",\
+						\"https://www.sogou.com/web?query=\",\
+						1\
+					]\
+				],\
 				\"location\" : \"D:\\shortcut\\\"}}";
 	}
 	void AppConfig::setRegKey(const string& keyname)
@@ -371,7 +386,26 @@ int nExitFlag;
 
 	AppConfig::SEARCHENGINE_CONFIG AppConfig::get_default_searchengine()
 	{
-		return m_default_search_engine;
+		Json::Value node;
+		node = m_jroot["appconfig"]["search_engines"];
+
+		SEARCHENGINE_CONFIG engin;
+		for(int i = 0; i < node.size(); ++i)
+		{
+			if( node[i][3].asInt() )
+			{
+
+				
+				engin.push_back(node[i][0].asString());
+				engin.push_back(node[i][1].asString());
+				engin.push_back(node[i][2].asString());
+
+			}
+		}
+
+		
+		return engin;
+
 	}
 
 	vector<AppConfig::SEARCHENGINE_CONFIG> AppConfig::get_all_searchengine()

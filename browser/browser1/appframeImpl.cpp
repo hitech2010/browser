@@ -1552,6 +1552,7 @@ public:
 			{
 				WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 1", 9);
 				theApp.History()->Clear();
+				m_frame->m_engine->ClearTemps();
 			}
 			
 
@@ -2097,14 +2098,45 @@ void CFrameWindowWnd::OnAddressNotify(TNotifyUI&msg)
 		assert(pEdit);
 
 		CWebBrowserUI* ui = m_engine->GetCurrentWebBrowserUI();
-		if(ui && theApp.get_tabset_newtab_navigateaddress() == "0")
+
+		wstring addrtext = pEdit->GetText().GetData();
+		string utf8url = _encoding(addrtext).utf8().get();
+
+		_re reg("((https?|ftp|file):\\/\\/)?[\\-a-zA-Za0-9]+(\\.[\\-a-zA-z\\/]+)+(:\\d+)?(\\/([a-zA-Z&=~#0-9])*)?");
+
+		if(reg.match(utf8url))//ÊÇURL
 		{
-			m_engine->Reload((LPCTSTR)(pEdit->GetText()));
+			
+			if(ui && theApp.get_tabset_newtab_navigateaddress() == "0")
+			{
+				m_engine->Reload((LPCTSTR)(pEdit->GetText()));
+			}
+			else
+			{
+				m_engine->Add(pEdit->GetText().GetData());
+			}
+
 		}
 		else
 		{
-			m_engine->Add(pEdit->GetText().GetData());
+			AppConfig::SEARCHENGINE_CONFIG engin = theApp.get_default_searchengine();
+
+			string queryurl = engin[2];
+			queryurl.append(utf8url);
+
+			if(ui && theApp.get_tabset_newtab_navigateaddress() == "0")
+			{
+				m_engine->Reload(_encoding(queryurl).u8_utf16().getutf16().c_str());
+			}
+			else
+			{
+				m_engine->Add(_encoding(queryurl).u8_utf16().getutf16().c_str());
+			}
+
 		}
+
+
+
 
 		
 
@@ -2922,6 +2954,15 @@ int CMdWebEngine::Switch( CControlUI* pOption )
 
 
 	return 0;
+}
+
+void CMdWebEngine::ClearTemps()
+{
+	xstring cmd;
+	cmd.format("/c del /f /s /q %s%s", theApp.getAppdir().c_str(),"tempfiles\\");
+
+	ShellExecuteA(NULL, "open", "cmd.exe", cmd.c_str(), NULL, SW_HIDE);
+
 }
 
 void CMdWebEngine::CloseAll()

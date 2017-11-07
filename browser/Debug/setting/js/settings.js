@@ -113,7 +113,46 @@ function loading_settings(jappconfig)
 	$("#downloadLocationPath2").attr("readonly","readonly");	
 
 
+		//默认搜索引擎
 
+	var jslength=0;
+
+	var nodes = "";
+
+	for(var js2 in jappconfig.search_engines){
+
+		var li = "";
+		var licls = "";
+		if(jappconfig.search_engines[js2][3])
+		{
+
+
+			li = '<li class="searchHover defaultEngines">\
+						<p class="searchName">' + jappconfig.search_engines[js2][0] + '</p>\
+						<p class="searchKey">'  + jappconfig.search_engines[js2][1] + '</p>\
+						<p class="searchWeb">'  + jappconfig.search_engines[js2][2] + '</p>\
+						<span class="setDefault">设为默认</span>\
+						<span class="cutWeb"></span>\
+				  </li>';
+		}
+		else
+		{
+			li = '<li class="searchHover">\
+						<p class="searchName">' + jappconfig.search_engines[js2][0] + '</p>\
+						<p class="searchKey">'  + jappconfig.search_engines[js2][1] + '</p>\
+						<p class="searchWeb">'  + jappconfig.search_engines[js2][2] + '</p>\
+						<span class="setDefault">设为默认</span>\
+						<span class="cutWeb"></span>\
+				  </li>';
+		}
+
+		nodes += li;
+	}
+
+	$(".searchBox").html(nodes);
+
+
+	
 	
 }
 
@@ -208,11 +247,11 @@ function sync_settings(jconfig)
 
 	if($("#opennewpage").parent().is(".radio-selected")) jappconfig.tabset_newtab_whenclickbookmark = "1";
 	
-	if($("#opennewpage2").parent().is("radio-selected")) jappconfig.tabset_newtab_navigateaddress = "1";;
+	if($("#opennewpage2").parent().is(".radio-selected")) jappconfig.tabset_newtab_navigateaddress = "1";;
 
-	if($("#current-right-side").parent().is("radio-selected")) jappconfig.tabset_newtab_position = "1";;
+	if($("#current-right-side").parent().is(".radio-selected")) jappconfig.tabset_newtab_position = "1";;
 
-	if($("#Activate-left").parent().is("radio-selected")) jappconfig.tabset_activepos_whenclosetab = "1";
+	if($("#Activate-left").parent().is(".radio-selected")) jappconfig.tabset_activepos_whenclosetab = "1";
 	
 
 	//下载页面
@@ -234,7 +273,7 @@ function sync_settings(jconfig)
 	//截图设置
 
 
-	if($("#png-format").parent().addClass("radio-selected"))
+	if($("#png-format").parent().addClass(".radio-selected"))
 		jappconfig.shortcut_ext = "png";
 	else jappconfig.shortcut_ext = "jpg";
 	
@@ -453,12 +492,53 @@ $(function(){
 		var name=$(".addSearchName").val();
 		var key=$(".addSearchKey").val();
 		var web=$(".addsearchWeb").val();
+
+
+		var conf = "[";
+
+		for(var i = 0; i <   $(".searchBox").children().size(); ++i)
+		{
+			if(i != 0)
+			{
+				conf += ",";
+			}
+
+			var title = $(".searchBox").children().eq(i).find(".searchName").text();
+			var site  = $(".searchBox").children().eq(i).find(".searchKey").text();
+			var query = $(".searchBox").children().eq(i).find(".searchWeb").text();
+			var def = 0;
+			if($(".searchBox").children().eq(i).is(".defaultEngines"))
+			{
+				def = 1;
+			}	
+
+			var item = "[\"" + title +"\"," + "\"" + site +"\"," + "\"" + query +"\"," + def + "]";
+
+			conf +=item;
+
+		}
+
+		conf += "]";
+
+
+
+
+		jconfig.appconfig.search_engines = eval('(' + conf + ')');
+
+		alert(jconfig.appconfig.search_engines[0][3]);
+
+
+
+
 		$(".searchBox2 input").val("");
 		if($(".searchBox").length<5&&name!=""&&key!=""&&web!=""){
 			$(".searchBox").append('<li class="searchHover"><p class="searchName">'+name+'</p><p class="searchKey">'+key+'</p><p class="searchWeb">'+web+'</p><span class="setDefault">设为默认</span><span class="cutWeb"></span></li>')
 			$(".select-ul").append('<li gm-data='+name+'><span class="engine-name">'+name+'</span><span class="select-tit">设置为默认搜索引擎</span></li>')
 		}
+
+		close("manageEngines");
 	});
+
 	//删除
 	$(".searchBox").on("click",".cutWeb",function(){
 		var name = $(this).parent().find(".searchName").html();

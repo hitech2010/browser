@@ -28,7 +28,7 @@ public:
 
 	
 
-	typedef map<string, string> SEARCHENGINE_CONFIG;
+	typedef vector<string> SEARCHENGINE_CONFIG;
 	
 private:
 	
