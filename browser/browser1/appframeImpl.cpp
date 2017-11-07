@@ -1170,7 +1170,7 @@ public:
 	void CFavorEditDlg::AddExistingFolder(CFavorFolder::RECORD record)
 	{
 
-		wstring  foldername = (LPWSTR)_encoding(record.folder).u8_utf16().get().c_str();
+		wstring  foldername = (LPWSTR)_encoding(record.folder).u8_utf16().getutf16().c_str();
 
 
 		CListContainerElementUI* elmt = new CListContainerElementUI();
