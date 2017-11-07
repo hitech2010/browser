@@ -988,7 +988,7 @@ public:
 
 			newlabel->SetManager(&m_pm, NULL, false);
 			newlabel->SetName(L"ui_favor_customfolder");
-			wxstring folder = (const wchar_t*)_encoding(otherfolders[i].folder).u8_utf16().get().c_str();
+			wxstring folder = (const wchar_t*)_encoding(otherfolders[i].folder).u8_utf16().getutf16().c_str();
 
 			newlabel->SetText(folder);
 			newlabel->SetFixedHeight(23);
