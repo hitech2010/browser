@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Window caption="0,0,0,40" roundcorner="5,5,5,5" sizebox="4,4,4,4" mininfo="386,254" >
+<Window caption="0,0,0,40" roundcorner="6,6"  mininfo="386,254" mininfo="386,254" showshadow="true" shadowimage="skin\shadow.png" shadowsize="6" shadowcorner="8,8,8,8"  >
   <Font id="0" name="微软雅黑" size="17" />
   <Font id="14" name="微软雅黑" default="true" size="14" />
   <Font id="141" name="微软雅黑" bold="true" size="14" />
@@ -14,7 +14,7 @@
   <Style name="treenode_checkbox_style" value="width=&quot;16&quot; height=&quot;16&quot; normalimage=&quot;file='common/unchecked.png' &quot; selectedimage=&quot;file='common/checked.png'&quot;" />
   <Style name="treeview_style" value="folderattr=&quot;treenode_folder_style&quot; checkboxattr=&quot;treenode_checkbox_style&quot;"/>
 
-  <VerticalLayout bkcolor="#FFFFFFFF" width="386" height="254" bordercolor="#FFBBBBBB" bordersize="1,1,1,1">
+  <VerticalLayout bkcolor="#FFFFFFFF" width="386" height="254" >
 
     <HorizontalLayout height="34" padding="0,13,0,0" width="386"  >
       <Button name="ui_favor_edit_name" text="名称：" font="14" width="42" height="20" textcolor="#FF5C5C5C" padding="56,7,0,0" />
