@@ -149,7 +149,8 @@ void CWebEventHandler::NavigateComplete2( CWebBrowserUI* pWeb, IDispatch *pDisp,
 
 		
 
-
+			ui->setUrl(strt);
+			ui->setNickUrl(_encoding(strt).u8_utf16().getutf16());
 			
 
 
