@@ -2102,7 +2102,7 @@ void CFrameWindowWnd::OnAddressNotify(TNotifyUI&msg)
 		wstring addrtext = pEdit->GetText().GetData();
 		string utf8url = _encoding(addrtext).utf8().get();
 
-		_re reg("((https?|ftp|file):\\/\\/)?[\\-a-zA-Za0-9]+(\\.[\\-a-zA-z\\/]+)+(:\\d+)?(\\/([a-zA-Z&=~#0-9])*)?");
+		_re reg("((https?|ftp|file):\\/\\/)?[\\-_a-zA-Za0-9]+(\\.[\\-_a-zA-z0-9]+)+(:\\d+)?(\\/([\\-_a-zA-Z;%?:@%$&+=~#0-9\\.])*)*");
 
 		if(reg.match(utf8url))//ÊÇURL
 		{
