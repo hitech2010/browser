@@ -76,7 +76,7 @@ public:
 	CFavorManager& Edit(const RECORD& newRecord);
 	CFavorManager& QueryById(int id = -1);
 	CFavorManager& QueryByFolder(const string& folder);
-	int            CountOf(const string& url);
+	CFavorManager&            QueryByUrl(const string& url);
 	const VRECORD& GetResult();
 	CFavorManager& Delete(int startpos, int endpos);
 	CFavorManager& Delete(int startpos, int endpos, const string& folder);

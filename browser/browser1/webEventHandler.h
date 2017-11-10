@@ -17,7 +17,14 @@ public:
 	IWebBrowser2* GetIWebBrowser();
 	bool IsGeemeeScheme(const wstring& lpszUrl);
 
+	CMdWebBrowserUI& SetFavored(bool bSet);
+	CMdWebBrowserUI& SetFavorRecord(CFavorManager::RECORD& rc);
+	CFavorManager::RECORD& GetFavorRecord();
+	bool IsFavored();
+
 private:
+	int		m_favored;
+	CFavorManager::RECORD m_record;
 	wstring m_title;
 	string  m_url;
 	wstring  m_nickurl;

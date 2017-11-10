@@ -1102,6 +1102,7 @@ HRESULT STDMETHODCALLTYPE CWebEventHandler::Download( CWebBrowserUI* pWeb,
 
 CMdWebBrowserUI::CMdWebBrowserUI():CWebBrowserUI()
 {
+	m_favored = 0;
 	m_title = L"";
 	m_nickurl = L"";
 	m_url = "";
@@ -1172,4 +1173,26 @@ bool CMdWebBrowserUI::IsGeemeeScheme(const wstring& url)
 	return true;
 
 
+}
+
+CMdWebBrowserUI& CMdWebBrowserUI::SetFavored(bool bSet)
+{
+	m_favored = bSet;
+	return *this;
+}
+
+CMdWebBrowserUI& CMdWebBrowserUI::SetFavorRecord(CFavorManager::RECORD& rc)
+{
+	m_record = rc;
+	return *this;
+}
+
+CFavorManager::RECORD&  CMdWebBrowserUI::GetFavorRecord()
+{
+	return m_record;
+}
+
+bool CMdWebBrowserUI::IsFavored()
+{
+	return m_favored;
 }

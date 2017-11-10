@@ -327,14 +327,23 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 
 	 CFavorManager& CFavorManager::Edit(const RECORD& newRecord)
 	 {
-		 xstring sql;
-		 sql.format("update favor set TITLE=\"%s\",FOLDER=\"%s\",URL=\"%s\" where id = %d",
+		 CppSQLite3Buffer sql;
+		 sql.format("update favor set TITLE=%Q,FOLDER=%Q,URL=%Q where id = %d",
 			 newRecord.title.c_str(),
 			 newRecord.folder.c_str(),
 			 newRecord.url.c_str(),
 			 newRecord.id);
 
-		 m_db->execDML(sql.c_str());
+		 
+
+		 try
+		 {
+			 m_db->execDML(sql);
+		 }
+		 catch (CppSQLite3Exception& e)
+		 {
+			 ;
+		 }
 
 		 return *this;
 	 }
@@ -382,14 +391,42 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 
 	 }
 
-	 int CFavorManager::CountOf(const string& url)
+	 CFavorManager& CFavorManager::QueryByUrl(const string& url)
 	 {
 		 CppSQLite3Buffer sql;
- 		 sql.format( "select * from favor where URL LIKE %Q", url.c_str());
+ 		 sql.format( "select * from favor where url like %Q LIMIT 1", url.c_str());
 
 		 CppSQLite3Table m_dbtable = m_db->getTable(sql);
 
-		 return m_dbtable.numRows();
+		 m_result.clear();
+
+
+		 for (int j = 0; j < m_dbtable.numRows(); ++j)
+		 {
+			 RECORD rc;
+			 for (int i = 0; i < m_dbtable.numFields(); ++i)
+			 {
+				 m_dbtable.setRow(j);
+
+
+				 rc.id = m_dbtable.getIntField("ID");
+				 rc.folder = m_dbtable.getStringField("FOLDER");
+				 const  char* blob = m_dbtable.getStringField("IMG");
+				 CppSQLite3Binary bin;
+				 bin.setEncoded((const unsigned char*)blob);
+				 rc.img.assign((const char*)bin.getBinary(), bin.getBinaryLength());
+
+
+				 rc.title = m_dbtable.getStringField("TITLE");
+				 rc.url = m_dbtable.getStringField("URL");
+				 rc.time = m_dbtable.getStringField("ADDDATE");
+			 }
+			 m_result.push_back(rc);
+
+		 }
+
+		 return *this;
+
 	 }
 
 	 CFavorManager& CFavorManager::SaveFile(LPCTSTR pathfile)

@@ -810,11 +810,16 @@ public:
 
 		string utf8title = _encoding(title).utf8().get();
 
+		string utf8folder = _encoding(m_Combo->GetText().GetData()).utf8().get();
+
 		favor_recode_item res = theApp.Favor()->QueryById().GetResult().at(0);
 
-		if (res.title != utf8title)
+
+
+		if (res.title != utf8title  || res.folder != utf8folder)
 		{
 			res.title = utf8title;
+			res.folder = utf8folder;
 
 			theApp.Favor()->Edit(res);
 		}
@@ -879,8 +884,16 @@ public:
 
 			if (m_Combo && m_Combo->GetCurSel() == m_Combo->GetCount() - 1)
 			{
-				m_Combo->RemoveAll();
-				Close(1000);
+				CControlUI* control = m_Combo->GetItemAt(m_Combo->GetCurSel());
+
+				wstring userdata = control->GetUserData().GetData();
+				if(userdata.size())
+				{
+					m_Combo->RemoveAll();
+					Close(1000);
+				}
+				
+
 			}
 
 			
@@ -974,7 +987,29 @@ public:
 		m_pm.AttachDialog(pRoot);  
 		m_pm.AddNotifier(this);
 
-		LPCTSTR pTitle = m_frame->m_engine->GetContainer(m_frame->m_engine->m_crrentWebPage)->GetItemAt(0)->GetText().GetData();
+
+
+
+		wstring  wstrTitle;
+
+		CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->m_crrentWebPage);
+		string currentfoldername;
+		
+		if(ui->IsFavored() )
+		{
+			CFavorManager::RECORD rc = ui->GetFavorRecord();
+			
+			 
+			wstrTitle = _encoding(rc.title).u8_utf16().getutf16().c_str();
+			currentfoldername = rc.folder;
+		}
+		else
+		{
+			wstrTitle = m_frame->m_engine->GetContainer(m_frame->m_engine->m_crrentWebPage)->GetItemAt(0)->GetText().GetData();
+		}
+		
+		
+		
 		m_title = static_cast<CEditUI*>(m_pm.FindControl(_T("ui_favor_add_title")));
 		m_Combo = static_cast<CComboUI*>(m_pm.FindControl(_T("ui_favor_folderlist")));
 		assert(m_title);
@@ -994,14 +1029,19 @@ public:
 			newlabel->SetFixedHeight(23);
 			newlabel->SetBkColor(0xFFF40000);
 			newlabel->SetFixedWidth(214);
-
 			m_Combo->Add(newlabel);
+
+			if(currentfoldername == otherfolders[i].folder)
+			{
+				newlabel->Select();
+			}
 		}
 
 		CListLabelElementUI* newlabel = new CListLabelElementUI();
 
 		newlabel->SetManager(&m_pm, NULL, false);
 		newlabel->SetName(L"ui_favor_selfolder");
+		newlabel->SetUserData(L"qitawenjianjia");
 		newlabel->SetText(L"其它文件夹");
 		newlabel->SetFixedHeight(23);
 		newlabel->SetFixedWidth(214);
@@ -1011,12 +1051,9 @@ public:
 
 
 
-
-
-
 		//<ListLabelElement name = "ui_favor_selfolder" text = "其它文件夹" height = "23" width = "214" / >
 
-		m_title->SetText(pTitle);
+		m_title->SetText(wstrTitle.c_str());
 		m_title->SetFocus();
 
 		return 0;  
@@ -1141,7 +1178,8 @@ public:
 		label->SetVisible(false);
 		wxstring tmp;
 		tmp.format(L"新建文件夹%d", m_folder->GetCount());
-
+		label->SetFont(12);
+		label->SetTextColor(0xFF5C5C5C);
 		label->SetText(tmp);
 		elmt->Add(label);
 
@@ -1153,9 +1191,11 @@ public:
 		edit->SetBorderSize(1);
 		edit->SetBorderColor(0xFFCBD7DE);
 		edit->SetFixedHeight(30);
-		label->SetFont(12);
-		label->SetTextColor(0xFF5C5C5C);
-		edit->SetText(L"ui_add");
+		edit->SetFont(12);
+		edit->SetBkColor(0xFFF4F5F8);
+		edit->SetNativeEditBkColor(0xFFF4F5F8);
+		edit->SetTextColor(0xFF5C5C5C);
+		edit->SetText(tmp.c_str());
 		elmt->Add(edit);
 		
 
@@ -1283,7 +1323,16 @@ public:
 		}
 		if (msg.pSender->GetName() == _T("ui_favor_edit_save") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			Save();
+			try
+			{
+				Save();
+			}
+			catch (std::exception& e)
+			{
+				MessageBoxA(NULL, e.what(), "发生异常", MB_OK);
+			}
+			
+			
 			Close(IDCLOSE);
 		}
 		if (msg.pSender->GetName() == _T("ui_favor_edit_list") && msg.sType == DUI_MSGTYPE_MENU)
@@ -1908,18 +1957,22 @@ void CFrameWindowWnd::OnTimer(TNotifyUI& msg)
 		if(ui )
 		{
 			string url = ui->getUrl();
+			CFavorManager::VRECORD vrc = theApp.Favor()->QueryByUrl(url).GetResult();
+
 
 			
-			if(theApp.Favor()->CountOf(url))
+			if(vrc.size())
 			{
 				btn_favor->SetAttribute(L"bkimage", favor_hot);
 				wstring tmp = btn_favor->GetBkImage();
-
+				ui->SetFavored(true);
+				ui->SetFavorRecord(vrc[0]);
 			}
 			else
 			{
 				btn_favor->SetAttribute(L"bkimage", favor_nor);
 				wstring tmp = btn_favor->GetBkImage();
+				ui->SetFavored(false);
 
 			}
 
