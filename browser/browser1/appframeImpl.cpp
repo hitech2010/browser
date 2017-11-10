@@ -860,8 +860,11 @@ public:
 		}
 		if (msg.pSender->GetName() == _T("ui_favor_add_delete") && msg.sType == DUI_MSGTYPE_CLICK)
 		{
-			favor_recode_item record = theApp.Favor()->QueryById().GetResult().at(0);
-			theApp.Favor()->Delete(record.id, record.id);
+			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_frame->m_engine->GetCurrentWebBrowserUI());
+			CFavorManager::RECORD rc = ui->GetFavorRecord();
+
+			theApp.Favor()->Delete(rc.id, rc.id);
+
 			Close();
 		}
 		if (msg.pSender->GetName() == _T("ui_favor_add_title") && msg.sType == DUI_MSGTYPE_RETURN)
