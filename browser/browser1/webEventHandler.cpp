@@ -753,6 +753,48 @@ STDMETHODIMP CWebEventHandler::Invoke(
 
 				break;
 			}
+			if(fun == L"bookmark_edit")
+			{
+				wxstring id = p1.bstrVal;
+				wxstring title = p2.bstrVal;
+				wxstring url = p3.bstrVal;
+
+				CFavorManager::RECORD rc;
+
+				rc.id = _ttoi(id.c_str());
+				rc.title = _encoding(title).utf8().get();
+				rc.url	 = _encoding(url).utf8().get();
+
+				CFavorManager::VRECORD vr = theApp.Favor()->QueryById(rc.id).GetResult();
+
+				if(vr.size() != 1)
+				{
+					break;
+				}
+
+				CFavorManager::RECORD record = vr[0];
+
+				if(record.title != rc.title || record.url != rc.url)
+				{
+					record.title = rc.title;
+					record.url	 = rc.url;
+					try
+					{
+						theApp.Favor()->Edit(record);
+					}
+					catch (...)
+					{
+						//
+					}
+					
+					
+				}
+
+				
+
+				break;
+			}
+
 			if (fun == L"bookmark_search")
 			{
 				wxstring keyword = p1.bstrVal;
@@ -768,13 +810,13 @@ STDMETHODIMP CWebEventHandler::Invoke(
 					xstring tmp;
 					tmp.format(
 						"<div class = \"history-info\">"
-							"<div class = \"bookmark-name-div\">"
+							"<div class = \"bookmark-name-div\" data-index = \"%d\">"
 								"%s"
 							"</div>"
 							"<div class = \"bookmark-src-div\">"
 								"%s"
 							"</div>"
-						"</div>", record.title.c_str(), record.url.c_str()
+						"</div>",record.id, record.title.c_str(), record.url.c_str()
 						);
 					querydata.append(tmp);
 
@@ -814,13 +856,14 @@ STDMETHODIMP CWebEventHandler::Invoke(
 						xstring tmp;
 						tmp.format(
 							"<div class = \"history-info\">"
-							"<div class = \"bookmark-name-div\">"
+							"<div class = \"bookmark-name-div\" data-index = \"%d\">"
 							"%s"
 							"</div>"
 							"<div class = \"bookmark-src-div\">"
 							"%s"
 							"</div>"
-							"</div>",record.title.c_str(), record.url.c_str());
+							"</div>",record.id, record.title.c_str(), record.url.c_str()
+							);
 
 						part_down.append(tmp);
 

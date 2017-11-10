@@ -66,4 +66,9 @@ BookmarkQuery.prototype.Open = function (url)
 
 									return  result = call("bookmark_open", url);
 								}
+BookmarkQuery.prototype.Edit = function (id, title, src) 
+								{
+
+									return  result = call("bookmark_edit", id, title, src);
+								}
   	

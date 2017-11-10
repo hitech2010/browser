@@ -127,6 +127,8 @@ $(function(){
     	}
     });
     function disabledFalse() {
+
+
 		var name= bookmarkThis.find(".bookmark-name-div").html().replace(/(^\s*)|(\s*$)/g, "");
 		var src = bookmarkThis.find(".bookmark-src-div").html().replace(/(^\s*)|(\s*$)/g, "");
 		bookmarkThis.find(".bookmark-name-div").html("<input class='bookmark-name inputCh' type='text' value='"+name+"'>");
@@ -138,8 +140,23 @@ $(function(){
 	function disabledTrue() {
 		var name= bookmarkThis.find(".bookmark-name").val();
 		var src = bookmarkThis.find(".bookmark-src").val();
-		bookmarkThis.find(".bookmark-name-div").html(name);
-		bookmarkThis.find(".bookmark-src-div").html(src);
+
+
+
+
+		if(name != undefined && src != undefined)
+		{
+			var id = bookmarkThis.find(".bookmark-name-div").data("index");
+			if(id != undefined )
+			{
+				bq.Edit(id+"", name, src);
+			}
+
+				bookmarkThis.find(".bookmark-name-div").html(name);
+				bookmarkThis.find(".bookmark-src-div").html(src);
+		}
+
+
 		
 		//bookmarkThis.removeClass("inputChange");
 		//bookmarkThis.find("input").removeClass("inputCh").attr("disabled", "disabled");

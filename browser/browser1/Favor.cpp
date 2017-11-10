@@ -327,6 +327,13 @@ CFavorManager::CFavorManager(CppSQLite3DB* db)throw()
 
 	 CFavorManager& CFavorManager::Edit(const RECORD& newRecord)
 	 {
+
+		 if(newRecord.title.size() ==0 || newRecord.url.size() ==0)
+		 {
+			 return *this;
+		 }
+
+
 		 CppSQLite3Buffer sql;
 		 sql.format("update favor set TITLE=%Q,FOLDER=%Q,URL=%Q where id = %d",
 			 newRecord.title.c_str(),
