@@ -26,7 +26,7 @@
             <button padding="10,2,0,2" name="ui_refreshed" width="24" height="24" 	bkimage="file='skin\toolbar_ex.png' source='96,0,120,24'" textcolor="#ff000000" disabledtextcolor="#ffa7a6aa" align="center" hotimage="file='skin\toolbar_ex.png' source='96,24,120,48'" pushedimage="file='skin\toolbar_ex.png' source='96,24,120,48'" />
             <button padding="10,2,0,2" name="ui_home" width="24" height="24" 	    bkimage="file='skin\toolbar_ex.png' source='120,0,144,24'" textcolor="#ff000000" disabledtextcolor="#ffa7a6aa" align="center" hotimage="file='skin\toolbar_ex.png' source='120,24,144,48'" pushedimage="file='skin\toolbar_ex.png' source='120,24,144,48'" />
             <HorizontalLayout padding="10,0,0,0" height="30">
-                <Edit name="ui_address" bkcolor="#FFF9FBFE" font="4" textcolor="0xFF4E4E4E" bordersize="1" size="18" bordercolor="0xFFDADDF0" textpadding="34,1,30,1" disabledtextcolor="#FFA7A6AA" />
+                <Edit name="ui_address" bkcolor="#FFF9FBFE"  nativebkcolor="#FFF9FBFE" font="4" textcolor="0xFF4E4E4E" bordersize="1" size="18" bordercolor="0xFFDADDF0" textpadding="34,1,30,1" disabledtextcolor="#FFA7A6AA" />
                 <Control float="true" pos="6,7,18,19"      bkimage="file='skin\greenlock.png' source='0,0,16,16'" />                        
                 <Button float="true" floatalign="right" name="ui_favor" pos="-24,3,0,27"  childalign="right" bkimage="file='skin\favor.png' source='0,0,24,24'" 
                 hotimage="file='skin\favor.png' source='24,0,48,24'" />
