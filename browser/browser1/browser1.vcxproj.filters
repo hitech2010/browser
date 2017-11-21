@@ -86,6 +86,9 @@
     <ClInclude Include="_re.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="app_selectframe.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="browser1.rc">

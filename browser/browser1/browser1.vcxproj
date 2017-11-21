@@ -44,7 +44,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)TMP\</IntDir>
     <IncludePath>$(SolutionDir);$(SolutionDir)browser\DuiLib;$(SolutionDir)thirdparty\sqlite;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\pcre2;$(SolutionDir)thirdparty\wtl;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)lib;$(SolutionDir)thirdparty;$(SolutionDir)$(Configuration)\;$(SolutionDir)thirdparty\pcre2;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)lib;$(SolutionDir)thirdparty;$(SolutionDir)$(Configuration)\;$(SolutionDir)thirdparty\pcre2;$(SolutionDir)thirdparty\sqlite;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -100,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="..\thirdparty\json\json.hpp" />
     <ClInclude Include="appframe.h" />
+    <ClInclude Include="app_selectframe.h" />
     <ClInclude Include="app_config.h" />
     <ClInclude Include="app_favorframe.h" />
     <ClInclude Include="CppSQLite3.h" />

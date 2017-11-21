@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "app_config.h"
+#include "app_selectframe.h"
 #include "appframe.h"
 //winhttp
 #include <winhttp.h>
@@ -10,16 +11,50 @@
 #pragma  comment(lib, "jsoncpp.lib")
 
 
+typedef void(*PFShowCertDetail)(int id, const char * title);
+
+PFShowCertDetail g_ShowCertDetailCallback = NULL;
+
+
+
+
+#pragma  comment(lib, "sqlite3.lib")
  #pragma  comment(lib, "gmssld.lib")
  #pragma  comment(lib, "http_proxy_serverd.lib")
  #pragma  comment(lib, "libeay32mtd.lib")
  #pragma  comment(lib, "mdsmd.lib")
  #pragma  comment(lib, "smd.lib")
+
 //
 //bool isGMSSL(string &strt, bool &b)
 //{
 //	return false;
 //}
+
+void SetShowCertDetailCallback(PFShowCertDetail fun)
+{
+	if(fun)
+	{
+		g_ShowCertDetailCallback = fun;
+
+	}
+}
+
+
+
+int ChooseCertUserUI(vector<string>& para)
+{
+	CChooseCertsDlg* additemdlg = new CChooseCertsDlg;
+	additemdlg->SetData(para);
+	additemdlg->Create(NULL, _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 386, 254, NULL);  
+	additemdlg->CenterWindow();
+	additemdlg->ShowWindow();
+
+	CPaintManagerUI::MessageLoop(); // ÏûÏ¢Ñ­»·
+
+	return -1;
+
+}
 
 
 string HttpWebShortcutEvent( std::map<std::string, string>& para)

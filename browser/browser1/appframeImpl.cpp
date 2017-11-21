@@ -3,6 +3,7 @@
 
 #include "appframe.h"
 #include "app_favorframe.h"
+#include   "app_selectframe.h"
 #include "webEventHandler.h"
 //#include "../../module/WhiteEncrypt/Function.h"
 #include "Favor.h"
@@ -1094,6 +1095,7 @@ public:
 	} 
 
 
+
 //CFavorEditDlg
 
 
@@ -1855,6 +1857,16 @@ void CFrameWindowWnd::ShowHistoryForm()
 	;
 }
 
+
+
+void CFrameWindowWnd::ShowSelectCertDlg()
+{
+	CChooseCertsDlg* additemdlg = new CChooseCertsDlg;
+	additemdlg->Create(GetHWND(), _T(""),  UI_WNDSTYLE_FRAME , WS_EX_WINDOWEDGE);  
+	additemdlg->CenterWindow();
+	additemdlg->ShowWindow();
+}
+
 BOOL CFrameWindowWnd::init()
 {
 	m_pMenu = NULL;
@@ -2381,6 +2393,7 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_SHOW_FAVOR_ADD:
 		{
+			//ShowAddFavorDlg();
 			ShowAddFavorDlg();
 		}
 		break;
@@ -2389,6 +2402,11 @@ LRESULT CFrameWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			ShowHistoryForm();
 		}
 		break;
+	case WM_USER_SELECT_CERTS:
+		{
+			ShowSelectCertDlg();
+			break;
+		}
 
 	case WM_MENUCLICK:
 		{
@@ -3079,8 +3097,8 @@ void CFrameWindowWnd::BookmarkAdd(void)
 	item.title = ed.utf8().get();
 	theApp.Favor()->Add(item);
 
-	CFavorAddItemDlg* additemdlg = new CFavorAddItemDlg;
-	additemdlg->m_frame = this;
+	CChooseCertsDlg* additemdlg = new CChooseCertsDlg;
+	//additemdlg->m_frame = this;
 	additemdlg->Create(GetHWND(), _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 386, 254, NULL);
 	additemdlg->CenterWindow();
 	int nRet = additemdlg->ShowModal();
@@ -3139,3 +3157,204 @@ void CFrameWindowWnd::SetNeedTip(bool need)
 	theApp.Unlock();
 }
 
+
+
+
+void CChooseCertsDlg::SetData(const vector<string>& data)
+{
+	m_data = data;
+}
+
+//certframe
+
+LPCTSTR CChooseCertsDlg::GetWindowClassName() const { return _T("UIChooseCertsDlg"); };
+LRESULT CChooseCertsDlg::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)
+{
+	if(uMsg == WM_KEYDOWN)
+	{
+		if(wParam == VK_ESCAPE)
+		{
+			Close();
+			return true;
+		}
+	}
+
+	return false;
+}
+void CChooseCertsDlg::OnFinalMessage(HWND /*hWnd*/)
+{  
+	m_pm.RemovePreMessageFilter(this);  
+	delete this;  
+}
+
+
+
+void CChooseCertsDlg::Notify(TNotifyUI& msg)
+{
+	LOGNOTIFY_CHOOSECERT;
+
+	if (msg.pSender->GetName() == _T("ui_favor_add_close") && msg.sType == DUI_MSGTYPE_CLICK)
+	{
+		this->Close(IDCLOSE);
+	}
+
+
+}
+
+LRESULT CChooseCertsDlg::OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+	POINT pt; pt.x = GET_X_LPARAM(lParam); pt.y = GET_Y_LPARAM(lParam);
+	::ScreenToClient(*this, &pt);
+
+	RECT rcClient;
+	::GetClientRect(*this, &rcClient);
+	Log("OnNcHitTest"
+		);
+
+	if(::IsZoomed(*this))
+	{
+		return HTCLIENT;
+	}
+
+
+
+
+	int nPos = 0;
+
+	RECT rcSizeBox = m_pm.GetSizeBox();
+	if (pt.y < rcClient.top + rcSizeBox.top)
+	{
+		if (pt.x < rcClient.left + rcSizeBox.left) return HTTOPLEFT;
+		if (pt.x > rcClient.right - rcSizeBox.right) return HTTOPRIGHT;
+		return HTTOP;
+	}
+	else if (pt.y > rcClient.bottom - rcSizeBox.bottom)
+	{
+		if (pt.x < rcClient.left + rcSizeBox.left) return HTBOTTOMLEFT;
+		if (pt.x > rcClient.right - rcSizeBox.right) return HTBOTTOMRIGHT;
+		return HTBOTTOM;
+	}
+
+	if (pt.x < rcClient.left + rcSizeBox.left) return HTLEFT;
+	if (pt.x > rcClient.right - rcSizeBox.right) return HTRIGHT;
+
+
+
+	RECT rcCaption = m_pm.GetCaptionRect();
+
+
+	if( pt.x >= rcClient.left + rcCaption.left && pt.x < rcClient.right - rcCaption.right \
+		&& pt.y >= rcCaption.top && pt.y < rcCaption.bottom ) 
+	{
+		CControlUI* pControl = static_cast<CControlUI*>(m_pm.FindControl(pt));
+
+		if( pControl && (_tcscmp(pControl->GetClass(), _T("ButtonUI")) != 0 &&
+			_tcscmp(pControl->GetClass(), _T("OptionUI")) != 0 &&
+			_tcscmp(pControl->GetClass(), _T("ControlUI")) !=  0 )
+			)
+		{
+			Log("OnNcHitTest() HTCAPTION ");
+			return HTCAPTION;  //如果鼠标在CAPTION区域中按钮容器控件上面，则不允许拖动
+		}
+
+
+	}
+	else
+	{
+		;
+	}
+
+
+
+
+
+	return HTCLIENT;
+}
+
+LRESULT CChooseCertsDlg::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{  
+	LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);  
+	styleValue &= ~WS_CAPTION;  
+	::SetWindowLong(*this, GWL_STYLE, styleValue | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);  
+	this->SetIcon(IDI_APP);
+	m_pm.Init(m_hWnd);  
+	m_pm.AddPreMessageFilter(this);  
+	CDialogBuilder builder;  
+	CControlUI* pRoot = builder.Create(_T("skin//selectcerts.xml"), (UINT)0, NULL, &m_pm);  
+	ASSERT(pRoot && "Failed to parse XML");
+	m_pm.AttachDialog(pRoot);  
+	m_pm.AddNotifier(this);
+
+
+	CListUI* m_List = static_cast<CListUI*>(m_pm.FindControl(L"ui_select_list"));
+	
+
+	for(int i = 0;i < m_data.size(); ++i)
+	{
+		CListContainerElementUI* ui = new CListContainerElementUI();
+		m_List->Add(ui);
+		ui->SetFixedHeight(29);
+		RECT rc = {1,0,1,0};
+		ui->SetPadding(rc);
+
+		CLabelUI* title = new CLabelUI();
+		ui->Add(title);
+		CLabelUI* certname = new CLabelUI();
+		ui->Add(certname);
+
+		
+		
+		title->SetAttribute(L"font",L"12");
+		title->SetAttribute(L"textcolor", L"#FF5C5C5C");
+		
+		title->SetAttribute(L"padding", L"14,0,0,0");
+		title->SetAttribute(L"align", L"center");
+		title->SetText(L"证书一");
+		title->SetFixedWidth(36);
+
+
+		certname->SetAttribute(L"font",L"12");
+		certname->SetAttribute(L"textcolor", L"#FF5C5C5C");
+		certname->SetAttribute(L"align", L"center");
+		certname->SetText(_encoding(m_data[i]).a_utf16().getutf16().c_str());
+		;
+
+
+	}
+
+
+
+
+	return 0;  
+}  
+
+LRESULT CChooseCertsDlg::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+{  
+	LRESULT lRes = 0;  
+	BOOL bHandled = TRUE;
+
+	switch (uMsg) 
+	{
+	case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;  
+	case WM_KEYDOWN:
+		{
+			if (wParam == VK_RETURN) 
+			{
+				//AddItem();
+			}  
+			else if (wParam == VK_ESCAPE) 
+			{
+				this->Close(IDCLOSE);
+				return true;
+			} 
+		}
+		break;
+	case WM_NCHITTEST:     lRes = OnNcHitTest(uMsg, wParam, lParam, bHandled); Log("OnNcHitTest %d", lRes); break;
+	default:  
+		bHandled = FALSE;  
+	}  
+
+	if (bHandled) return lRes;  
+	if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes)) return lRes;  
+	return CWindowWnd::HandleMessage(uMsg, wParam, lParam);  
+} 

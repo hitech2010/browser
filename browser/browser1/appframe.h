@@ -15,12 +15,13 @@ namespace THEAPP
 #define favor_nor L"file='skin\\favor.png' source='0,0,24,24'"
 }
 
-#define WM_USER_OPTIONMENU_ABOUT 1500L
+#define WM_USER_OPTIONMENU_ABOUT  (WM_APP + 1500L)
 #define WM_USER_OPTIONMENU_DOWNLOAD (WM_USER_OPTIONMENU_ABOUT + 1)
 #define WM_USER_OPTIONMENU_SAVEASFILE (WM_USER_OPTIONMENU_ABOUT + 2)
 #define WM_USER_OPTIONMENU_SAVEASIMG  (WM_USER_OPTIONMENU_ABOUT + 3)
 #define WM_USER_OPTIONMENU_CLEARCHCHE  (WM_USER_OPTIONMENU_ABOUT + 4)
 #define WM_USER_OPTIONMENU_PRINT		(WM_USER_OPTIONMENU_ABOUT+ 5)
+#define WM_USER_SELECT_CERTS		    (WM_USER_OPTIONMENU_ABOUT+ 6)
 
 
 class CMdWebEngine
@@ -121,6 +122,7 @@ public:
 	
 };
 
+
 class CFrameWindowWnd : public CWindowWnd, public INotifyUI
 {
 public:
@@ -146,6 +148,7 @@ public:
 	void ShowAboutDlg();
 	void ShowAddFavorDlg();
 	void ShowHistoryForm();
+	void ShowSelectCertDlg();
 	void BookmarkAdd(void);
 	void ShowMenu(void);
 	int ShowCloseTipDlg();
@@ -169,6 +172,8 @@ public:
 	CMdWebEngine*   m_engine;
 	CControlUI* m_pRoot;
 	CHorizontalLayoutUI*  m_webtags;
+
+	vector<string>      m_data;
 
 	CWindowWnd* m_pMenu;
 

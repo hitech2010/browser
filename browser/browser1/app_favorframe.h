@@ -1,3 +1,5 @@
+#pragma  once;
+
 class CFavorAddItemDlg : public CWindowWnd, public INotifyUI, public IMessageFilterUI
 {
 public:
