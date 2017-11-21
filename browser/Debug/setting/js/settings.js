@@ -109,8 +109,21 @@ function loading_settings(jappconfig)
 	if(jappconfig.shortcut_ext == "png") $("#png-format").parent().addClass("radio-selected");
 	else $("#jpg-format").parent().addClass("radio-selected");
 
+	//用户设置
+	//
+	
+	$(".User-privacy .check-selected").removeClass("check-selected");
+
+	if(jappconfig.user_cleanonclose == "1") $("#autoClear").parent().addClass("check-selected");	
+
+
+
 	$("#downloadLocationPath2").removeAttr("readonly").attr("value",jappconfig.location);
 	$("#downloadLocationPath2").attr("readonly","readonly");	
+
+
+	
+	
 
 
 		//默认搜索引擎
@@ -148,6 +161,37 @@ function loading_settings(jappconfig)
 
 		nodes += li;
 	}
+
+
+/*
+	$(".select-ul").html('');
+	for(var js2 in jappconfig.search_engines)
+	{
+
+		var li = "";
+
+		if(jappconfig.search_engines[js2][3])
+		{
+
+
+			var li = '<li gm-data="' + '' + '">' + jappconfig.search_engines[js2][0] +
+					'</span><span class="select-tit no-tit">设置为默认搜索引擎</span></li>';
+
+
+			//$("#default-search-engine").text(jappconfig.search_engines[js2][0]);
+		}
+		else
+		{
+			var li = '<li gm-data="' + jappconfig.search_engines[js2][0] + '">' + jappconfig.search_engines[js2][0] +
+					'</span><span class="select-tit">设置为默认搜索引擎</span></li>';
+		}
+
+		$(".select-ul").append(li);
+	}
+
+*/
+
+
 
 	$(".searchBox").html(nodes);
 
@@ -273,16 +317,20 @@ function sync_settings(jconfig)
 	//截图设置
 
 
-	if($("#png-format").parent().addClass(".radio-selected"))
+	if($("#png-format").parent().is(".radio-selected"))
 		jappconfig.shortcut_ext = "png";
 	else jappconfig.shortcut_ext = "jpg";
 	
-
+	//用户设置
 	var download_path2 = $("#downloadLocationPath2").attr("value");
 	if(download_path2.length)
 	{
 		jappconfig.location = download_path2;
 	}
+
+
+	jappconfig.user_cleanonclose ="0";
+	if($("#autoClear").parent().is(".check-selected")) jappconfig.user_cleanonclose  = "1";;	
 	
 	bs.Sync(JSON.stringify(jconfig));
 	setTimeout(function(){sync_settings(jconfig);},300);
