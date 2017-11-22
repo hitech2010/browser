@@ -4,6 +4,7 @@
 
 #include "app_config.h"
 #include "app_selectframe.h"
+
 #include "appframe.h"
 //winhttp
 #include <winhttp.h>
@@ -45,14 +46,30 @@ void SetShowCertDetailCallback(PFShowCertDetail fun)
 int ChooseCertUserUI(vector<string>& para)
 {
 	CChooseCertsDlg* additemdlg = new CChooseCertsDlg;
-	additemdlg->SetData(para);
-	additemdlg->Create(NULL, _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 386, 254, NULL);  
-	additemdlg->CenterWindow();
-	additemdlg->ShowWindow();
+	int  id = -1;
+	if(additemdlg)
+	{
+		additemdlg->SetData(para);
 
-	CPaintManagerUI::MessageLoop(); // 消息循环
+		additemdlg->SetViewInfoCallback(g_ShowCertDetailCallback);
+		additemdlg->Create(NULL, _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 386, 254, NULL);  
+		additemdlg->CenterWindow();
+		additemdlg->ShowWindow();
 
-	return -1;
+		CPaintManagerUI::MessageLoop(); // 消息循环
+
+		id = additemdlg->exitid;
+
+	
+		delete additemdlg;
+	}
+	
+	
+	
+
+	
+
+	return id;
 
 }
 

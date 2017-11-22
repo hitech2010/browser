@@ -3097,8 +3097,8 @@ void CFrameWindowWnd::BookmarkAdd(void)
 	item.title = ed.utf8().get();
 	theApp.Favor()->Add(item);
 
-	CChooseCertsDlg* additemdlg = new CChooseCertsDlg;
-	//additemdlg->m_frame = this;
+	CFavorAddItemDlg* additemdlg = new CFavorAddItemDlg;
+	additemdlg->m_frame = this;
 	additemdlg->Create(GetHWND(), _T(""), UI_WNDSTYLE_DIALOG, 0, 0, 0, 386, 254, NULL);
 	additemdlg->CenterWindow();
 	int nRet = additemdlg->ShowModal();
@@ -3157,7 +3157,24 @@ void CFrameWindowWnd::SetNeedTip(bool need)
 	theApp.Unlock();
 }
 
+void CChooseCertsDlg::SetViewInfoCallback(PFShowCertDetail func)
+{
+	m_cb = func;
 
+}
+
+CChooseCertsDlg::CChooseCertsDlg():CWindowWnd(),INotifyUI(),IMessageFilterUI()
+{
+	m_cb = NULL;
+	m_list = NULL;
+	exitid = 0;
+	m_data.clear();
+
+
+}
+CChooseCertsDlg::~CChooseCertsDlg(){
+
+};
 
 
 void CChooseCertsDlg::SetData(const vector<string>& data)
@@ -3183,8 +3200,7 @@ LRESULT CChooseCertsDlg::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam,
 }
 void CChooseCertsDlg::OnFinalMessage(HWND /*hWnd*/)
 {  
-	m_pm.RemovePreMessageFilter(this);  
-	delete this;  
+	m_pm.RemovePreMessageFilter(this);   
 }
 
 
@@ -3193,13 +3209,42 @@ void CChooseCertsDlg::Notify(TNotifyUI& msg)
 {
 	LOGNOTIFY_CHOOSECERT;
 
-	if (msg.pSender->GetName() == _T("ui_favor_add_close") && msg.sType == DUI_MSGTYPE_CLICK)
+	if (msg.pSender->GetName() == _T("ui_select_close") && msg.sType == DUI_MSGTYPE_CLICK)
 	{
+		exitid = -1;
 		this->Close(IDCLOSE);
+	}
+
+	if (msg.pSender->GetName() == _T("ui_select_cancel") && msg.sType == DUI_MSGTYPE_CLICK)
+	{
+		exitid = -2;
+		this->Close(IDCLOSE);
+	}
+
+	if (msg.pSender->GetName() == _T("ui_select_ok") && msg.sType == DUI_MSGTYPE_CLICK)
+	{
+		exitid = m_list->GetCurSel();
+		this->Close(IDCLOSE);
+	}
+
+	if (msg.pSender->GetName() == _T("ui_list_item") && msg.sType == DUI_MSGTYPE_DBCLICK)
+	{
+		int id = m_list->GetCurSel();
+		if(id >= 0 && m_cb)
+		{
+			m_cb(id, "test");
+		}
+		
 	}
 
 
 }
+
+UINT CChooseCertsDlg::GetClassStyle() const
+{
+	return  CS_DBLCLKS;
+}
+
 
 LRESULT CChooseCertsDlg::OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
@@ -3285,18 +3330,20 @@ LRESULT CChooseCertsDlg::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
 	m_pm.AttachDialog(pRoot);  
 	m_pm.AddNotifier(this);
 
+	exitid = 0;
 
-	CListUI* m_List = static_cast<CListUI*>(m_pm.FindControl(L"ui_select_list"));
+	 m_list = static_cast<CListUI*>(m_pm.FindControl(L"ui_select_list"));
 	
 
 	for(int i = 0;i < m_data.size(); ++i)
 	{
 		CListContainerElementUI* ui = new CListContainerElementUI();
-		m_List->Add(ui);
+
+		m_list->Add(ui);
 		ui->SetFixedHeight(29);
 		RECT rc = {1,0,1,0};
 		ui->SetPadding(rc);
-
+		ui->SetName(L"ui_list_item");
 		CLabelUI* title = new CLabelUI();
 		ui->Add(title);
 		CLabelUI* certname = new CLabelUI();
@@ -3306,7 +3353,7 @@ LRESULT CChooseCertsDlg::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
 		
 		title->SetAttribute(L"font",L"12");
 		title->SetAttribute(L"textcolor", L"#FF5C5C5C");
-		
+		title->SetName(L"ui_item_title");
 		title->SetAttribute(L"padding", L"14,0,0,0");
 		title->SetAttribute(L"align", L"center");
 		title->SetText(L"Ö¤ÊéÒ»");
@@ -3314,6 +3361,7 @@ LRESULT CChooseCertsDlg::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
 
 
 		certname->SetAttribute(L"font",L"12");
+		certname->SetName(L"ui_item_name");
 		certname->SetAttribute(L"textcolor", L"#FF5C5C5C");
 		certname->SetAttribute(L"align", L"center");
 		certname->SetText(_encoding(m_data[i]).a_utf16().getutf16().c_str());
@@ -3336,6 +3384,7 @@ LRESULT CChooseCertsDlg::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg) 
 	{
 	case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;  
+	case WM_DESTROY:		PostQuitMessage(exitid);
 	case WM_KEYDOWN:
 		{
 			if (wParam == VK_RETURN) 

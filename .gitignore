@@ -2,7 +2,7 @@
 *.exp
 *.obj
 *.suo
-
+.svn
 
 *.lib
 !sqlite3.lib

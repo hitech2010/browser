@@ -23,7 +23,7 @@
 		
 		
 
-    <CheckBox name="ui_clearcache_linshiwenjian_checkbox" float="true"    pos="31,71,44,83"   bordercolor="#FFBBBBBB" bordersize="1,1,1,1"  bkimage="skin/unchecked.png" selectedimage="skin/checked.png" />
+    <Option name="ui_clearcache_linshiwenjian_checkbox" float="true"    pos="31,71,44,83"   bordercolor="#FFBBBBBB" bordersize="1,1,1,1"  bkimage="skin/unchecked.png" selectedimage="skin/checked.png" />
     <Button float="true"  text="网页临时文件"  pos="53,68,254,85" align="left"    textcolor="#FF5C5C5C" />
 
     <CheckBox name="ui_clearcache_cookies_checkbox" float="true"    pos="31,98,44,111"  bordercolor="#FFBBBBBB" bordersize="1,1,1,1"  bkimage="skin/unchecked.png" selectedimage="skin/checked.png" />
