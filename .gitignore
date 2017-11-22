@@ -5,11 +5,7 @@
 .svn
 
 *.lib
-!sqlite3.lib
-!libeay32MTd.lib
-!MDSMD.lib
-!jsoncpp.lib
-!pcre2.lib
+!browser/lib/*.lib
 
 *.bak
 *.dll
