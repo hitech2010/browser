@@ -10,7 +10,7 @@
     
     
    	<Label text="极密浏览器" font="141" textcolor="#FF5C5C5C" float="true" pos="19,12,89,32" width="70" height="20"/>
-   	<Button name="ui_closetipdlg_close" padding="360,10,0,0" width="16" height="16"  bkimage="file=&apos;skin\dlg_close.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\dlg_close.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\dlg_close.png&apos; source=&apos;16,0,32,16&apos;" />
+   	<Button name="ui_closetipdlg_close" padding="360,10,0,0" width="16" height="16"  bkimage="file=&apos;skin\close_dlg.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" />
    
 
     <HorizontalLayout height="94">

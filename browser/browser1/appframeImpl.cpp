@@ -1595,18 +1595,40 @@ public:
 			//RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 4351  
 
 			if(m_linshiwenjian)
-			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 8", 9);
+			{
+				WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 8", 9);
+			}
+			
 			if(m_cookies)
-			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 2", 9);
+			{
+				WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 2", 9);
+// 				TCHAR szPath[MAX_PATH];
+// 				DeleteUrlCache(Cookie);
+// 				if (SHGetSpecialFolderPath(NULL, szPath, CSIDL_COOKIES, FALSE)){//得到目录，并清空 
+// 					EmptyDirectory(szPath);
+// 				}
+			}
+			
 			if(m_biaodan)
-			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 16", 9);
-			if(m_password)
-			WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 32", 9);
+			{
+				WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 16", 9);
+			}
+			
+			if(m_password)//5、清除自动密码历史记录
+			{
+				SHDeleteKey(HKEY_CURRENT_USER, _T("Software\\Microsoft\\Internet Explorer\\IntelliForms"));
+			}
+			
 			if(m_lish)
 			{
 				WinExec("rundll32.exe Inetcpl.cpl, ClearMyTracksByProcess 1", 9);
 				theApp.History()->Clear();
 				m_frame->m_engine->ClearTemps();
+			}
+			if(m_recentclose)
+			{
+				m_frame->m_engine->ClearDeleted();
+
 			}
 			
 
@@ -1888,7 +1910,8 @@ BOOL CFrameWindowWnd::init()
 	CButtonUI* btn_favor = static_cast<CButtonUI*>(m_pm.FindControl(L"ui_favor"));
 	m_pm.SetTimer(btn_favor, 1000, 100);
 	m_pm.SetTimer(m_pm.FindControl(L"ui_home"), 1001, 300);
-	m_pm.SetTimer(m_pm.FindControl(L"ui_restorepage"), 1002, 300);
+	m_pm.SetTimer(m_pm.FindControl(L"ui_restorepage"), 1002, 100);
+	int nRet = m_pm.SetTimer(m_pm.FindControl(L"ui_address"), 1003, 300);
 
 	m_pm.GetDPIObj()->SetDPIAwareness(PROCESS_DPI_UNAWARE);
 
@@ -1939,6 +1962,7 @@ void CFrameWindowWnd::OnSelectChanged(TNotifyUI& msg)
 void CFrameWindowWnd::OnTimer(TNotifyUI& msg)
 {
 
+
 	if( msg.pSender->GetName() == _T("ui_home") ) 
 	{
 		msg.pSender->SetVisible(theApp.get_ui_show_homepage() == "1");
@@ -1948,7 +1972,109 @@ void CFrameWindowWnd::OnTimer(TNotifyUI& msg)
 
 	if( msg.pSender->GetName() == _T("ui_restorepage") ) 
 	{
+
+		static int padding = 14;
 		msg.pSender->SetVisible(theApp.get_ui_show_restore_recent() == "1");
+
+		CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_engine->GetCurrentWebBrowserUI());
+		CEditUI * pEdit = static_cast<CEditUI*>(m_pm.FindControl(L"ui_address"));
+		CControlUI * pGreenLock = (m_pm.FindControl(L"ui_greenlock"));
+		CLabelUI	*pGreenText = static_cast<CLabelUI*>(m_pm.FindControl(L"ui_greentext"));
+		CContainerUI	*pContainer = static_cast<CContainerUI*>(m_pm.FindControl(L"ui_address_ctrls"));
+
+		if(!pEdit && !pContainer)
+		{
+			return ;
+		}
+
+		if(!ui)
+		{
+			return ;
+		}
+
+		string url = ui->getUrl();
+		
+		
+		bool bShowSafe = false;
+		if(url.find("https") != string::npos)
+		{
+			bShowSafe = true;
+		}
+		bool bShowGreenText = false;
+
+		if(ui && ui->isSM())
+		{
+			bShowGreenText = true;
+		}
+		
+		pGreenText->SetVisible(bShowGreenText);
+		pGreenLock->SetVisible(bShowSafe);
+
+
+
+		if(bShowGreenText && bShowSafe)
+		{
+			
+
+			if(padding != 44)
+			{
+				padding = 44;
+				pEdit->SetAttribute(L"textpadding",L"44,1,30,1");
+			}
+
+		}
+		else if(bShowSafe )
+		{
+// 			if(!pGreenLock)
+// 			{
+// 				CControlUI* p1 = new CControlUI();
+// 				pContainer->Add(p1);
+// 				p1->SetAttribute(L"float", L"true");
+// 				p1->SetAttribute(L"name", L"ui_greenlock");
+// 				p1->SetAttribute(L"pos", L"6,8,18,20");
+// 				p1->SetAttribute(L"bkimage", L"skin\\greenlock.png");
+// 
+// 			}
+// 
+// 			if(pGreenText)
+// 			{
+// 				pContainer->Remove(pGreenText);
+// 
+// 			}
+			if(padding != 22)
+			{
+				pEdit->SetAttribute(L"textpadding",L"22,1,30,1");
+				padding = 22;
+			}
+
+			
+		}
+		else
+		{
+// 			if(pGreenLock)
+// 			{
+// 				pContainer->Remove(pGreenLock);
+// 			}
+// 
+// 			if(pGreenText)
+// 			{
+// 				pContainer->Remove(pGreenText);
+// 
+// 			}
+
+			if(padding != 14)
+			{
+				pEdit->SetAttribute(L"textpadding",L"14,1,30,1");
+				padding = 14;
+			}
+			
+		}
+
+
+		
+
+
+		
 	}
 
 	if( msg.pSender->GetName() == _T("ui_favor") ) 
@@ -2025,10 +2151,18 @@ void CFrameWindowWnd::OnClick(TNotifyUI& msg)
 		int cnt = m_engine->GetCount();
 
 		Log("ui_closetab cnt %d", cnt);
-		if (m_engine->GetCount() < 2) /*UI_addtab btn left and quit */
+		if (m_engine->GetCount() == 1) /*UI_addtab btn left and quit */
 		{
-
-			Close();
+			if(theApp.get_tabset_quit_whencloselast() == "1")
+			{
+				Close();
+			}
+			else
+			{
+				m_engine->Reload(m_engine->getIndexPage());
+			}
+			
+			//Close();
 		}
 		else
 		{
@@ -2690,10 +2824,12 @@ int CMdWebEngine::Add(LPCTSTR url, bool background)
 	if (isGMSSL(strUrl, b))
 	{
 		g_um[strUrl] = strback;
+		_ie->useSM(true);
 		setproxy(true);
 	}
 	else
 	{
+		_ie->useSM(false);
 		setproxy(false);
 	}
 	url = _bstr_t(strUrl.c_str());
@@ -2747,8 +2883,9 @@ int CMdWebEngine::Remove( CControlUI* btnCloseTab )
 		{
 			//do nothing; 最左边
 		}
-		else if(pos == nCount - 2)
+		else if(pos == nCount - 2 || theApp.get_tabset_activepos_whenclosetab() == "0")
 		{
+			
 			CContainerUI* pContainerPrev = dynamic_cast<CContainerUI*>(m_tabcontainer->GetItemAt(pos-1));
 			COptionUI* pOptPrev = dynamic_cast<COptionUI*>(m_pm->FindSubControlByClass(pContainerPrev, _T("OptionUI")));
 			if(pOpt->IsSelected())
@@ -2758,8 +2895,9 @@ int CMdWebEngine::Remove( CControlUI* btnCloseTab )
 
 			}
 		}
-		else
+		else if(pos == 0 || theApp.get_tabset_activepos_whenclosetab() == "1")
 		{
+			
 			CContainerUI* pContainerNext = dynamic_cast<CContainerUI*>(m_tabcontainer->GetItemAt(pos+1));
 			COptionUI* pOptNext = dynamic_cast<COptionUI*>(m_pm->FindSubControlByClass(pContainerNext, _T("OptionUI")));
 
@@ -2795,6 +2933,10 @@ int CMdWebEngine::Remove( CControlUI* btnCloseTab )
 	{
 		m_webcontainer->SelectItem(pNewSelected);
 		m_crrentWebPage = pNewSelected;
+	}
+	else
+	{
+		m_crrentWebPage = NULL;
 	}
 
 	
@@ -2932,10 +3074,12 @@ int CMdWebEngine::Reload(LPCTSTR url /*= NULL*/)
 	if (isGMSSL(strUrl, b))
 	{
 		g_um[strUrl] = strback;
+		pWebBrowserUI->useSM(true);
 		setproxy(true);
 	}
 	else
 	{
+		pWebBrowserUI->useSM(false);
 		setproxy(false);
 	}
 	url = _bstr_t(strUrl.c_str());
@@ -3037,6 +3181,14 @@ void CMdWebEngine::ClearTemps()
 
 	ShellExecuteA(NULL, "open", "cmd.exe", cmd.c_str(), NULL, SW_HIDE);
 
+}
+
+void CMdWebEngine::ClearDeleted()
+{
+	while(!m_deleted.empty())
+	{
+			m_deleted.pop();
+	}
 }
 
 void CMdWebEngine::CloseAll()

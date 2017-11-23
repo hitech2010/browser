@@ -15,7 +15,7 @@
   <VerticalLayout bkcolor="#FFFFFFFF" width="264" height="391"  font="14">
 		
     <Button float="true"  font="14"  text="清理上网痕迹" pos="70,20,193,40"   textcolor="#FF5C5C5C" />
-    <Button name="ui_clearcache_close" float="true"  font="1" pos="241,13,251,23" textcolor="#FF5C5C5C" bkimage="file=&apos;skin\close_dlg.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" />
+    <Button name="ui_clearcache_close" float="true"  font="1" pos="238,10,254,26" textcolor="#FF5C5C5C" bkimage="file=&apos;skin\close_dlg.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" />
     
     
     <Label  height="1" bkcolor="#FFE1E1E1" float="true" pos="32,48,233,49"   >

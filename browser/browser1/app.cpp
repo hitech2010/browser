@@ -402,6 +402,11 @@ int nExitFlag;
 		return inipath;
 	}
 
+	string AppConfig::get_tabset_quit_whencloselast()
+	{
+		return config("tabset_quit_whencloselast");
+	}
+
 
 
 

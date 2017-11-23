@@ -15,7 +15,7 @@
 
 
   <VerticalLayout width="386" height="254" bkcolor="#FFFFFFFF" showshadow="true" shadowimage="skin\shadow.png" roundcorner="6,6" shadowsize="6"  shadowcorner="6,6,6,6">
-    <Button name="ui_about_close" padding="360,8,0,0" width="16" height="16" align="right" bkimage="file=&apos;skin\dlg_close.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\dlg_close.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\dlg_close.png&apos; source=&apos;16,0,32,16&apos;" />
+    <Button name="ui_about_close" padding="360,8,0,0" width="16" height="16" align="right" bkimage="file=&apos;skin\close_dlg.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" />
     <!--<HorizontalLayout height="24"  bordercolor="#FFBBBBBB" bordersize="0,0,0,0">
       <Button name="ui_titlebar" width="360" height="24"></Button>
       <Button name="ui_close" width="24" height="24" padding="0,2,0,0" bkimage="file=&apos;skin\toolbar1.png&apos; source=&apos;72,0,96,24&apos;" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" hotimage="file=&apos;skin\toolbar1.png&apos; source=&apos;72,24,96,48&apos;" pushedimage="file=&apos;skin\toolbar1.png&apos; source=&apos;72,24,96,48&apos;" />

@@ -17,7 +17,7 @@
 		
 		<Container height="38" bkcolor="#FFF1F2F6">
 		    <Button float="true"  font="14"  text="请选择证书" pos="19,10,89,30"   textcolor="#FF5C5C5C" />
-  			<Button name="ui_select_close" float="true"  font="1" pos="397,13,407,23" bkimage="file=&apos;skin\close_dlg.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" />
+  			<Button name="ui_select_close" float="true"  font="1" pos="394,10,410,26" bkimage="file=&apos;skin\close_dlg.png&apos; source=&apos;0,0,16,16&apos;" hotimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" pushedimage="file=&apos;skin\close_dlg.png&apos; source=&apos;16,0,32,16&apos;" />
 		</Container>
 		
 		<Button padding="27,27,0,0" height="29" width="382" text="证书名称" textcolor="#FF30383C" bkcolor="#FFF9FBFE" bordercolor="0xFFDADDF0" bordersize="1"></Button>

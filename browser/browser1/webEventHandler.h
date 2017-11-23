@@ -22,8 +22,15 @@ public:
 	CFavorManager::RECORD& GetFavorRecord();
 	bool IsFavored();
 
+	void useSM(bool bSM = false);
+	bool isSM();
+
+
+
+
 private:
 	int		m_favored;
+	int     m_isguomi;
 	CFavorManager::RECORD m_record;
 	wstring m_title;
 	string  m_url;

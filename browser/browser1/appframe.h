@@ -47,6 +47,7 @@ static CMdWebEngine* thisobj;
 
 	void ClearTemps();
 
+	void ClearDeleted();
 	void CloseAll();
 
 	stack<string> GetDeleted();

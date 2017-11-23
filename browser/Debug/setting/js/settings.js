@@ -161,9 +161,11 @@ function loading_settings(jappconfig)
 
 		nodes += li;
 	}
+	
 
 
-/*
+
+
 	$(".select-ul").html('');
 	for(var js2 in jappconfig.search_engines)
 	{
@@ -174,22 +176,22 @@ function loading_settings(jappconfig)
 		{
 
 
-			var li = '<li gm-data="' + '' + '">' + jappconfig.search_engines[js2][0] +
-					'</span><span class="select-tit no-tit">设置为默认搜索引擎</span></li>';
-
+			var li = '<li gm-data="' + jappconfig.search_engines[js2][0] + '">'  + '<span class="engine-name">' + jappconfig.search_engines[js2][0] + 
+					'</span><span class="select-tit no-tit">设置为默认搜索引擎</span></li>'; 
+			$(".select-name").text(jappconfig.search_engines[js2][0]);
 
 			//$("#default-search-engine").text(jappconfig.search_engines[js2][0]);
 		}
 		else
 		{
-			var li = '<li gm-data="' + jappconfig.search_engines[js2][0] + '">' + jappconfig.search_engines[js2][0] +
+			var li = '<li gm-data="' + jappconfig.search_engines[js2][0] + '">' +  '<span class="engine-name">' + jappconfig.search_engines[js2][0] +
 					'</span><span class="select-tit">设置为默认搜索引擎</span></li>';
 		}
 
-		$(".select-ul").append(li);
+			$(".select-ul").append(li);
 	}
 
-*/
+		//<li gm-data="百度"><span class="engine-name">百度</span><span class="select-tit no-tit">设置为默认搜索引擎</span></li>
 
 
 
@@ -295,7 +297,7 @@ function sync_settings(jconfig)
 
 	if($("#current-right-side").parent().is(".radio-selected")) jappconfig.tabset_newtab_position = "1";;
 
-	if($("#Activate-left").parent().is(".radio-selected")) jappconfig.tabset_activepos_whenclosetab = "1";
+	if($("#Activate-right").parent().is(".radio-selected")) jappconfig.tabset_activepos_whenclosetab = "1";
 	
 
 	//下载页面
@@ -340,6 +342,8 @@ $(function(){
 	//设置菜单
 	//
 	//
+	
+	
 
 	bs = new BrowserSetting();
     var config = bs.Query();
@@ -412,6 +416,38 @@ $(function(){
 					$(".searchHover").eq(t).addClass("defaultEngines");
 				}
 			}
+			
+					var conf = "[";
+
+					for(var i = 0; i <   $(".searchBox").children().size(); ++i)
+					{
+						if(i != 0)
+						{
+							conf += ",";
+						}
+
+						var title = $(".searchBox").children().eq(i).find(".searchName").text();
+						var site  = $(".searchBox").children().eq(i).find(".searchKey").text();
+						var query = $(".searchBox").children().eq(i).find(".searchWeb").text();
+						var def = 0;
+						if($(".searchBox").children().eq(i).is(".defaultEngines"))
+						{
+							def = 1;
+						}	
+
+						var item = "[\"" + title +"\"," + "\"" + site +"\"," + "\"" + query +"\"," + def + "]";
+
+						conf +=item;
+
+					}
+
+					conf += "]";
+
+
+
+
+					jconfig.appconfig.search_engines = eval('(' + conf + ')');
+			
 		}else{
 			$(".select-ul").slideUp(300);
 			return false;
@@ -573,7 +609,6 @@ $(function(){
 
 		jconfig.appconfig.search_engines = eval('(' + conf + ')');
 
-		alert(jconfig.appconfig.search_engines[0][3]);
 
 
 

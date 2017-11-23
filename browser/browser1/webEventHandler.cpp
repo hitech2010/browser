@@ -1239,3 +1239,13 @@ bool CMdWebBrowserUI::IsFavored()
 {
 	return m_favored;
 }
+
+void CMdWebBrowserUI::useSM(bool bSM /*= false*/)
+{
+	m_isguomi = bSM;
+}
+
+bool CMdWebBrowserUI::isSM()
+{
+	return m_isguomi;
+}
