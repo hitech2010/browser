@@ -19,8 +19,9 @@
 **/Release/**
 **/Temp/
 **/Tmp/
-
-
+MDSM/
+GMSSL/
+GMSSL_Proxy/
 
 **/ipch/
 browser - 副本/

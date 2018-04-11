@@ -9,7 +9,12 @@
 //winhttp
 #include <winhttp.h>
 #pragma  comment(lib, "Winhttp.lib")
+
+#ifdef _DEBUG
+#pragma  comment(lib, "jsoncppD.lib")
+#else
 #pragma  comment(lib, "jsoncpp.lib")
+#endif
 
 
 typedef void(*PFShowCertDetail)(int id, const char * title);
@@ -18,13 +23,21 @@ PFShowCertDetail g_ShowCertDetailCallback = NULL;
 
 
 
+#ifdef _DEBUG
+#pragma  comment(lib, "gmssld.lib")
+#pragma  comment(lib, "http_proxy_serverd.lib")
+#pragma  comment(lib, "libeay32mtd.lib")
+#pragma  comment(lib, "mdsmd.lib")
+#pragma  comment(lib, "smd.lib")
+#else
+#pragma  comment(lib, "gmssl.lib")
+#pragma  comment(lib, "http_proxy_server.lib")
+#pragma  comment(lib, "libeay32mt.lib")
+#pragma  comment(lib, "mdsm.lib")
+#pragma  comment(lib, "sm.lib")
+#endif
 
 #pragma  comment(lib, "sqlite3.lib")
- #pragma  comment(lib, "gmssld.lib")
- #pragma  comment(lib, "http_proxy_serverd.lib")
- #pragma  comment(lib, "libeay32mtd.lib")
- #pragma  comment(lib, "mdsmd.lib")
- #pragma  comment(lib, "smd.lib")
 
 //
 //bool isGMSSL(string &strt, bool &b)

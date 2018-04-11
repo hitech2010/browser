@@ -1,7 +1,11 @@
 
 #pragma once
 
+#ifdef _DEBUG
+#pragma  comment(lib, "pcre2d.lib")
+#else
 #pragma  comment(lib, "pcre2.lib")
+#endif
 
 #define PCRE2_CODE_UNIT_WIDTH 8
 #define PCRE2_STATIC

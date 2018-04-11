@@ -1,5 +1,6 @@
 
 #include "appframe.h"
+#include "JavaScript.h"
 
 
 class CMdWebBrowserUI :public CWebBrowserUI 
@@ -55,7 +56,7 @@ public:
 	};
 
 public:
-	CWebEventHandler(CMdWebEngine* webcore = NULL);
+	CWebEventHandler(CMdWebEngine* webcore = NULL, CMdWebBrowserUI* ui = NULL);
 
 
 	virtual void BeforeNavigate2(CWebBrowserUI* pWeb, IDispatch *pDisp,VARIANT *&url,VARIANT *&Flags,VARIANT *&TargetFrameName,VARIANT *&PostData,VARIANT *&Headers,VARIANT_BOOL *&Cancel );
@@ -134,6 +135,9 @@ public:
 protected:
 
 	CMdWebEngine* m_webengine;
+	CMdWebBrowserUI* m_ui;
+public:
+	CJavaScript m_js;
 	ULONG m_dwRef;
 
 

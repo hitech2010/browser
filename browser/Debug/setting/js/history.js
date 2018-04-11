@@ -30,10 +30,10 @@ $(function(){
 
 	//alert(res);
 	//$("sy-today part-box").innerHTML = res;
-	$(".part-right .sy-today ").html(today);
-	$(".part-right .sy-yesterday ").html(yesterday);
-	$(".part-right .sy-thisweek ").html(thisweek);
-	$(".part-right .sy-thismonth ").html(thismonth);
+	//$(".part-right .sy-today ").html(today);
+	//$(".part-right .sy-yesterday ").html(yesterday);
+	//$(".part-right .sy-thisweek ").html(thisweek);
+	//$(".part-right .sy-thismonth ").html(thismonth);
 	//alert($(".part-right .sy-today ").html();)
 	//
 	//

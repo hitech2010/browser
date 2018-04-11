@@ -134,8 +134,6 @@ public:
 class BrowserApp :public AppConfig
 {
 
-	
-
 	CppSQLite3DB db;//关于browser的数据
 	string       m_appdir;
 	string       m_appfile;

@@ -1832,7 +1832,6 @@ public:
 				_tcscmp(pControl->GetClass(), _T("ContainerUI")) !=  0 )
 				)
 			{
-				Log("OnNcHitTest() HTCAPTION ");
 				return HTCAPTION;  //如果鼠标在CAPTION区域中按钮容器控件上面，则不允许拖动
 			}
 
@@ -1961,6 +1960,8 @@ void CFrameWindowWnd::OnSelectChanged(TNotifyUI& msg)
 
 void CFrameWindowWnd::OnTimer(TNotifyUI& msg)
 {
+	try
+	{
 
 
 	if( msg.pSender->GetName() == _T("ui_home") ) 
@@ -2080,45 +2081,54 @@ void CFrameWindowWnd::OnTimer(TNotifyUI& msg)
 	if( msg.pSender->GetName() == _T("ui_favor") ) 
 	{
 
-		CButtonUI* btn_favor = static_cast<CButtonUI*>(m_engine->m_pm->FindControl(_T("ui_favor")));
+		
+			CButtonUI* btn_favor = static_cast<CButtonUI*>(m_engine->m_pm->FindControl(_T("ui_favor")));
 
-		wstring addrtext = m_engine->GetAddressBar()->GetText();
+			wstring addrtext = m_engine->GetAddressBar()->GetText();
 
-		if(addrtext.find(L"geemee:") != wstring::npos)
-		{
-			btn_favor->SetVisible(false);
-		}
-		else
-		{
-			btn_favor->SetVisible(TRUE);
-		}
-
-
-		CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_engine->GetCurrentWebBrowserUI());
-		if(ui )
-		{
-			string url = ui->getUrl();
-			CFavorManager::VRECORD vrc = theApp.Favor()->QueryByUrl(url).GetResult();
-
-
-			
-			if(vrc.size())
+			if(addrtext.find(L"geemee:") != wstring::npos)
 			{
-				btn_favor->SetAttribute(L"bkimage", favor_hot);
-				wstring tmp = btn_favor->GetBkImage();
-				ui->SetFavored(true);
-				ui->SetFavorRecord(vrc[0]);
+				btn_favor->SetVisible(false);
 			}
 			else
 			{
-				btn_favor->SetAttribute(L"bkimage", favor_nor);
-				wstring tmp = btn_favor->GetBkImage();
-				ui->SetFavored(false);
-
+				btn_favor->SetVisible(TRUE);
 			}
 
 
-		}
+			CMdWebBrowserUI* ui = static_cast<CMdWebBrowserUI*>(m_engine->GetCurrentWebBrowserUI());
+			if(ui )
+			{
+				string url = ui->getUrl();
+				CFavorManager::VRECORD vrc = theApp.Favor()->QueryByUrl(url).GetResult();
+
+
+
+				if(vrc.size())
+				{
+					btn_favor->SetAttribute(L"bkimage", favor_hot);
+					wstring tmp = btn_favor->GetBkImage();
+					ui->SetFavored(true);
+					ui->SetFavorRecord(vrc[0]);
+				}
+				else
+				{
+					btn_favor->SetAttribute(L"bkimage", favor_nor);
+					wstring tmp = btn_favor->GetBkImage();
+					ui->SetFavored(false);
+
+				}
+
+
+			}
+
+		
+	}
+	}
+
+	catch (...)
+	{
+		OutputDebugStringA("timer exceptions");
 	}
 
 
@@ -2797,8 +2807,11 @@ int CMdWebEngine::Add(LPCTSTR url, bool background)
 	ie->CActiveXUI::SetAttribute(_T("clsid"), _T("{8856F961-340A-11D0-A96B-00C04FD705A2}"));
 	ie->SetDelayCreate(true);
 
-	static CWebEventHandler handler(this);; 
-	ie->SetWebBrowserEventHandler(&handler);
+	
+
+	CWebEventHandler* handler = new CWebEventHandler(this, _ie);
+
+	ie->SetWebBrowserEventHandler(handler);
 	ie->DoCreateControl();
 
 	if(!background)
@@ -2825,6 +2838,7 @@ int CMdWebEngine::Add(LPCTSTR url, bool background)
 	{
 		g_um[strUrl] = strback;
 		_ie->useSM(true);
+		clearproxy();
 		setproxy(true);
 	}
 	else
@@ -2866,6 +2880,11 @@ int CMdWebEngine::GetCount()
 
 int CMdWebEngine::Remove( CControlUI* btnCloseTab )
 {
+	try
+	{
+	
+	OutputDebugStringA("12343456");
+	
 	CContainerUI* pContainer = dynamic_cast<CContainerUI*>(btnCloseTab->GetParent());
 	assert(pContainer);
 
@@ -2939,7 +2958,13 @@ int CMdWebEngine::Remove( CControlUI* btnCloseTab )
 		m_crrentWebPage = NULL;
 	}
 
-	
+	OutputDebugStringA("45677689");
+
+	}
+	catch(...)
+	{
+		::MessageBoxA(NULL, "1234","4356", MB_OK);
+	}
 
 	return true;
 }
@@ -3018,8 +3043,9 @@ CWebBrowserUI* CMdWebEngine::GetWebPage(UINT_PTR tab)
 
 			}
 		}
-
 	}
+
+	return 0;
 }
 
 LPCTSTR CMdWebEngine::getHistoryPage()
@@ -3075,6 +3101,7 @@ int CMdWebEngine::Reload(LPCTSTR url /*= NULL*/)
 	{
 		g_um[strUrl] = strback;
 		pWebBrowserUI->useSM(true);
+		clearproxy();
 		setproxy(true);
 	}
 	else

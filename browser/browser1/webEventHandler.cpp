@@ -214,6 +214,8 @@ void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,V
 		CComQIPtr<IHTMLDocument2> pDoc2 = pDoc;
 		if (NULL == pDoc2)
 			return ;
+
+		m_js.SetDocument2(pDoc2);
 		CComPtr<IHTMLElementCollection> pBody = NULL;
 		hr = pDoc2->get_all(&pBody);
 
@@ -310,7 +312,13 @@ void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,V
 				theApp.Pool().AddPool(event);
 
 			}
+			else
+			{
+				wb->Refresh();
+			}
 		
+			
+	
 			
 			if (xurl[xurl.length() - 1] != '/')
 			{
@@ -374,9 +382,9 @@ void CWebEventHandler::CommandStateChange( CWebBrowserUI* pWeb, long Command,VAR
 
 
 
-CWebEventHandler::CWebEventHandler( CMdWebEngine* webcore /*= NULL*/ )
+CWebEventHandler::CWebEventHandler( CMdWebEngine* webcore, CMdWebBrowserUI* ui /*= NULL*/ )
 {
-	
+	m_ui = ui;
 	m_webengine = webcore;
 }
 
@@ -514,7 +522,7 @@ STDMETHODIMP CWebEventHandler::GetIDsOfNames(
 {
 	;
 	
-	if (_tcscmp((const wchar_t*)*rgszNames, L"test") == 0)
+	if (_tcscmp((const wchar_t*)*rgszNames, L"jnotify_asyn") == 0)
 	{
 		*rgdispid = FUN_TEST;
 		return S_OK;
@@ -530,7 +538,7 @@ STDMETHODIMP CWebEventHandler::GetIDsOfNames(
 		
 		return S_OK;
 	}
-	else if (_tcscmp((const wchar_t*)*rgszNames, L"jnotify_asyn") == 0)
+	else if (_tcscmp((const wchar_t*)*rgszNames, L"jnotify_asyn2") == 0)
 	{
 		*rgdispid = FUN_GET_ASYNCALL;
 
@@ -545,6 +553,37 @@ STDMETHODIMP CWebEventHandler::GetIDsOfNames(
 	*rgdispid = -1;
 	return E_FAIL;
 }
+
+typedef struct tagEXEC_JS_CONTEXT
+{
+	CWebEventHandler* handlerobj;
+	DISPPARAMS disp_paras;
+	
+
+}EXEC_JS_CONTEXT;
+
+bool ExecJsFun( const wstring& lpJsFun, const vector<wstring>& params )  
+{  
+	
+	return true;  
+} 
+
+unsigned int __stdcall calljs_proc(void* para)
+{
+
+	EXEC_JS_CONTEXT* ej = (EXEC_JS_CONTEXT*)para;
+	CWebEventHandler* handler = ej->handlerobj;
+
+	VARIANT p0 = ej->disp_paras.rgvarg[4];
+
+	VARIANT result; VariantInit(&result);
+	EXCEPINFO ei;
+	UINT  ui;
+	handler->m_js.CallAnonymousJSFunction(V_DISPATCH(&p0), &ej->disp_paras, &result, &ei, &ui);
+	return 0;
+
+}
+
 
 
 
@@ -562,6 +601,7 @@ STDMETHODIMP CWebEventHandler::Invoke(
 	{
 		return E_FAIL;
 	}
+	
 
 	xstring loginfo;
 	loginfo.format("CWebEventHandler::Invoke %d", dispidMember).log();
@@ -569,7 +609,19 @@ STDMETHODIMP CWebEventHandler::Invoke(
 	
 	switch (dispidMember)
 	{
-	case FUN_TEST:		pvarResult->vt = VT_I4; V_I4(pvarResult) = 5;	break;
+
+	case FUN_TEST:		
+		{
+			EXEC_JS_CONTEXT* ej = new EXEC_JS_CONTEXT();;
+			ej->handlerobj = this;
+			ej->disp_paras = *pdispparams;
+
+			//_beginthreadex(NULL, 0, calljs_proc, (void*)ej, 0, 0);
+
+			calljs_proc((void*)ej);
+			
+			break;
+		}	
 	case FUN_GET_HISTORY:
 	{
 		vector<history_recode_item> res = theApp.History()->Query(V_I4(&pdispparams->rgvarg[0])); break;
@@ -581,8 +633,14 @@ STDMETHODIMP CWebEventHandler::Invoke(
 	case FUN_GET_ASYNCALL:
 	{
 
-		pvarResult->vt = VT_I4; V_I4(pvarResult) = 5;	break;
+		VARIANT p0 = pdispparams->rgvarg[4];
+		VARIANT p1 = pdispparams->rgvarg[3];
+		VARIANT p2 = pdispparams->rgvarg[2];
+		VARIANT p3 = pdispparams->rgvarg[1];
+		VARIANT p4 = pdispparams->rgvarg[0];
 
+
+		_beginthreadex(NULL, 0,calljs_proc,NULL, 0, NULL); 
 				
 		break;
 	}

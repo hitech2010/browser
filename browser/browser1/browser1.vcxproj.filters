@@ -16,6 +16,9 @@
     <Filter Include="头文件\UI">
       <UniqueIdentifier>{4363ec0a-3cbd-4939-8ca3-c313c4859153}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\settings">
+      <UniqueIdentifier>{e6590073-a675-4481-80eb-ba45999d8888}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="app.cpp">
@@ -122,6 +125,51 @@
     </None>
     <None Include="..\Debug\skin\favor_add_item.xml">
       <Filter>资源文件</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\bookmark.js">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\bookmarkimpl.js">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\history.js">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\history.js.bak">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\historyimpl.js">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\index.js">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\index.js.bak">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\indeximpl.js">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\jquery-1.6.2.min.js">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\jquery-2.1.4.min.js">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\json2.js">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\settingimpl.js">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\settings.js">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\settings.js.bak">
+      <Filter>头文件\settings</Filter>
+    </None>
+    <None Include="..\Debug\setting\js\style.js">
+      <Filter>头文件\settings</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

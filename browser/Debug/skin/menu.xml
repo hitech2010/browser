@@ -78,7 +78,7 @@
 	  	
 	  	<Button style="textstyle2" align="left" textpadding="32,0,0,0" float="true" pos="0,119,270,153" name="ui_internet_option"    text="Internet选项"></Button>
 	  	<Button style="textstyle5" align="left" textpadding="32,0,0,0" float="true" pos="0,154,270,190"   text="反馈建议"></Button>
-	  	<Button style="textstyle2" align="left" textpadding="32,0,0,0" float="true" pos="0,191,270,227" name="ui_about_geemee"   text="关于geemee"></Button>	
+	  	<Button style="textstyle2" align="left" textpadding="32,0,0,0" float="true" pos="0,191,270,227" name="ui_about_geemee"   text="关于"></Button>	
 	  	
 	  </HorizontalLayout>
 
