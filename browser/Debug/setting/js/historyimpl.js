@@ -26,6 +26,8 @@ function HistoryQuery(a)
 
 }
 
+
+
 HistoryQuery.prototype.Query = function (qtype) 
 								{
 									if(qtype == "today")

@@ -192,6 +192,7 @@ void CWebEventHandler::NavigateComplete2( CWebBrowserUI* pWeb, IDispatch *pDisp,
 
 void CWebEventHandler::DocumentComplete( CWebBrowserUI* pWeb, IDispatch *pDisp,VARIANT *&url )
 {
+	
 	if (!url || !url->bstrVal)
 	{
 		return;

@@ -1786,8 +1786,7 @@ public:
 
 		RECT rcClient;
 		::GetClientRect(*this, &rcClient);
-		Log("OnNcHitTest"
-			);
+		Log("OnNcHitTest");
 
 		if(::IsZoomed(*this))
 		{

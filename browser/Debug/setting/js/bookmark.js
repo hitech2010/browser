@@ -26,9 +26,19 @@ $(function(){
 	var res 		= bq.Query();
 
 
+		function _show(cls,data)  
+    {  
+    	
+
+         $(".bookmark-content  "+ cls).html(data);
+    } 
+    
+    
+    
+    setTimeout(function(){_show(".page",res) }, 100)
 
 
-	$(".bookmark-content .page").html(res);
+
 
 
 	$("#ImportBookmarks").click(function(){

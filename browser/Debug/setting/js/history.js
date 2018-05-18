@@ -20,17 +20,43 @@
 	}
 
 
+
+
+
+
+
+
 $(function(){
+	
+	
 
 	 hq = new HistoryQuery();
 	var today = hq.Query("today");
 	var yesterday = hq.Query("yesterday");
 	var thisweek = hq.Query("thisweek");
 	var thismonth = hq.Query("thismonth");
+	
+	
+	function _show(cls,data)  
+    {  
+    	
+
+         $(".part-right "+ cls).html(data);
+    } 
+    
+    
+
 
 	//alert(res);
 	//$("sy-today part-box").innerHTML = res;
-	//$(".part-right .sy-today ").html(today);
+	
+	setTimeout(function(){_show(".sy-today",today) }, 100)
+	setTimeout(function(){_show(".sy-yesterday",yesterday) }, 100)
+	setTimeout(function(){_show(".sy-thisweek",thisweek) }, 100)
+	setTimeout(function(){_show(".sy-thismonth",thismonth) }, 100)
+	
+	
+	
 	//$(".part-right .sy-yesterday ").html(yesterday);
 	//$(".part-right .sy-thisweek ").html(thisweek);
 	//$(".part-right .sy-thismonth ").html(thismonth);
@@ -41,7 +67,7 @@ $(function(){
 
 	var txt = "Browser Name: " + navigator.appName + "\n";
   txt += "Browser Version: " + navigator.appVersion + "\n";
-  //alert(txt);
+
 	function history(s) {
 		if(s > 0) {
 			document.getElementById('ceng4').style.display = 'block';
@@ -63,11 +89,7 @@ $(function(){
 		$parents.find(".part-box").slideDown(100);
 	});
 	//浏览器记录划过
-/*	$(".history-info").on("hover",function(){
-		$(this).find("span").show()
-	},function(){
-		$(this).find("span").hide();
-	});*/
+
 
     function backtohistory(){
         if($("#history-search-name").val()==""){
