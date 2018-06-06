@@ -359,6 +359,13 @@ void CWebEventHandler::NewWindow3( CWebBrowserUI* pWeb, IDispatch **pDisp, VARIA
 {
 	Log("void CWebEventHandler::NewWindow3");
 
+	
+	if(_tcscmp(bstrUrl, _T("about:blank")) == 0)
+	{
+		(*Cancel) = TRUE;
+		return ;
+	}
+
 	if(theApp.get_tabset_qiantaitiaozhuan() == "0")
 	{
 		m_webengine->Add(bstrUrl, true);
