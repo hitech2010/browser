@@ -179,12 +179,6 @@ void CWebEventHandler::NavigateComplete2( CWebBrowserUI* pWeb, IDispatch *pDisp,
 
 	}
 	
-
-
-
-	BSTR bstrname;
-	m_webengine->m_crrentWebPage->GetWebBrowser2()->get_LocationName(&bstrname);
-	
 	
 
 }

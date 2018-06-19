@@ -153,6 +153,8 @@ public:
 	BrowserApp();
 	~BrowserApp();
 
+
+
 	void FixIEEmulation();
 	CHistoryMgr* History();
 	BrowserApp& SetDefaultBrowser();

@@ -2957,7 +2957,7 @@ int CMdWebEngine::Remove( CControlUI* btnCloseTab )
 		m_crrentWebPage = NULL;
 	}
 
-	OutputDebugStringA("45677689");
+	
 
 	}
 	catch(...)

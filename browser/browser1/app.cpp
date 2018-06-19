@@ -17,6 +17,14 @@
 #endif
 
 
+#include  <DbgHelp.h>
+#pragma  comment(lib, "dbghelp.lib")
+#include <shlwapi.h>
+#pragma  comment(lib, "shlwapi.lib")
+
+#include <time.h>
+
+
 typedef void(*PFShowCertDetail)(int id, const char * title);
 
 PFShowCertDetail g_ShowCertDetailCallback = NULL;
@@ -331,6 +339,8 @@ int nExitFlag;
 			\"appconfig\" :\
 		{\
 			\"ask_before_close\":\"yes\",\
+			\"main_page\" : \"http://baidu.com\",\
+			\"user_startpage\" : \"http://baidu.com\",\
 				\"startup_page_policy\" : \"1\",\
 				\"ui_show_homepage\" : \"0\",\
 				\"ui_show_bookmark\" : \"1\",\
@@ -584,7 +594,7 @@ int nExitFlag;
 
 		if(m_appfile.size())
 		{
-			nResult= reg.SetValue( 9000, _encoding(m_appfile).a_utf16().getutf16().c_str()  ); 
+			nResult= reg.SetValue( 11000, _encoding(m_appfile).a_utf16().getutf16().c_str()  ); 
 		}
 
 		
@@ -657,8 +667,10 @@ int nExitFlag;
 		Json::Reader reader;
 		Json::Value root;
 		if (!reader.parse(ifs, m_jroot, false))
+
+
 		{
-			throw std::exception("imcomplete ini file");
+			//throw std::exception("imcomplete ini file");
 			reader.parse(defaultconfig, m_jroot, true);
 		}
 
@@ -677,9 +689,6 @@ int nExitFlag;
 			MessageBoxA(NULL, "wrong ini file", NULL, MB_OK);
 			// throw std::exception("wrong ini file");
 		}
-		
-
-		Log("BrowserApp::7");
 
 	}
 
@@ -787,6 +796,70 @@ int nExitFlag;
 
 	}
 
+	LONG WINAPI UnhandleExceptionFilter(struct _EXCEPTION_POINTERS* ExceptionInfo)
+	{
+
+		TCHAR szAppDataDir[256] = {0};
+
+
+		::ExpandEnvironmentStrings(_T("%APPDATA%\\gmbrowser"), szAppDataDir, MAX_PATH);
+
+
+		if(!PathFileExists(szAppDataDir) )
+		{
+			CreateDirectory(szAppDataDir, NULL);
+
+		}
+
+		TCHAR dumpfilename[256] = {0};
+
+		SYSTEMTIME  sysTime;
+		GetLocalTime(&sysTime);
+
+
+
+		struct tm tmtime = {0};
+		tmtime.tm_year = sysTime.wYear - 1900;
+		tmtime.tm_mon = sysTime.wMonth - 1;
+		tmtime.tm_mday = sysTime.wDay;
+		tmtime.tm_hour = sysTime.wHour;
+		tmtime.tm_min = sysTime.wMinute;
+		tmtime.tm_sec = sysTime.wSecond;
+		tmtime.tm_wday = 0;
+		tmtime.tm_yday = 0;
+		tmtime.tm_isdst = -1;
+
+
+
+		_stprintf(dumpfilename, _T("%08X.dmp"), mktime(&tmtime));
+
+
+
+		PathAppend(szAppDataDir, dumpfilename);
+
+
+		HANDLE   hFile   =   CreateFile(szAppDataDir,   GENERIC_WRITE,   FILE_SHARE_WRITE,   NULL,   CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,   NULL   );
+
+		if   (hFile!=INVALID_HANDLE_VALUE)
+		{ 
+			MINIDUMP_EXCEPTION_INFORMATION   ExInfo; 
+
+			ExInfo.ThreadId   =   ::GetCurrentThreadId();
+			ExInfo.ExceptionPointers   =   ExceptionInfo;
+			ExInfo.ClientPointers   =   NULL;
+
+			int nDumpType = MiniDumpNormal;
+			MiniDumpWithThreadInfo | MiniDumpWithHandleData | MiniDumpWithProcessThreadData;
+
+			//   write   the   dump
+			BOOL   bOK   =   MiniDumpWriteDump(GetCurrentProcess(),   GetCurrentProcessId(),   hFile,
+				(MINIDUMP_TYPE)nDumpType,  &ExInfo,   NULL,   NULL   );
+			CloseHandle(hFile); 
+		} 
+
+		//PostThreadMessage(GetCurrentThreadId(),WM_QUIT,0,0);
+		return 0;
+	}
 
 
 
@@ -831,6 +904,7 @@ unsigned int __stdcall  sync_setting_proc(void* para)
 }
 
 
+
 CFrameWindowWnd* g_frame;
 
 int __stdcall _tWinMain(HINSTANCE hInstance,
@@ -842,7 +916,7 @@ int __stdcall _tWinMain(HINSTANCE hInstance,
 
 	CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
-
+	SetUnhandledExceptionFilter(UnhandleExceptionFilter);
 	theApp.FixIEEmulation();
 
 	//_beginthreadex(NULL, 0, sync_setting_proc, NULL, 0, NULL);
